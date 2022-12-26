@@ -1,68 +1,71 @@
 package com.briansandpuzzlegame;
 
-/**
- * Each room type implements this class
- */
 public interface IRoom {
 
-	public void doEnter();
+	public void enter();
 
-	public void doGo();
+	public void push();
+	
+	public void go();
 
-	public void doOpen();
+	public void open();
 
-	public void doClose();
+	public void close();
 
-	public void doMove();
+	public void move();
 
-	public void doUse();
+	public void use();
 
-	public void doTurn();
+	public void turn();
 
-	public void doTake();
+	public void take();
 
-	public void doInspect();
+	public void inspect();
 
-	public void doAttack();
+	public void attack();
 
-	public void doClimb();
+	public void climb();
 
-	public void doDescend();
+	public void descend();
 
-	public void doRun();
+	public void run();
 
-	public void doHide();
+	public void hide();
 
-	public void doCrawl();
+	public void crawl();
 
-	public void doJump();
+	public void jump();
 
-	public void doSearch();
+	public void search();
 
-	public void doLook();
+	public void look();
 
-	public void doCheck();
+	public void check();
 
-	public void doTouch();
+	public void touch();
 
-	public void doThrow();
+	public void Throw();
 
-	public void doWatch();
+	public void watch();
 
-	public void doWait();
+	public void Wait();
 
-	public void doBreak();
+	public void Break();
 
-	public void doSmash();
+	public void smash();
 
-	public void doInventory();
+	public void inventory();
 
-	public void goNorth();
+	public void north();
 
-	public void goEast();
+	public void east();
 
-	public void goSouth();
+	public void south();
 
-	public void goWest();
+	public void west();
+	
+	public void yes();
+	
+	public void no();
 
 }
