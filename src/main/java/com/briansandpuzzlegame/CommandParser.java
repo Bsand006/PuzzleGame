@@ -26,8 +26,7 @@ public class CommandParser implements KeyListener {
 	JScrollPane scroller;
 	Font font;
 
-	// User input string
-	public String words;
+	public String words; // User input string
 
 	// Game GUI
 	void run() {

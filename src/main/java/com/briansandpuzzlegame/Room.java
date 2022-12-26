@@ -7,12 +7,8 @@ public class Room implements IRoom {
 	CommandParser p;
 
 	String userInput;
-	List<Boolean> playerState = new ArrayList<Boolean>();
-	
-
-	boolean movedFoward = false;
-	boolean inspectedObject = false;
-	
+	String playerLocation;
+	List<String> playerState = new ArrayList<String>();
 
 	public Room(CommandParser p) {
 		this.p = p;
@@ -29,36 +25,61 @@ public class Room implements IRoom {
 		if (userInput.contains("move"))
 			move();
 
+		if (userInput.contains("go"))
+			go();
+
 		if (userInput.contains("search"))
 			search();
 
 		if (userInput.contains("inspect"))
 			inspect();
-		
+
 		if (userInput.contains("push"))
 			push();
 
+		if (userInput.contains("east"))
+			east();
+
+		if (userInput.contains("north"))
+			north();
+
+		if (userInput.contains("south"))
+			south();
+
+		if (userInput.contains("west"))
+			west();
 	}
 
 	public void enter() {
 	}
 
 	public void go() {
+		if (userInput.contains("foward") && !playerState.contains("movedFoward")) {
+			p.textBox.append("\n You move into the room and bump into some object");
+			playerState.add("movedFoward");
+		} else {
+			p.textBox.append("\n I do not understand where you are trying go");
+		}
 	}
 
 	public void push() {
-		
-		if (userInput.contains("button") && inspectedObject == true) {
+
+		if (userInput.contains("button") && playerState.contains("inspectedObject")
+				&& !playerState.contains("pushedButton")) {
+
 			p.textBox.append("\n You push the button. The room floods with bright light"
 					+ "\n You stand in a large square room made of concrete"
 					+ "\n There is a metal door to the north. There is a table to the east");
 		
+			playerState.add("pushedButton");
+			playerLocation = "center";
+
 		} else {
 			p.textBox.append("\n I do not understand what you are trying to push");
 		}
-		
+
 	}
-	
+
 	public void open() {
 	}
 
@@ -66,9 +87,10 @@ public class Room implements IRoom {
 	}
 
 	public void move() {
-		if (userInput.contains("foward")) {
+		if (userInput.contains("foward") && !playerState.contains("movedFoward")) {
 			p.textBox.append("\n You move into the room and bump into some object");
-			movedFoward = true;
+			playerState.add("movedFoward");
+
 		} else {
 			p.textBox.append("\n I do not understand where you are trying to move to");
 		}
@@ -84,13 +106,11 @@ public class Room implements IRoom {
 	}
 
 	public void inspect() {
-		if (userInput.contains("object")) {
+		if (userInput.contains("object") && !playerState.contains("inspectedObject")) {
 
-			if (movedFoward == true) {
-				p.textBox.append(
-						"\n You run your hand along its metallic surface and you feel a button");
-				inspectedObject = true;
-			}
+			p.textBox.append("\n You run your hand along its metallic surface and you feel a button");
+			playerState.add("inspectedObject");
+
 		} else {
 			p.textBox.append("\n I do not understand what you are inspecting");
 		}
@@ -164,6 +184,12 @@ public class Room implements IRoom {
 	}
 
 	public void east() {
+		if (!playerLocation.equals("east") && playerState.contains("pushedButton")) {
+			p.textBox.append("\n The table is made of wood and has a drawer"
+					+ "\n On the table is a hammer");
+			
+			playerLocation = "east";
+		}
 	}
 
 	public void south() {
@@ -172,9 +198,9 @@ public class Room implements IRoom {
 	public void west() {
 	}
 
-	public void yes() {		
+	public void yes() {
 	}
 
-	public void no() {		
+	public void no() {
 	}
 }
