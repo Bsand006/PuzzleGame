@@ -13,7 +13,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class CommandParser implements KeyListener {
-	Room r;
+	Level1 r;
+	Level2 a;
 
 	// Parser wordlists
 	ArrayList<String> verbList;
@@ -26,11 +27,12 @@ public class CommandParser implements KeyListener {
 	JScrollPane scroller;
 	Font font;
 
+	public int level = 1;
 	public String words; // User input string
 
 	// Game GUI
 	void run() {
-		r = new Room(this);
+		r = new Level1(this);
 
 		// JFrame
 		f = new JFrame();

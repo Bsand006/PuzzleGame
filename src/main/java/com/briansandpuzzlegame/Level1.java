@@ -3,18 +3,28 @@ package com.briansandpuzzlegame;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room implements IRoom {
+public class Level1 implements IRoom {
 	CommandParser p;
 
 	String userInput;
-	String playerLocation;
+	String playerLocation = "center";
 	List<String> playerState = new ArrayList<String>();
 	List<String> inventory = new ArrayList<String>();
 
-	boolean plateopen = false;
 
-	public Room(CommandParser p) {
+
+	public Level1(CommandParser p) {
 		this.p = p;
+	}
+
+	public void doorOpens() {
+
+		p.textBox.append(
+				"\n The door squeaks as it swings open" + "\n You have completed level 1! Type 'continue' to move on");
+
+		if (userInput.contains("continue"))
+			p.level += 1;
+
 	}
 
 	public void verbInterpreter() {
@@ -22,6 +32,11 @@ public class Room implements IRoom {
 		userInput = p.inputPasser();
 		System.out.println(userInput);
 
+		
+
+		if (userInput.contains("break"))
+			Break();
+		
 		if (userInput.contains("inventory"))
 			inventory();
 
@@ -60,9 +75,11 @@ public class Room implements IRoom {
 
 		if (userInput.contains("take"))
 			take();
+		
 	}
 
 	public void enter() {
+		
 	}
 
 	public void go() {
@@ -87,6 +104,13 @@ public class Room implements IRoom {
 			playerState.add("pushedButton");
 			playerLocation = "center";
 
+		} else if (userInput.contains("button") && playerState.contains("pushedButton")
+				&& !inventory.contains("buttonKey")) {
+
+			p.textBox.append("\n You decide to push the button again" + "\n Out of the plate the "
+					+ "button is on a key is revealed");
+			playerState.add("pushedButtonTwice");
+
 		} else {
 			p.textBox.append("\n I do not understand what you are trying to push");
 		}
@@ -103,15 +127,6 @@ public class Room implements IRoom {
 			p.textBox.append("\n I do not understand what you want to open");
 		}
 
-		// Plate on wall
-		if (playerState.contains("foundPlate") && plateopen == false) {
-			p.textBox.append("\n The plate is firmly screwed into place");
-
-		} else if (playerState.contains("foundPlate") && plateopen == true) {
-			p.textBox.append("\n You remove the plate and find a key inside" + "\n Plate key added to inventory");
-			inventory.add("key from plate");
-
-		}
 	}
 
 	public void close() {
@@ -128,6 +143,29 @@ public class Room implements IRoom {
 	}
 
 	public void use() {
+		if (inventory.contains("screwdriver") && userInput.contains("panel")) {
+			p.textBox.append("\n You unscrew the panel and it clatters to the ground" + "\n There is a key inside");
+			playerState.add("openedPanel");
+
+		} else if (inventory.contains("key") && playerLocation.equals("north") && userInput.contains("door")) {
+			p.textBox.append("\n The key slides into the lock and the handle pops out of the door"
+					+ "\n The door is still locked");
+			playerState.add("tableKeyUsed");
+
+			if (playerState.contains("tableKeyUsed") && playerState.contains("buttonKeyUsed"))
+				doorOpens();
+
+		} else if (inventory.contains("buttonKey") && playerLocation.equals("north") && userInput.contains("door")) {
+			p.textBox.append("\n The key slides into the lock" + "\n The latch mechanicaly slides open");
+			playerState.add("buttonKeyUsed");
+
+			if (playerState.contains("tableKeyUsed") && playerState.contains("buttonKeyUsed"))
+				doorOpens();
+
+		} else {
+			p.textBox.append("\n I do not understand what you want to use");
+		}
+
 	}
 
 	public void turn() {
@@ -137,6 +175,18 @@ public class Room implements IRoom {
 		if (userInput.contains("hammer") && playerLocation.equals("east")) {
 			p.textBox.append("\n You take the hammer");
 			inventory.add("hammer");
+
+		} else if (playerState.contains("foundScrewdriver") && playerLocation.equals("east")) {
+			p.textBox.append("\n You take the screwdriver");
+			inventory.add("screwdriver");
+
+		} else if (playerState.contains("openedPanel")) {
+			p.textBox.append("\n You take the key");
+			inventory.add("key");
+
+		} else if (playerState.contains("pushedButtonTwice")) {
+			p.textBox.append("\n You take the key");
+			inventory.add("buttonKey");
 
 		} else {
 			p.textBox.append("\n I do not understand what you want to take");
@@ -148,6 +198,11 @@ public class Room implements IRoom {
 
 			p.textBox.append("\n You run your hand along its metallic surface and you feel a button");
 			playerState.add("inspectedObject");
+
+		} else if (userInput.contains("drawer") && playerLocation.equals("east")) {
+			p.textBox.append("\n You run your hand along the inside of the drawer"
+					+ "\n You feel a small panel. You push it and it retracts to reveal a screwdriver");
+			playerState.add("foundScrewdriver");
 
 		} else {
 			p.textBox.append("\n I do not understand what you are inspecting");
@@ -176,30 +231,26 @@ public class Room implements IRoom {
 	}
 
 	public void search() {
+
+		// If user looks for lightswitch
 		if (userInput.contains("lightswitch")) {
 			p.textBox.append("\n You search the walls for a lightswitch and do not find one");
 
-		} else {
-			p.textBox.append("\n I do not understand what you are searching for");
-		}
-
-		if (userInput.contains("room") && playerState.contains("pushedButton")) {
+			// Searching room after lights are on
+		} else if (userInput.contains("room") && playerState.contains("pushedButton")) {
 			p.textBox.append("\n You search the entire room" + "\n You find a metal panel attached by four screws");
 
 			playerState.add("foundPlate");
+
+			// Unrecognized input
+		} else {
+			p.textBox.append("\n I do not understand what you are searching for");
 		}
 
 	}
 
 	public void look() {
-		if (userInput.contains("left")) {
-			p.textBox.append("\n You look left and see complete darkness");
-		} else if (userInput.contains("right")) {
-			p.textBox.append("\n You look right and see complete darkness");
 
-		} else {
-			p.textBox.append("\n I do not understand where you are looking");
-		}
 	}
 
 	public void check() {
@@ -218,13 +269,30 @@ public class Room implements IRoom {
 	}
 
 	public void Break() {
+		
+		if (inventory.contains("hammer") && userInput.contains("table") && playerLocation.equals("east")
+				&& !inventory.contains("screwdriver")) {
+			p.textBox.append("\n You smash the table with the hammer" + "\n You find a screwdriver in the debris");
+		
+		} else {
+			p.textBox.append("\n I do not understand what you want to break");
+		}
 	}
 
 	public void smash() {
+
+		if (inventory.contains("hammer") && userInput.contains("table") && playerLocation.equals("east")
+				&& !inventory.contains("screwdriver")) {
+			p.textBox.append("\n You smash the table with the hammer" + "\n You find a screwdriver in the debris");
+		
+		} else {
+			p.textBox.append("\n I do not understand what you want to smash");
+		}
 	}
 
 	public void inventory() {
 
+		// Displays inventory
 		if (!inventory.isEmpty()) {
 			p.textBox.append("\n" + inventory);
 		} else {
@@ -233,8 +301,11 @@ public class Room implements IRoom {
 	}
 
 	public void north() {
+
+		// Metal door
 		if (!playerLocation.equals("north") && playerState.contains("pushedButton")) {
-			p.textBox.append("\n The metal door has two keyholes. The handle is retracted into the door");
+			p.textBox.append("\n The metal door has two keyholes and a latch. The handle is retracted into the door"
+					+ "\n The latch cannot be moved by hand");
 
 			playerLocation = "north";
 
@@ -244,6 +315,8 @@ public class Room implements IRoom {
 	}
 
 	public void east() {
+
+		// Table
 		if (!playerLocation.equals("east") && playerState.contains("pushedButton")) {
 			p.textBox.append("\n The table is made of wood and has a drawer" + "\n On the table is a hammer");
 

@@ -2,6 +2,8 @@ package com.briansandpuzzlegame;
 
 public interface IRoom {
 
+	
+	
 	public void enter();
 
 	public void push();
@@ -69,3 +71,4 @@ public interface IRoom {
 	public void no();
 
 }
+
