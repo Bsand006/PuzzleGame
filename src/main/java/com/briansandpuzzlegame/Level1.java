@@ -11,32 +11,20 @@ public class Level1 implements IRoom {
 	List<String> playerState = new ArrayList<String>();
 	List<String> inventory = new ArrayList<String>();
 
-
-
+	// For referencing CommandParser
 	public Level1(CommandParser p) {
 		this.p = p;
 	}
 
-	public void doorOpens() {
-
-		p.textBox.append(
-				"\n The door squeaks as it swings open" + "\n You have completed level 1! Type 'continue' to move on");
-
-		if (userInput.contains("continue"))
-			p.level += 1;
-
-	}
-
+	// Interpreter
 	public void verbInterpreter() {
 
 		userInput = p.inputPasser();
 		System.out.println(userInput);
 
-		
-
 		if (userInput.contains("break"))
 			Break();
-		
+
 		if (userInput.contains("inventory"))
 			inventory();
 
@@ -75,17 +63,31 @@ public class Level1 implements IRoom {
 
 		if (userInput.contains("take"))
 			take();
-		
+
+		if (userInput.contains("use"))
+			use();
+
+		if (userInput.contains("continue"))
+			Continue();
+	}
+
+	// Level completion method
+	public void doorOpens() {
+
+		p.textBox.append(
+				"\n The door squeaks as it swings open" + "\n You have completed level 1! Type 'continue' to move on");
+
 	}
 
 	public void enter() {
-		
+
 	}
 
 	public void go() {
-		if (userInput.contains("foward") && !playerState.contains("movedFoward")) {
+		if (userInput.contains("forward") && !playerState.contains("movedForward")) {
 			p.textBox.append("\n You move into the room and bump into some object");
-			playerState.add("movedFoward");
+			playerState.add("movedForward");
+			Continue();
 
 		} else {
 			p.textBox.append("\n I do not understand where you are trying go");
@@ -133,9 +135,9 @@ public class Level1 implements IRoom {
 	}
 
 	public void move() {
-		if (userInput.contains("foward") && !playerState.contains("movedFoward")) {
+		if (userInput.contains("forward") && !playerState.contains("movedForward")) {
 			p.textBox.append("\n You move into the room and bump into some object");
-			playerState.add("movedFoward");
+			playerState.add("movedForward");
 
 		} else {
 			p.textBox.append("\n I do not understand where you are trying to move to");
@@ -147,7 +149,9 @@ public class Level1 implements IRoom {
 			p.textBox.append("\n You unscrew the panel and it clatters to the ground" + "\n There is a key inside");
 			playerState.add("openedPanel");
 
-		} else if (inventory.contains("key") && playerLocation.equals("north") && userInput.contains("door")) {
+		} else if (inventory.contains("key") && playerLocation.equals("north") && userInput.contains("door")
+				&& !playerState.contains("tableKeyUsed")) {
+
 			p.textBox.append("\n The key slides into the lock and the handle pops out of the door"
 					+ "\n The door is still locked");
 			playerState.add("tableKeyUsed");
@@ -155,7 +159,9 @@ public class Level1 implements IRoom {
 			if (playerState.contains("tableKeyUsed") && playerState.contains("buttonKeyUsed"))
 				doorOpens();
 
-		} else if (inventory.contains("buttonKey") && playerLocation.equals("north") && userInput.contains("door")) {
+		} else if (inventory.contains("buttonKey") && playerLocation.equals("north") && userInput.contains("door")
+				&& !playerState.contains("buttonKeyUsed")) {
+
 			p.textBox.append("\n The key slides into the lock" + "\n The latch mechanicaly slides open");
 			playerState.add("buttonKeyUsed");
 
@@ -176,15 +182,17 @@ public class Level1 implements IRoom {
 			p.textBox.append("\n You take the hammer");
 			inventory.add("hammer");
 
-		} else if (playerState.contains("foundScrewdriver") && playerLocation.equals("east")) {
+		} else if (playerState.contains("foundScrewdriver") && playerLocation.equals("east")
+				&& !inventory.contains("screwdriver")) {
+
 			p.textBox.append("\n You take the screwdriver");
 			inventory.add("screwdriver");
 
-		} else if (playerState.contains("openedPanel")) {
+		} else if (userInput.contains("key") && playerState.contains("openedPanel") && !inventory.contains("key")) {
 			p.textBox.append("\n You take the key");
 			inventory.add("key");
 
-		} else if (playerState.contains("pushedButtonTwice")) {
+		} else if (playerState.contains("pushedButtonTwice") && !inventory.contains("buttonKey")) {
 			p.textBox.append("\n You take the key");
 			inventory.add("buttonKey");
 
@@ -269,11 +277,12 @@ public class Level1 implements IRoom {
 	}
 
 	public void Break() {
-		
+
 		if (inventory.contains("hammer") && userInput.contains("table") && playerLocation.equals("east")
 				&& !inventory.contains("screwdriver")) {
 			p.textBox.append("\n You smash the table with the hammer" + "\n You find a screwdriver in the debris");
-		
+			playerState.add("foundScrewdriver");
+
 		} else {
 			p.textBox.append("\n I do not understand what you want to break");
 		}
@@ -284,7 +293,7 @@ public class Level1 implements IRoom {
 		if (inventory.contains("hammer") && userInput.contains("table") && playerLocation.equals("east")
 				&& !inventory.contains("screwdriver")) {
 			p.textBox.append("\n You smash the table with the hammer" + "\n You find a screwdriver in the debris");
-		
+			playerState.add("foundScrewdriver");
 		} else {
 			p.textBox.append("\n I do not understand what you want to smash");
 		}
@@ -326,7 +335,24 @@ public class Level1 implements IRoom {
 			p.textBox.append("\n You are as east as you can go");
 	}
 
+	public void Continue() {
+		p.activeLevel = "Great door";
+		p.textBox.setText("");
+		p.textBox.append("You step into a large room");
+		p.textBox.append("\n To the north is a large door 20ft tall");
+		p.textBox.append("\n There are 5 pedastals in a row in front of the door");
+		p.textBox.append("\n To the east there is a small wood door");
+	}
+
 	public void south() {
+
+		if (!playerLocation.equals("south") && playerState.contains("pushedButton")) {
+			if (playerLocation.equals("north")) {
+				p.textBox.append("\n You are at the stand with the button in the center");
+				playerLocation = "center";
+			}
+		} else if (playerLocation.equals("south"))
+			p.textBox.append("\n You are as south as you can go");
 	}
 
 	public void west() {
@@ -337,4 +363,5 @@ public class Level1 implements IRoom {
 
 	public void no() {
 	}
+
 }

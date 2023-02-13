@@ -1,10 +1,11 @@
 package com.briansandpuzzlegame;
 
-import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -14,7 +15,11 @@ import javax.swing.SwingUtilities;
 
 public class CommandParser implements KeyListener {
 	Level1 r;
-	Level2 a;
+	GreatDoor a;
+	EastDoorPuzzle b;
+
+	HashMap<String, IRoom> levels;
+	String activeLevel;
 
 	// Parser wordlists
 	ArrayList<String> verbList;
@@ -27,13 +32,21 @@ public class CommandParser implements KeyListener {
 	JScrollPane scroller;
 	Font font;
 
-	public int level = 1;
 	public String words; // User input string
 
 	// Game GUI
 	void run() {
 		r = new Level1(this);
+		a = new GreatDoor(this);
+		b = new EastDoorPuzzle(this);
+		
+		levels = new HashMap<>();
 
+		levels.put("First level", r);
+		levels.put("Great door", a);
+		levels.put("East door puzzle", b);
+		activeLevel = "First level";
+		
 		// JFrame
 		f = new JFrame();
 		f.setLayout(null);
@@ -91,7 +104,10 @@ public class CommandParser implements KeyListener {
 
 					if (verbList.contains(a) || adverbList.contains(a)) {
 						inputPasser();
-						r.verbInterpreter();
+						
+						IRoom room =  levels.get(activeLevel);
+						room.verbInterpreter();
+
 						break;
 					} else
 						textBox.append("\n" + a + " is not a verb I recognize");
@@ -140,6 +156,7 @@ public class CommandParser implements KeyListener {
 		verbList.add("break");
 		verbList.add("smash");
 		verbList.add("inventory");
+		verbList.add("continue");
 
 	}
 

@@ -1,8 +1,8 @@
 package com.briansandpuzzlegame;
 
 public interface IRoom {
-
 	
+	public void verbInterpreter();
 	
 	public void enter();
 
@@ -70,5 +70,7 @@ public interface IRoom {
 	
 	public void no();
 
+	public void Continue();
+	
 }
 
