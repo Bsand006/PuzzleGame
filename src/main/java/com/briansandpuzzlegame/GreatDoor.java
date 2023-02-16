@@ -1,15 +1,24 @@
 package com.briansandpuzzlegame;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GreatDoor implements IRoom {
 	CommandParser p;
 
 	String userInput;
 	String playerLocation = "center";
+	List<String> inventory = new ArrayList<String>();
 
 	public GreatDoor(CommandParser p) {
 		this.p = p;
+		
+		setInventory(inventory);
+
 	}
 
+
+	
 	@Override
 	public void verbInterpreter() {
 
@@ -22,6 +31,9 @@ public class GreatDoor implements IRoom {
 		if (userInput.contains("open"))
 			open();
 
+		if (userInput.contains("inventory"))
+			inventory();
+		
 	}
 
 	@Override
@@ -62,10 +74,9 @@ public class GreatDoor implements IRoom {
 		} else {
 			p.textBox.append("\n I do not understand what you want to open");
 		}
-		
+
 		p.activeLevel = "East door puzzle";
-			
-	
+
 	}
 
 	@Override
@@ -180,7 +191,12 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void inventory() {
-
+		// Displays inventory
+		if (!inventory.isEmpty()) {
+			p.textBox.append("\n" + inventory);
+		} else {
+			p.textBox.append("\n Inventory is empty");
+		}
 	}
 
 	@Override
@@ -221,6 +237,18 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void Continue() {
+
+	}
+
+	@Override
+	public List<String> getInventory() {
+		return inventory;
+	}
+
+	@Override
+	public void setInventory(List<String> inventory) {
+
+		this.inventory = inventory;
 
 	}
 

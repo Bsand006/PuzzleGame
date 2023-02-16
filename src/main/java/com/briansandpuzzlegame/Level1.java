@@ -336,6 +336,8 @@ public class Level1 implements IRoom {
 	}
 
 	public void Continue() {
+	
+		getInventory();
 		p.activeLevel = "Great door";
 		p.textBox.setText("");
 		p.textBox.append("You step into a large room");
@@ -362,6 +364,19 @@ public class Level1 implements IRoom {
 	}
 
 	public void no() {
+	}
+
+	@Override
+	public List<String> getInventory() {
+		return inventory;
+	}
+
+	@Override
+	public void setInventory(List<String> inventory) {
+
+		this.inventory = inventory;
+		
+		
 	}
 
 }

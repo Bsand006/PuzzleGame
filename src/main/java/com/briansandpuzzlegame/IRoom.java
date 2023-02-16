@@ -1,13 +1,15 @@
 package com.briansandpuzzlegame;
 
+import java.util.List;
+
 public interface IRoom {
-	
+
 	public void verbInterpreter();
-	
+
 	public void enter();
 
 	public void push();
-	
+
 	public void go();
 
 	public void open();
@@ -65,12 +67,15 @@ public interface IRoom {
 	public void south();
 
 	public void west();
-	
+
 	public void yes();
-	
+
 	public void no();
 
 	public void Continue();
-	
-}
 
+	public List<String> getInventory();
+
+	public void setInventory(List<String> inventory);
+
+}
