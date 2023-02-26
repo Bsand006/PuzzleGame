@@ -1,10 +1,11 @@
 package com.briansandpuzzlegame;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IRoom {
 
-	public void verbInterpreter();
+	public void verbInterpreter() throws IOException;
 
 	public void enter();
 
@@ -77,6 +78,10 @@ public interface IRoom {
 	public void exit();
 
 	public void Continue();
+	
+	public void save() throws IOException;
+	
+	public void load() throws IOException;
 
 	public List<String> getInventory();
 

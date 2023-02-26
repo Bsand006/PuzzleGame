@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,11 +18,21 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class CommandParser implements KeyListener {
 	Level1 r;
 	GreatDoor a;
 	EastDoorPuzzle b;
 
+	// Game tracker JSON
+	JSONObject gameTracker;
+	JSONArray eastDoorLocks;
+	Path filePath = Paths.get("/home/brain/Git/PuzzleGame/state.json");
+	String rawContent;
+
+	// Current room hashmap
 	HashMap<String, IRoom> levels;
 	String activeLevel;
 
@@ -34,25 +49,28 @@ public class CommandParser implements KeyListener {
 
 	public String words; // User input string
 
-	// Game GUI
 	void run() {
+
+		// Hashmap to track active room
+
 		r = new Level1(this);
 		a = new GreatDoor(this);
 		b = new EastDoorPuzzle(this);
-		
+
 		levels = new HashMap<>();
 
 		levels.put("First level", r);
 		levels.put("Great door", a);
 		levels.put("East door puzzle", b);
 		activeLevel = "First level";
-		
-		// JFrame
+
+		// Generates game GUI
+
 		f = new JFrame();
 		f.setLayout(null);
 		f.setVisible(true);
 		f.setSize(850, 600);
-		f.setTitle("Puzzle game");
+		f.setTitle("Zorp");
 		f.getContentPane().setBackground(Color.BLACK);
 
 		// Text font
@@ -85,6 +103,30 @@ public class CommandParser implements KeyListener {
 
 	}
 
+	void load() throws IOException {
+
+		rawContent = new String(Files.readAllBytes(filePath));
+		gameTracker = new JSONObject(rawContent);
+
+		gameTracker.put("level1Done", false);
+		gameTracker.put("eastDoorPuzzleDone", false);
+
+		eastDoorLocks = new JSONArray();
+		gameTracker.put("eastDoorLocks", eastDoorLocks);
+		eastDoorLocks.put(1, false);
+		eastDoorLocks.put(2, false);
+		eastDoorLocks.put(3, false);
+		eastDoorLocks.put(4, false);
+		rawContent = gameTracker.toString(gameTracker.length());
+
+	}
+
+	void save() throws IOException {
+
+		Files.writeString(filePath, "MEEP", StandardOpenOption.CREATE);
+
+	}
+
 	// Parser
 	public void keyPressed(KeyEvent e) {
 
@@ -104,9 +146,13 @@ public class CommandParser implements KeyListener {
 
 					if (verbList.contains(a) || adverbList.contains(a)) {
 						inputPasser();
-						
-						IRoom room =  levels.get(activeLevel);
-						room.verbInterpreter();
+
+						IRoom room = levels.get(activeLevel);
+						try {
+							room.verbInterpreter();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 
 						break;
 					} else
@@ -155,8 +201,6 @@ public class CommandParser implements KeyListener {
 		verbList.add("wait");
 		verbList.add("break");
 		verbList.add("smash");
-		verbList.add("inventory");
-		verbList.add("continue");
 
 	}
 
@@ -165,6 +209,12 @@ public class CommandParser implements KeyListener {
 
 		adverbList = new ArrayList<String>();
 
+		adverbList.add("load");
+		adverbList.add("save");
+		adverbList.add("inventory");
+		adverbList.add("continue");
+		adverbList.add("leave");
+		adverbList.add("exit");
 		adverbList.add("north");
 		adverbList.add("northeast");
 		adverbList.add("east");

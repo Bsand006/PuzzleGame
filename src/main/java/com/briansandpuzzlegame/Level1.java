@@ -1,5 +1,6 @@
 package com.briansandpuzzlegame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Level1 implements IRoom {
 	}
 
 	// Interpreter
-	public void verbInterpreter() {
+	public void verbInterpreter() throws IOException {
 
 		userInput = p.inputPasser();
 		System.out.println(userInput);
@@ -74,6 +75,12 @@ public class Level1 implements IRoom {
 
 		if (userInput.contains("continue"))
 			Continue();
+		
+		if (userInput.contains("load"))
+			load();
+		
+		if (userInput.contains("save"))
+			save();
 	}
 
 	// Level completion method
@@ -349,6 +356,7 @@ public class Level1 implements IRoom {
 	public void Continue() { // MOVES TO NEXT LEVEL
 
 		getInventory();
+		p.gameTracker.put("level1Done", true);
 		p.activeLevel = "Great door";
 		p.textBox.setText("");
 		p.textBox.append("You step into a large room");
@@ -399,6 +407,19 @@ public class Level1 implements IRoom {
 	public void exit() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void save() throws IOException {
+
+		p.textBox.append("\n Game saved");
+		p.save();
+	}
+
+	@Override
+	public void load() throws IOException {
+
+		p.load();
 	}
 
 }
