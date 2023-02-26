@@ -1,5 +1,10 @@
 package com.briansandpuzzlegame;
 
+/*
+ * This room is past the door to the east in the GreatDoor room. This room contains a puzzle box
+ * that holds a piece of paper which has part of the sequence to open the great door.
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,14 +12,18 @@ public class EastDoorPuzzle implements IRoom {
 	CommandParser p;
 
 	String userInput;
-	boolean[] locks = new boolean[4];
-	List<String> inventory = new ArrayList<String>();
+	boolean[] locks = new boolean[4]; // Position of the four locks on the box. Are they unlocked or not?
+	boolean boxUnlock = false; // Is the box unlocked?
+	boolean leaveRoom = false; // Leave the room?
+	List<String> inventory = new ArrayList<String>(); // Inventory
 
 	public EastDoorPuzzle(CommandParser p) {
 		this.p = p;
+
+		setInventory(inventory); // Updates inventory from previous class
 	}
 
-	@Override
+	@Override // Executes verb methods
 	public void verbInterpreter() {
 
 		userInput = p.inputPasser();
@@ -39,15 +48,52 @@ public class EastDoorPuzzle implements IRoom {
 
 		if (userInput.contains("push"))
 			push();
-		
+
 		if (userInput.contains("search"))
 			search();
-		
+
 		if (userInput.contains("touch"))
 			touch();
-		
+
 		if (userInput.contains("throw"))
 			Throw();
+
+		if (userInput.contains("inventory"))
+			inventory();
+
+		if (userInput.contains("look"))
+			look();
+
+		if (userInput.contains("check"))
+			check();
+
+		if (userInput.contains("west"))
+			west();
+
+		if (userInput.contains("leave"))
+			leave();
+
+		if (userInput.contains("exit"))
+			exit();
+
+		if (userInput.contains("go"))
+			go();
+
+		if (userInput.contains("yes"))
+			yes();
+
+		if (userInput.contains("no"))
+			no();
+	}
+
+	public void boxUnlocks() { // Alerts player when the puzzle is completed
+
+		if (locks[0] == true && locks[1] == true && locks[2] == true && locks[3] == true) {
+			p.textBox.append("\n You hear the latches inside the box click");
+			boxUnlock = true;
+
+		}
+
 	}
 
 	@Override
@@ -56,25 +102,37 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void push() {
+	public void push() { // Player tried to push the box or pedastel over?
 
 		if (userInput.contains("box")) {
 			p.textBox.append("\n The box is bolted to the pedastel it rests on");
 
+		} else if (userInput.contains("pedastel")) {
+			p.textBox.append("\n The pedastel is bolted to the floor");
 		} else {
 			p.textBox.append("\n I do not understand what you want to push");
 		}
+
 	}
 
 	@Override
 	public void go() {
 
+		if (userInput.contains("west")) {
+			p.textBox.append("\n Do you want to leave the room? Yes or no");
+			leaveRoom = true;
+		}
 	}
 
 	@Override
-	public void open() {
-		if (userInput.contains("box") && locks[0] == true && locks[1] == true && locks[2] == true && locks[3] == true) {
+	public void open() { // Player tries to open the box?
+		if (boxUnlock == true) {
 			p.textBox.append("\n The lid of the box creaks open");
+			p.textBox.append("Inside there is a single sheet of paper and a key");
+		} else if (boxUnlock == false) {
+			p.textBox.append("\n The box is locked");
+		} else {
+			p.textBox.append("\n I do not understand what you want to open");
 		}
 
 	}
@@ -92,9 +150,77 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void use() {
-		// TODO Auto-generated method stub
+	public void use() { // Player uses the keys on a lock?
 
+		if (userInput.contains("key") && userInput.contains("lock")) {
+
+			switch (userInput) {
+
+			case "use first key on second lock":
+				if (locks[1] == false && inventory.contains("key1")) {
+
+					p.textBox.append("\n You hear a click as the key turns the lock");
+					locks[1] = true;
+					inventory.remove(inventory.indexOf("key1"));
+					boxUnlocks();
+
+				} else if (!inventory.contains("key1")) {
+					p.textBox.append("\n You do not have the first key in your inventory");
+				}
+
+				break;
+
+			case "use second key on fourth lock":
+				if (locks[3] == false && inventory.contains("key2")) {
+
+					p.textBox.append("\n You hear a click as the key turns the lock");
+					locks[3] = true;
+					inventory.remove(inventory.indexOf("key2"));
+					boxUnlocks();
+
+				} else if (!inventory.contains("key2")) {
+					p.textBox.append("\n You do not have the second key in your inventory");
+				}
+
+				break;
+
+			case "use third key on third lock":
+				if (locks[2] == false && inventory.contains("key3")) {
+
+					p.textBox.append("\n You hear a click as the key turns the lock");
+					locks[2] = true;
+					inventory.remove(inventory.indexOf("key3"));
+					boxUnlocks();
+
+				} else if (!inventory.contains("key3")) {
+					p.textBox.append("You do not have the third key in your inventory");
+				}
+
+				break;
+
+			case "use fourth key on first lock":
+				if (locks[0] == false && inventory.contains("key4")) {
+
+					p.textBox.append("\n You hear a click as the key turns the lock");
+					locks[0] = true;
+					inventory.remove(inventory.indexOf("key4"));
+					boxUnlocks();
+
+				} else if (!inventory.contains("key4")) {
+					p.textBox.append("\n You do not have the fourth key in your inventory");
+				}
+
+				break;
+
+			default:
+				p.textBox.append("\n The key shoots out of the lock as you stick it in");
+
+			}
+
+		} else {
+			p.textBox.append("\n I do not understand what you want to use");
+
+		}
 	}
 
 	@Override
@@ -104,7 +230,7 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void take() {
+	public void take() { // Player takes a key?
 
 		switch (userInput) {
 
@@ -114,6 +240,10 @@ public class EastDoorPuzzle implements IRoom {
 					&& !inventory.contains("key4")) {
 
 				p.textBox.append("\n You take all four keys");
+				inventory.add("key1");
+				inventory.add("key2");
+				inventory.add("key3");
+				inventory.add("key4");
 
 			} else {
 				p.textBox.append("\n You aready have the keys");
@@ -127,7 +257,7 @@ public class EastDoorPuzzle implements IRoom {
 
 		case "take key 1":
 
-			if (!inventory.contains("key1")) {
+			if (!inventory.contains("key1") && locks[1] == false) {
 				p.textBox.append("\n You take the 1st key");
 				inventory.add("key1");
 			} else {
@@ -137,7 +267,7 @@ public class EastDoorPuzzle implements IRoom {
 
 		case "take key 2":
 
-			if (!inventory.contains("key2")) {
+			if (!inventory.contains("key2") && locks[3] == false) {
 				p.textBox.append("\n You take the 2nd key");
 				inventory.add("key2");
 			} else {
@@ -147,7 +277,7 @@ public class EastDoorPuzzle implements IRoom {
 
 		case "take key 3":
 
-			if (!inventory.contains("key3")) {
+			if (!inventory.contains("key3") && locks[2] == false) {
 				p.textBox.append("\n You take the 3rd key");
 				inventory.add("key3");
 			} else {
@@ -157,7 +287,7 @@ public class EastDoorPuzzle implements IRoom {
 
 		case "take key 4":
 
-			if (!inventory.contains("key4")) {
+			if (!inventory.contains("key4") && locks[0] == false) {
 				p.textBox.append("\n You take the 4th key");
 				inventory.add("key4");
 			} else {
@@ -168,6 +298,13 @@ public class EastDoorPuzzle implements IRoom {
 		case "box":
 			p.textBox.append("\n The box is fixed to the pedestal");
 
+		case "paper":
+
+			if (boxUnlock == true) {
+				p.textBox.append("\n You take the paper");
+				inventory.add("paper");
+			}
+
 		default:
 			p.textBox.append("\n I do not understand what you want to take");
 			break;
@@ -177,16 +314,18 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void inspect() {
+	public void inspect() { // Player inspects the box, locks, or the keys?
 
 		if (userInput.contains("box")) {
 			p.textBox.append("\n The images above the locks on the box are: ");
 			p.textBox.append("\n    Bat, Snake, Spider, Wolf");
 
 		} else if (userInput.contains("keys")) {
-			p.textBox.append("\n The number of teeth on the keys are: ");
-			p.textBox.append("\n    Five, Four, Six, Three");
+			p.textBox.append("\n First key has Five, second has Four, third has Six, " + "fourth has Three");
 
+		} else if (userInput.contains("locks")) {
+			p.textBox.append("\n The images above the locks on the box are: ");
+			p.textBox.append("\n    Bat, Snake, Spider, Wolf");
 		} else {
 			p.textBox.append("\n I do not understand what you want to inspect");
 		}
@@ -235,7 +374,7 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void search() {
+	public void search() { // Player searches room?
 
 		if (userInput.contains("room")) {
 			p.textBox.append("\n There is nothing else in this room of interest");
@@ -245,19 +384,36 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void look() {
-		// TODO Auto-generated method stub
+	public void look() { // Player looks at box, locks, or keys?
+
+		if (userInput.contains("box")) {
+			p.textBox.append("\n The images above the locks on the box are: ");
+			p.textBox.append("\n    Bat, Snake, Spider, Wolf");
+
+		} else if (userInput.contains("keys")) {
+			p.textBox.append("\n First key has Five, second has Four, third has Six, " + "fourth has Three");
+
+		} else if (userInput.contains("locks")) {
+			p.textBox.append("\n The images above the locks on the box are: ");
+			p.textBox.append("\n    Bat, Snake, Spider, Wolf");
+		} else {
+			p.textBox.append("\n I do not understand what you want to look at");
+		}
 
 	}
 
 	@Override
-	public void check() {
-		// TODO Auto-generated method stub
+	public void check() { // Player checks the room?
 
+		if (userInput.contains("room")) {
+			p.textBox.append("\n There is nothing else in this room of interest");
+		} else {
+			p.textBox.append("\n I do not understand what you want to check");
+		}
 	}
 
 	@Override
-	public void touch() {
+	public void touch() { // Player touches box?
 
 		if (userInput.contains("box")) {
 			p.textBox.append("\n The metallic box is cold to the touch");
@@ -267,7 +423,7 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void Throw() {
+	public void Throw() { // Player tries to throw box or pedestal?
 
 		if (userInput.contains("box")) {
 			p.textBox.append("\n The box is bolted to the pedestal");
@@ -292,7 +448,7 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void Break() {
+	public void Break() { // Player tries to break box?
 
 		if (userInput.contains("box")) {
 			p.textBox.append("\n Its a heavy metal box... you fail to break it");
@@ -303,7 +459,7 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void smash() {
+	public void smash() { // Player tries to smash box?
 
 		if (userInput.contains("box")) {
 			p.textBox.append("\n Its a heavy metal box... you fail to smash it");
@@ -314,9 +470,13 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void inventory() {
-		// TODO Auto-generated method stub
+	public void inventory() { // Show inventory
 
+		if (!inventory.isEmpty()) {
+			p.textBox.append("\n" + inventory);
+		} else {
+			p.textBox.append("\n Inventory is empty");
+		}
 	}
 
 	@Override
@@ -339,25 +499,37 @@ public class EastDoorPuzzle implements IRoom {
 
 	@Override
 	public void west() {
-		// TODO Auto-generated method stub
 
+		p.textBox.append("\n Do you want to leave this room? Yes or no");
+		leaveRoom = true;
 	}
 
 	@Override
 	public void yes() {
-		// TODO Auto-generated method stub
+
+		if (leaveRoom == true) {
+			p.textBox.append("\n You leave the room");
+			getInventory();
+			p.activeLevel = "Great door";
+		} else {
+			p.textBox.append("\n What?");
+		}
 
 	}
 
 	@Override
 	public void no() {
-		// TODO Auto-generated method stub
 
+		if (leaveRoom == true) {
+			p.textBox.append("\n You decide not to leave the room");
+			leaveRoom = false;
+		} else {
+			p.textBox.append("\n What?");
+		}
 	}
 
 	@Override
 	public void Continue() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -371,6 +543,24 @@ public class EastDoorPuzzle implements IRoom {
 	public void setInventory(List<String> inventory) {
 
 		this.inventory = inventory;
+	}
+
+	@Override
+	public void leave() {
+
+		if (userInput.contains("room")) {
+			p.textBox.append("\n Do you want to leave the room? Yes or no");
+			leaveRoom = true;
+		}
+	}
+
+	@Override
+	public void exit() {
+
+		if (userInput.contains("room")) {
+			p.textBox.append("\n Do you want to exit the room? Yes or no");
+			leaveRoom = true;
+		}
 	}
 
 }

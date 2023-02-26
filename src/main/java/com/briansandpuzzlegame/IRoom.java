@@ -71,6 +71,10 @@ public interface IRoom {
 	public void yes();
 
 	public void no();
+	
+	public void leave();
+	
+	public void exit();
 
 	public void Continue();
 

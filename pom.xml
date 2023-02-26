@@ -4,7 +4,13 @@
 	<artifactId>PuzzleGame</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>PuzzleGame</name>
-
+	<dependencies>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180130</version>
+		</dependency>
+	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
@@ -12,3 +18,8 @@
 		<java.version>11</java.version>
 	</properties>
 </project>
+
+
+
+
+

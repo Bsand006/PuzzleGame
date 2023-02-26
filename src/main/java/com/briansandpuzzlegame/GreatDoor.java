@@ -12,13 +12,11 @@ public class GreatDoor implements IRoom {
 
 	public GreatDoor(CommandParser p) {
 		this.p = p;
-		
+
 		setInventory(inventory);
 
 	}
 
-
-	
 	@Override
 	public void verbInterpreter() {
 
@@ -33,7 +31,7 @@ public class GreatDoor implements IRoom {
 
 		if (userInput.contains("inventory"))
 			inventory();
-		
+
 	}
 
 	@Override
@@ -68,14 +66,13 @@ public class GreatDoor implements IRoom {
 			p.textBox.append("\n     But use the wrong key to your dismay");
 
 			playerLocation = "puzzleBox";
-
-		} else if (userInput.contains("box")) {
+			p.activeLevel = "East door puzzle";
 
 		} else {
 			p.textBox.append("\n I do not understand what you want to open");
 		}
 
-		p.activeLevel = "East door puzzle";
+		
 
 	}
 
@@ -236,8 +233,9 @@ public class GreatDoor implements IRoom {
 	}
 
 	@Override
-	public void Continue() {
+	public void Continue() { // MOVES TO NEXT ROOM
 
+		getInventory();
 	}
 
 	@Override
@@ -249,6 +247,18 @@ public class GreatDoor implements IRoom {
 	public void setInventory(List<String> inventory) {
 
 		this.inventory = inventory;
+
+	}
+
+	@Override
+	public void leave() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void exit() {
+		// TODO Auto-generated method stub
 
 	}
 

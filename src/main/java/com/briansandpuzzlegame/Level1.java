@@ -14,6 +14,8 @@ public class Level1 implements IRoom {
 	// For referencing CommandParser
 	public Level1(CommandParser p) {
 		this.p = p;
+
+		setInventory(inventory);
 	}
 
 	// Interpreter
@@ -66,6 +68,9 @@ public class Level1 implements IRoom {
 
 		if (userInput.contains("use"))
 			use();
+
+		if (userInput.contains("look"))
+			look();
 
 		if (userInput.contains("continue"))
 			Continue();
@@ -139,9 +144,15 @@ public class Level1 implements IRoom {
 			p.textBox.append("\n You move into the room and bump into some object");
 			playerState.add("movedForward");
 
+		} else if (userInput.contains("left") && !playerState.contains("movedForward")) {
+			p.textBox.append("\n You bump into a wall");
+
+		} else if (userInput.contains("right") && !playerState.contains("movedForward")) {
+			p.textBox.append("\n You bump into a wall");
 		} else {
 			p.textBox.append("\n I do not understand where you are trying to move to");
 		}
+
 	}
 
 	public void use() {
@@ -335,8 +346,8 @@ public class Level1 implements IRoom {
 			p.textBox.append("\n You are as east as you can go");
 	}
 
-	public void Continue() {
-	
+	public void Continue() { // MOVES TO NEXT LEVEL
+
 		getInventory();
 		p.activeLevel = "Great door";
 		p.textBox.setText("");
@@ -375,7 +386,18 @@ public class Level1 implements IRoom {
 	public void setInventory(List<String> inventory) {
 
 		this.inventory = inventory;
+
+	}
+
+	@Override
+	public void leave() {
+		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void exit() {
+		// TODO Auto-generated method stub
 		
 	}
 
