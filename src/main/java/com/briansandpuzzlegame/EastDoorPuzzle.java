@@ -86,12 +86,13 @@ public class EastDoorPuzzle implements IRoom {
 
 		if (userInput.contains("no"))
 			no();
-		
+
 		if (userInput.contains("load"))
 			load();
-		
-		if (userInput.contains("save"));
-			save();
+
+		if (userInput.contains("save"))
+			;
+		save();
 	}
 
 	public void boxUnlocks() { // Alerts player when the puzzle is completed
@@ -169,7 +170,6 @@ public class EastDoorPuzzle implements IRoom {
 
 					p.textBox.append("\n You hear a click as the key turns the lock");
 					locks[1] = true;
-					p.eastDoorLocks.put(2, true);
 					inventory.remove(inventory.indexOf("key1"));
 					boxUnlocks();
 
@@ -184,7 +184,6 @@ public class EastDoorPuzzle implements IRoom {
 
 					p.textBox.append("\n You hear a click as the key turns the lock");
 					locks[3] = true;
-					p.eastDoorLocks.put(4, true);
 					inventory.remove(inventory.indexOf("key2"));
 					boxUnlocks();
 
@@ -199,7 +198,6 @@ public class EastDoorPuzzle implements IRoom {
 
 					p.textBox.append("\n You hear a click as the key turns the lock");
 					locks[2] = true;
-					p.eastDoorLocks.put(3, true);
 					inventory.remove(inventory.indexOf("key3"));
 					boxUnlocks();
 
@@ -214,7 +212,6 @@ public class EastDoorPuzzle implements IRoom {
 
 					p.textBox.append("\n You hear a click as the key turns the lock");
 					locks[0] = true;
-					p.eastDoorLocks.put(1, true);
 					inventory.remove(inventory.indexOf("key4"));
 					boxUnlocks();
 
@@ -315,7 +312,6 @@ public class EastDoorPuzzle implements IRoom {
 			if (boxUnlock == true) {
 				p.textBox.append("\n You take the paper");
 				inventory.add("paper");
-				p.gameTracker.put("eastDoorPuzzleDone", true);
 			}
 
 		default:

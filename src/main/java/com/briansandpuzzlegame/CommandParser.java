@@ -22,6 +22,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class CommandParser implements KeyListener {
+	StateTracker z;
+	
 	Level1 r;
 	GreatDoor a;
 	EastDoorPuzzle b;
@@ -29,6 +31,7 @@ public class CommandParser implements KeyListener {
 	// Game tracker JSON
 	JSONObject gameTracker;
 	JSONArray eastDoorLocks;
+	JSONArray inventory;
 	Path filePath = Paths.get("/home/brain/Git/PuzzleGame/state.json");
 	String rawContent;
 
@@ -49,8 +52,14 @@ public class CommandParser implements KeyListener {
 
 	public String words; // User input string
 
+	/*
+	 * This constructor creates the GUI interface and the Hashmap to track the active room
+	 */
+	
 	void run() {
 
+		z = new StateTracker(this);
+		
 		// Hashmap to track active room
 
 		r = new Level1(this);
@@ -97,33 +106,46 @@ public class CommandParser implements KeyListener {
 
 		inputBox.addKeyListener(this); // Adds KeyListener
 
-		// Runs list methods
-		verbs();
-		adverbs();
+		verbs(); // Runs verbs
+		adverbs(); // Runs adverbs
+
+		// Runs JSONSetup
+		try {
+			JSONSetup();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	void load() throws IOException {
+	void JSONSetup() throws IOException { // Setup JSON file
 
-		rawContent = new String(Files.readAllBytes(filePath));
-		gameTracker = new JSONObject(rawContent);
+		gameTracker = new JSONObject();
 
 		gameTracker.put("level1Done", false);
 		gameTracker.put("eastDoorPuzzleDone", false);
 
 		eastDoorLocks = new JSONArray();
-		gameTracker.put("eastDoorLocks", eastDoorLocks);
 		eastDoorLocks.put(1, false);
-		eastDoorLocks.put(2, false);
+		eastDoorLocks.put(2, false); // Code no work :(
 		eastDoorLocks.put(3, false);
 		eastDoorLocks.put(4, false);
-		rawContent = gameTracker.toString(gameTracker.length());
+
+		inventory = new JSONArray();
 
 	}
 
-	void save() throws IOException {
+	void load() throws IOException { // Load functionality
 
-		Files.writeString(filePath, "MEEP", StandardOpenOption.CREATE);
+		rawContent = new String(Files.readAllBytes(filePath));
+		gameTracker = new JSONObject(rawContent);
+
+	}
+
+	void save() throws IOException { // Save functionality
+
+		rawContent = gameTracker.toString(gameTracker.length());
+		Files.writeString(filePath, rawContent, StandardOpenOption.CREATE);
 
 	}
 

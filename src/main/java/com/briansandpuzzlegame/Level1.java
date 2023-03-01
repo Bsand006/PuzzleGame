@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Level1 implements IRoom {
 	CommandParser p;
+	StateTracker a;
 
 	String userInput;
 	String playerLocation = "center";
@@ -17,6 +18,10 @@ public class Level1 implements IRoom {
 		this.p = p;
 
 		setInventory(inventory);
+	}
+
+	public Level1(StateTracker a) {
+		this.a = a;
 	}
 
 	// Interpreter
@@ -75,10 +80,10 @@ public class Level1 implements IRoom {
 
 		if (userInput.contains("continue"))
 			Continue();
-		
+
 		if (userInput.contains("load"))
 			load();
-		
+
 		if (userInput.contains("save"))
 			save();
 	}
@@ -99,7 +104,6 @@ public class Level1 implements IRoom {
 		if (userInput.contains("forward") && !playerState.contains("movedForward")) {
 			p.textBox.append("\n You move into the room and bump into some object");
 			playerState.add("movedForward");
-			Continue();
 
 		} else {
 			p.textBox.append("\n I do not understand where you are trying go");
@@ -356,6 +360,7 @@ public class Level1 implements IRoom {
 	public void Continue() { // MOVES TO NEXT LEVEL
 
 		getInventory();
+		a.getInventory(inventory);
 		p.gameTracker.put("level1Done", true);
 		p.activeLevel = "Great door";
 		p.textBox.setText("");
@@ -363,6 +368,7 @@ public class Level1 implements IRoom {
 		p.textBox.append("\n To the north is a large door 20ft tall");
 		p.textBox.append("\n There are 5 pedastals in a row in front of the door");
 		p.textBox.append("\n To the east there is a small wood door");
+		p.textBox.append("\n To the west there is a large iron door");
 	}
 
 	public void south() {
@@ -400,13 +406,13 @@ public class Level1 implements IRoom {
 	@Override
 	public void leave() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void exit() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
