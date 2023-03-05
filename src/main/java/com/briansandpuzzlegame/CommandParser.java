@@ -127,7 +127,7 @@ public class CommandParser implements KeyListener {
 
 		eastDoorLocks = new JSONArray();
 		eastDoorLocks.put(1, false);
-		eastDoorLocks.put(2, false); // Code no work :(
+		eastDoorLocks.put(2, false);  
 		eastDoorLocks.put(3, false);
 		eastDoorLocks.put(4, false);
 

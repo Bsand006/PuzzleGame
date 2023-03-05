@@ -5,6 +5,7 @@ import java.util.List;
 
 public class GreatDoor implements IRoom {
 	CommandParser p;
+	StateTracker a = new StateTracker(this);
 
 	String userInput;
 	String playerLocation = "center";
@@ -264,8 +265,10 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void save() {
-		// TODO Auto-generated method stub
 		
+		p.textBox.append("\n Game Saved");
+		a.inventory = inventory;
+		a.currentRoom = p.activeLevel;
 	}
 
 	@Override

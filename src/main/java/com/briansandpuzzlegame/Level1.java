@@ -6,22 +6,17 @@ import java.util.List;
 
 public class Level1 implements IRoom {
 	CommandParser p;
-	StateTracker a;
+	StateTracker a = new StateTracker(this);
 
 	String userInput;
 	String playerLocation = "center";
-	List<String> playerState = new ArrayList<String>();
 	List<String> inventory = new ArrayList<String>();
+	List<String> playerState = new ArrayList<String>();
 
 	// For referencing CommandParser
 	public Level1(CommandParser p) {
 		this.p = p;
 
-		setInventory(inventory);
-	}
-
-	public Level1(StateTracker a) {
-		this.a = a;
 	}
 
 	// Interpreter
@@ -360,7 +355,6 @@ public class Level1 implements IRoom {
 	public void Continue() { // MOVES TO NEXT LEVEL
 
 		getInventory();
-		a.getInventory(inventory);
 		p.gameTracker.put("level1Done", true);
 		p.activeLevel = "Great door";
 		p.textBox.setText("");
@@ -400,6 +394,7 @@ public class Level1 implements IRoom {
 	public void setInventory(List<String> inventory) {
 
 		this.inventory = inventory;
+		a.inventory = inventory;
 
 	}
 
@@ -419,7 +414,10 @@ public class Level1 implements IRoom {
 	public void save() throws IOException {
 
 		p.textBox.append("\n Game saved");
-		p.save();
+		a.playerState = playerState;
+		a.inventory = inventory;
+		a.currentRoom = p.activeLevel;
+
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import java.util.List;
 
 public class EastDoorPuzzle implements IRoom {
 	CommandParser p;
+	StateTracker a = new StateTracker(this);
 
 	String userInput;
 	boolean[] locks = new boolean[4]; // Position of the four locks on the box. Are they unlocked or not?
@@ -575,7 +576,15 @@ public class EastDoorPuzzle implements IRoom {
 	@Override
 	public void save() throws IOException {
 
-		p.save();
+		p.textBox.append("\n Game saved");
+		a.inventory = inventory;
+		a.currentRoom = p.activeLevel;
+		a.boxOpen = boxUnlock;
+		
+		for (int i = 0; i < locks.length; i++) 
+			a.locks[i] = locks[i];
+		
+		
 	}
 
 	@Override
