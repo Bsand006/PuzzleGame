@@ -1,5 +1,6 @@
 package com.briansandpuzzlegame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -264,17 +265,19 @@ public class GreatDoor implements IRoom {
 	}
 
 	@Override
-	public void save() {
+	public void save() throws IOException {
 		
 		p.textBox.append("\n Game Saved");
 		a.inventory = inventory;
 		a.currentRoom = p.activeLevel;
+		
+		a.save();
 	}
 
 	@Override
-	public void load() {
-		// TODO Auto-generated method stub
-		
+	public void load() throws IOException {
+
+		a.load();
 	}
 
 }

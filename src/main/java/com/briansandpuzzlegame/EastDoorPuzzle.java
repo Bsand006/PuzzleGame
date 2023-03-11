@@ -580,17 +580,17 @@ public class EastDoorPuzzle implements IRoom {
 		a.inventory = inventory;
 		a.currentRoom = p.activeLevel;
 		a.boxOpen = boxUnlock;
-		
-		for (int i = 0; i < locks.length; i++) 
+
+		for (int i = 0; i < locks.length; i++)
 			a.locks[i] = locks[i];
-		
-		
+
+		a.save();
+
 	}
 
 	@Override
 	public void load() throws IOException {
 
-		p.load();
 	}
 
 }

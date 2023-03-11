@@ -5,10 +5,6 @@ import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,22 +14,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 public class CommandParser implements KeyListener {
 	StateTracker z;
-	
+
 	Level1 r;
 	GreatDoor a;
 	EastDoorPuzzle b;
-
-	// Game tracker JSON
-	JSONObject gameTracker;
-	JSONArray eastDoorLocks;
-	JSONArray inventory;
-	Path filePath = Paths.get("/home/brain/Git/PuzzleGame/state.json");
-	String rawContent;
 
 	// Current room hashmap
 	HashMap<String, IRoom> levels;
@@ -53,13 +39,12 @@ public class CommandParser implements KeyListener {
 	public String words; // User input string
 
 	/*
-	 * This constructor creates the GUI interface and the Hashmap to track the active room
+	 * This constructor creates the GUI interface and the Hashmap to track the
+	 * active room
 	 */
-	
+
 	void run() {
 
-		z = new StateTracker(this);
-		
 		// Hashmap to track active room
 
 		r = new Level1(this);
@@ -109,44 +94,6 @@ public class CommandParser implements KeyListener {
 		verbs(); // Runs verbs
 		adverbs(); // Runs adverbs
 
-		// Runs JSONSetup
-		try {
-			JSONSetup();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	void JSONSetup() throws IOException { // Setup JSON file
-
-		gameTracker = new JSONObject();
-
-		gameTracker.put("level1Done", false);
-		gameTracker.put("eastDoorPuzzleDone", false);
-
-		eastDoorLocks = new JSONArray();
-		eastDoorLocks.put(1, false);
-		eastDoorLocks.put(2, false);  
-		eastDoorLocks.put(3, false);
-		eastDoorLocks.put(4, false);
-
-		inventory = new JSONArray();
-
-	}
-
-	void load() throws IOException { // Load functionality
-
-		rawContent = new String(Files.readAllBytes(filePath));
-		gameTracker = new JSONObject(rawContent);
-
-	}
-
-	void save() throws IOException { // Save functionality
-
-		rawContent = gameTracker.toString(gameTracker.length());
-		Files.writeString(filePath, rawContent, StandardOpenOption.CREATE);
-
 	}
 
 	// Parser
@@ -187,7 +134,6 @@ public class CommandParser implements KeyListener {
 
 	// Passes typed words to other class if it contains a matching verb
 	public String inputPasser() {
-
 		return words;
 	}
 

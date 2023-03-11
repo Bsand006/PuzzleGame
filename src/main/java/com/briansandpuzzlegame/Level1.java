@@ -354,8 +354,8 @@ public class Level1 implements IRoom {
 
 	public void Continue() { // MOVES TO NEXT LEVEL
 
+		a.inventory = inventory;
 		getInventory();
-		p.gameTracker.put("level1Done", true);
 		p.activeLevel = "Great door";
 		p.textBox.setText("");
 		p.textBox.append("You step into a large room");
@@ -417,13 +417,16 @@ public class Level1 implements IRoom {
 		a.playerState = playerState;
 		a.inventory = inventory;
 		a.currentRoom = p.activeLevel;
+		
+		a.JSONSetup(); 
+		a.save();
 
 	}
 
 	@Override
 	public void load() throws IOException {
 
-		p.load();
+		
 	}
 
 }

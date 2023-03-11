@@ -1,11 +1,21 @@
 {
-   "level1Done": false,
-   "eastDoorPuzzleDone": false,
-   "eastDoorLocks": [
+   "level1State": [
       null,
-      false,
-      false,
-      false,
-      false
+      [
+         "movedForward",
+         "inspectedObject",
+         "pushedButton",
+         "pushedButtonTwice",
+         "foundScrewdriver"
+      ]
+   ],
+   "Active Class": "First level",
+   "inventory": [
+      null,
+      [
+         "buttonKey",
+         "hammer",
+         "screwdriver"
+      ]
    ]
 }
