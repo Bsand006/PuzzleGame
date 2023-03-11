@@ -41,7 +41,7 @@ public class StateTracker {
 	public StateTracker(CommandParser p) {
 		this.p = p;
 	}
-
+	
 	public StateTracker(Level1 a) {
 		this.a = a;
 	}
@@ -55,7 +55,8 @@ public class StateTracker {
 	}
 
 	void JSONSetup() { // Setup JSON file
-
+	
+		
 		gameTracker = new JSONObject();
 		gameTracker.put("Active Class", currentRoom);
 
@@ -63,8 +64,7 @@ public class StateTracker {
 		if (currentRoom.equals("First level")) {
 			level1State = new JSONArray();
 
-				level1State.put(1, playerState);
-			
+			level1State.put(1, playerState);
 
 			gameTracker.put("level1State", level1State);
 		}
@@ -77,10 +77,9 @@ public class StateTracker {
 		} else if (boxOpen != true && currentRoom.equals("East Door Puzzle")) {
 
 			eastDoorLocks = new JSONArray();
-			eastDoorLocks.put(1, locks[0]);
-			eastDoorLocks.put(2, locks[1]);
-			eastDoorLocks.put(3, locks[2]);
-			eastDoorLocks.put(4, locks[3]);
+
+			for (int i = 0; i < locks.length; i++)
+				eastDoorLocks.put(i, locks[i]);
 
 			gameTracker.put("eastDoorBoxLocks", eastDoorLocks);
 			gameTracker.put("boxOpen?", boxOpen);
@@ -89,26 +88,82 @@ public class StateTracker {
 
 		// Player inventory
 		playerInventory = new JSONArray();
-		
-		
-			playerInventory.put(1, inventory);
-		
-
+		playerInventory.put(1, inventory);
 		gameTracker.put("inventory", playerInventory);
 
 	}
 
 	void load() throws IOException { // Load functionality
 
+		p.textBox.append("\n LOADING SAVE FILE...");
 		rawContent = new String(Files.readAllBytes(filePath));
-		gameTracker = new JSONObject(rawContent);
-		
-		p.activeLevel = gameTracker.getString("Active Class");
-		
-		if (p.activeLevel.equals("First level")) {
-			
-		}
 
+		if (!rawContent.isBlank()) {
+
+			gameTracker = new JSONObject(rawContent);
+
+			p.activeLevel = gameTracker.getString("Active Class");
+			p.textBox.append("\n Player is currently in : " + p.activeLevel);
+
+			boxOpen = gameTracker.getBoolean("boxOpen?");
+
+			switch (p.activeLevel) {
+
+			case ("First level"): // Level 1
+
+				// Inventory
+
+				playerInventory = new JSONArray();
+				playerInventory.put(gameTracker.get("inventory"));
+				inventory = new ArrayList<String>();
+				inventory.add(playerInventory.toString());
+				a.inventory = inventory;
+				System.out.println(inventory);
+
+				// Player state tracker
+
+				level1State = new JSONArray();
+				level1State.put(gameTracker.get("level1State"));
+				playerState = new ArrayList<String>();
+				playerState.add(level1State.toString());
+				a.playerState = playerState;
+				System.out.println(playerState);
+
+			case ("Great door"):
+
+				// Inventory
+
+				playerInventory = new JSONArray();
+				playerInventory.put(gameTracker.get("inventory"));
+				inventory = new ArrayList<String>();
+				inventory.add(playerInventory.toString());
+				c.inventory = inventory;
+				System.out.println(inventory);
+
+			case ("East door puzzle"):
+
+				// Inventory
+
+				playerInventory = new JSONArray();
+				playerInventory.put(gameTracker.get("inventory"));
+				inventory = new ArrayList<String>();
+				inventory.add(playerInventory.toString());
+				b.inventory = inventory;
+				System.out.println(inventory);
+
+				// East puzzlebox locks
+
+				eastDoorLocks = new JSONArray();
+				eastDoorLocks.put(gameTracker.get("eastDoorBoxLocks"));
+				locks = new boolean[eastDoorLocks.length()];
+
+				for (int i = 0; i < locks.length; i++)
+					locks[i] = eastDoorLocks.getBoolean(i);
+			}
+
+		} else {
+			p.textBox.append("\n ERROR! No save file to load");
+		}
 	}
 
 	void save() throws IOException { // Save functionality

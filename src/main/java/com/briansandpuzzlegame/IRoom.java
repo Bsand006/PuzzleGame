@@ -18,6 +18,8 @@ public interface IRoom {
 	public void close();
 
 	public void move();
+	
+	public void walk();
 
 	public void use();
 
@@ -82,6 +84,8 @@ public interface IRoom {
 	public void save() throws IOException;
 	
 	public void load() throws IOException;
+	
+	public void repeat();
 
 	public List<String> getInventory();
 

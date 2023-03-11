@@ -43,6 +43,10 @@ public class CommandParser implements KeyListener {
 	 * active room
 	 */
 
+	public CommandParser(StateTracker z) {
+		this.z = z;
+	}
+
 	void run() {
 
 		// Hashmap to track active room
@@ -169,6 +173,7 @@ public class CommandParser implements KeyListener {
 		verbList.add("wait");
 		verbList.add("break");
 		verbList.add("smash");
+		verbList.add("walk");
 
 	}
 
@@ -177,6 +182,7 @@ public class CommandParser implements KeyListener {
 
 		adverbList = new ArrayList<String>();
 
+		adverbList.add("repeat");
 		adverbList.add("load");
 		adverbList.add("save");
 		adverbList.add("inventory");
@@ -196,7 +202,6 @@ public class CommandParser implements KeyListener {
 
 	}
 
-	// Launches Program
 	public static void main(String[] args) {
 
 		SwingUtilities.invokeLater(new Runnable() {

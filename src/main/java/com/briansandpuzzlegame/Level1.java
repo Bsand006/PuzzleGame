@@ -13,7 +13,6 @@ public class Level1 implements IRoom {
 	List<String> inventory = new ArrayList<String>();
 	List<String> playerState = new ArrayList<String>();
 
-	// For referencing CommandParser
 	public Level1(CommandParser p) {
 		this.p = p;
 
@@ -39,6 +38,9 @@ public class Level1 implements IRoom {
 
 		if (userInput.contains("go"))
 			go();
+
+		if (userInput.contains("walk"))
+			walk();
 
 		if (userInput.contains("search"))
 			search();
@@ -81,6 +83,12 @@ public class Level1 implements IRoom {
 
 		if (userInput.contains("save"))
 			save();
+
+		if (userInput.contains("touch"))
+			touch();
+		
+		if (userInput.contains("check"))
+			check();
 	}
 
 	// Level completion method
@@ -97,11 +105,16 @@ public class Level1 implements IRoom {
 
 	public void go() {
 		if (userInput.contains("forward") && !playerState.contains("movedForward")) {
-			p.textBox.append("\n You move into the room and bump into some object");
+			p.textBox.append("\n You go into the room and bump into some object");
 			playerState.add("movedForward");
 
+		} else if (userInput.contains("left") && !playerState.contains("movedForward")) {
+			p.textBox.append("\n You bump into a wall");
+
+		} else if (userInput.contains("right") && !playerState.contains("movedForward")) {
+			p.textBox.append("\n You bump into a wall");
 		} else {
-			p.textBox.append("\n I do not understand where you are trying go");
+			p.textBox.append("\n I do not understand where you are trying to go to");
 		}
 	}
 
@@ -112,7 +125,8 @@ public class Level1 implements IRoom {
 
 			p.textBox.append("\n You push the button. The room floods with bright light"
 					+ "\n You stand in a large square room made of concrete"
-					+ "\n There is a metal door to the north. There is a table to the east");
+					+ "\n There is a metal door to the north. There is a table to the east"
+					+ "\n Along the east wall there is a small patch of it that seems different");
 
 			playerState.add("pushedButton");
 			playerLocation = "center";
@@ -157,6 +171,22 @@ public class Level1 implements IRoom {
 			p.textBox.append("\n You bump into a wall");
 		} else {
 			p.textBox.append("\n I do not understand where you are trying to move to");
+		}
+
+	}
+
+	public void walk() {
+		if (userInput.contains("forward") && !playerState.contains("movedForward")) {
+			p.textBox.append("\n You walk into the room and bump into some object");
+			playerState.add("movedForward");
+
+		} else if (userInput.contains("left") && !playerState.contains("movedForward")) {
+			p.textBox.append("\n You bump into a wall");
+
+		} else if (userInput.contains("right") && !playerState.contains("movedForward")) {
+			p.textBox.append("\n You bump into a wall");
+		} else {
+			p.textBox.append("\n I do not understand where you are trying to walk to");
 		}
 
 	}
@@ -229,6 +259,10 @@ public class Level1 implements IRoom {
 					+ "\n You feel a small panel. You push it and it retracts to reveal a screwdriver");
 			playerState.add("foundScrewdriver");
 
+		} else if (userInput.contains("wall") && playerLocation.equals("east")) {
+			p.textBox.append("You find a metal panel attached by four screws");
+			playerState.add("foundPlate");
+
 		} else {
 			p.textBox.append("\n I do not understand what you are inspecting");
 		}
@@ -279,9 +313,25 @@ public class Level1 implements IRoom {
 	}
 
 	public void check() {
+		 if (userInput.contains("wall") && playerLocation.equals("east")) {
+				p.textBox.append("You find a metal panel attached by four screws");
+				playerState.add("foundPlate");
+		 } else {
+			 p.textBox.append("\n I do not understand what you want to check");
+		 }
+		
 	}
 
 	public void touch() {
+		if (userInput.contains("object") && !playerState.contains("inspectedObject")) {
+
+			p.textBox.append("\n You run your hand along its metallic surface and you feel a button");
+			playerState.add("inspectedObject");
+
+		} else {
+			p.textBox.append("\n I do not understand what you are touching");
+		}
+
 	}
 
 	public void Throw() {
@@ -362,7 +412,7 @@ public class Level1 implements IRoom {
 		p.textBox.append("\n To the north is a large door 20ft tall");
 		p.textBox.append("\n There are 5 pedastals in a row in front of the door");
 		p.textBox.append("\n To the east there is a small wood door");
-		p.textBox.append("\n To the west there is a large iron door");
+		p.textBox.append("\n To the west there is another door");
 	}
 
 	public void south() {
@@ -417,15 +467,21 @@ public class Level1 implements IRoom {
 		a.playerState = playerState;
 		a.inventory = inventory;
 		a.currentRoom = p.activeLevel;
-		
-		a.JSONSetup(); 
+
+		a.JSONSetup();
 		a.save();
 
 	}
 
 	@Override
 	public void load() throws IOException {
+		a.load();
 
+	}
+
+	@Override
+	public void repeat() {
+		// TODO Auto-generated method stub
 		
 	}
 

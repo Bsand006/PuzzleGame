@@ -31,6 +31,9 @@ public class EastDoorPuzzle implements IRoom {
 
 		userInput = p.inputPasser();
 
+		if (userInput.contains("repeat"))
+			repeat();
+
 		if (userInput.contains("inspect"))
 			inspect();
 
@@ -222,6 +225,62 @@ public class EastDoorPuzzle implements IRoom {
 
 				break;
 
+			case "use key 1 on lock 2":
+				if (locks[1] == false && inventory.contains("key1")) {
+
+					p.textBox.append("\n You hear a click as the key turns the lock");
+					locks[1] = true;
+					inventory.remove(inventory.indexOf("key1"));
+					boxUnlocks();
+
+				} else if (!inventory.contains("key1")) {
+					p.textBox.append("\n You do not have the first key in your inventory");
+				}
+
+				break;
+
+			case "use key 2 on lock 4":
+				if (locks[3] == false && inventory.contains("key2")) {
+
+					p.textBox.append("\n You hear a click as the key turns the lock");
+					locks[3] = true;
+					inventory.remove(inventory.indexOf("key2"));
+					boxUnlocks();
+
+				} else if (!inventory.contains("key2")) {
+					p.textBox.append("\n You do not have the second key in your inventory");
+				}
+
+				break;
+
+			case "use key 3 on lock 3":
+				if (locks[2] == false && inventory.contains("key3")) {
+
+					p.textBox.append("\n You hear a click as the key turns the lock");
+					locks[2] = true;
+					inventory.remove(inventory.indexOf("key3"));
+					boxUnlocks();
+
+				} else if (!inventory.contains("key3")) {
+					p.textBox.append("You do not have the third key in your inventory");
+				}
+
+				break;
+
+			case "use key 4 on lock 1":
+				if (locks[0] == false && inventory.contains("key4")) {
+
+					p.textBox.append("\n You hear a click as the key turns the lock");
+					locks[0] = true;
+					inventory.remove(inventory.indexOf("key4"));
+					boxUnlocks();
+
+				} else if (!inventory.contains("key4")) {
+					p.textBox.append("\n You do not have the fourth key in your inventory");
+				}
+
+				break;
+
 			default:
 				p.textBox.append("\n The key shoots out of the lock as you stick it in");
 
@@ -229,7 +288,6 @@ public class EastDoorPuzzle implements IRoom {
 
 		} else {
 			p.textBox.append("\n I do not understand what you want to use");
-
 		}
 	}
 
@@ -590,6 +648,27 @@ public class EastDoorPuzzle implements IRoom {
 
 	@Override
 	public void load() throws IOException {
+
+	}
+
+	@Override
+	public void walk() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void repeat() {
+		p.textBox.append("\n ");
+		p.textBox.append("\n In the center of this room sits a small metal box on " + "a pedastal");
+		p.textBox.append("\n There is an iron lock on all four sides. Each lock has a " + "scuplted image above it");
+		p.textBox.append("\n Four keys hang from the wall, all with different numbers of teeth");
+		p.textBox.append("\n Above the keys the following verse is etched into the wall:");
+		p.textBox.append("\n ");
+		p.textBox.append("\n    The spells of these locks are all the same");
+		p.textBox.append("\n     Though each possesses a unique name");
+		p.textBox.append("\n    Count on your answer to unlock the way");
+		p.textBox.append("\n     But use the wrong key to your dismay");
 
 	}
 

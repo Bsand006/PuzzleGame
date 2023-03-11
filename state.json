@@ -5,8 +5,7 @@
          "movedForward",
          "inspectedObject",
          "pushedButton",
-         "pushedButtonTwice",
-         "foundScrewdriver"
+         "pushedButtonTwice"
       ]
    ],
    "Active Class": "First level",
@@ -14,8 +13,7 @@
       null,
       [
          "buttonKey",
-         "hammer",
-         "screwdriver"
+         "hammer"
       ]
    ]
 }

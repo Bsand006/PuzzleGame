@@ -28,6 +28,15 @@ public class GreatDoor implements IRoom {
 		if (userInput.contains("east"))
 			east();
 
+		if (userInput.contains("west"))
+			west();
+
+		if (userInput.contains("north"))
+			north();
+
+		if (userInput.contains("south"))
+			south();
+
 		if (userInput.contains("open"))
 			open();
 
@@ -57,8 +66,7 @@ public class GreatDoor implements IRoom {
 		if (userInput.contains("door") && playerLocation.equals("eastDoor")) {
 			p.textBox.append("\n ");
 			p.textBox.append("\n In the center of this room sits a small metal box on " + "a pedastal");
-			p.textBox
-					.append("\n There is an iron lock on all four sides. Each lock has a " + "scuplted image above it");
+			p.textBox.append("\n There is an iron lock on all four sides. Each lock has a " + "scuplted image above it");
 			p.textBox.append("\n Four keys hang from the wall, all with different numbers of teeth");
 			p.textBox.append("\n Above the keys the following verse is etched into the wall:");
 			p.textBox.append("\n ");
@@ -73,8 +81,6 @@ public class GreatDoor implements IRoom {
 		} else {
 			p.textBox.append("\n I do not understand what you want to open");
 		}
-
-		
 
 	}
 
@@ -205,11 +211,16 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void east() {
-		if (playerLocation.equals("center") && userInput.contains("east")) {
+		if (playerLocation.equals("center")) {
 			playerLocation = "eastDoor";
 			p.textBox.append("");
 			p.textBox.append("\n You stand before a wooden door");
 
+		} else if (playerLocation.equals("westDoor")) {
+			playerLocation = "center";
+			p.textBox.append("\n You are in front of the large door in the center");
+		} else {
+			p.textBox.append("\n You are as east as you can go");
 		}
 
 	}
@@ -221,7 +232,17 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void west() {
+		if (playerLocation.equals("center")) {
+			playerLocation = "westDoor";
+			p.textBox.append("\n You stand in front of an unassuming door"
+					+ "\n Above the door there is a sign that reads: " + " LOCKED DOOR");
 
+		} else if (playerLocation.equals("eastDoor")) {
+			playerLocation = "center";
+			p.textBox.append("\n You are in front of the large door in the center");
+		} else {
+			p.textBox.append("\n You are as west as you can go");
+		}
 	}
 
 	@Override
@@ -266,11 +287,11 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void save() throws IOException {
-		
+
 		p.textBox.append("\n Game Saved");
 		a.inventory = inventory;
 		a.currentRoom = p.activeLevel;
-		
+
 		a.save();
 	}
 
@@ -278,6 +299,18 @@ public class GreatDoor implements IRoom {
 	public void load() throws IOException {
 
 		a.load();
+	}
+
+	@Override
+	public void walk() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void repeat() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
