@@ -18,7 +18,7 @@ public interface IRoom {
 	public void close();
 
 	public void move();
-	
+
 	public void walk();
 
 	public void use();
@@ -28,6 +28,8 @@ public interface IRoom {
 	public void take();
 
 	public void inspect();
+	
+	public void investigate();
 
 	public void attack();
 
@@ -60,6 +62,12 @@ public interface IRoom {
 	public void Break();
 
 	public void smash();
+	
+	public void put();
+	
+	public void place();
+	
+	public void remove();
 
 	public void inventory();
 
@@ -74,18 +82,18 @@ public interface IRoom {
 	public void yes();
 
 	public void no();
-	
+
 	public void leave();
-	
+
 	public void exit();
 
 	public void Continue();
-	
-	public void save() throws IOException;
-	
-	public void load() throws IOException;
-	
+
 	public void repeat();
+
+	public void save(StateTracker z);
+
+	public void load();
 
 	public List<String> getInventory();
 

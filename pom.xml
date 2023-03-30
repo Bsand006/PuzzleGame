@@ -3,7 +3,7 @@
 	<groupId>com.briansand</groupId>
 	<artifactId>PuzzleGame</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>PuzzleGame</name>
+	<name>Zorp</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.json</groupId>

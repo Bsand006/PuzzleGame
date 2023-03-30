@@ -12,7 +12,6 @@ import java.util.List;
 
 public class EastDoorPuzzle implements IRoom {
 	CommandParser p;
-	StateTracker a = new StateTracker(this);
 
 	String userInput;
 	boolean[] locks = new boolean[4]; // Position of the four locks on the box. Are they unlocked or not?
@@ -95,8 +94,7 @@ public class EastDoorPuzzle implements IRoom {
 			load();
 
 		if (userInput.contains("save"))
-			;
-		save();
+			save(null);
 	}
 
 	public void boxUnlocks() { // Alerts player when the puzzle is completed
@@ -632,22 +630,16 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public void save() throws IOException {
+	public void save(StateTracker z) {
 
+		
+		z.setCurrentRoom(userInput);
 		p.textBox.append("\n Game saved");
-		a.inventory = inventory;
-		a.currentRoom = p.activeLevel;
-		a.boxOpen = boxUnlock;
-
-		for (int i = 0; i < locks.length; i++)
-			a.locks[i] = locks[i];
-
-		a.save();
 
 	}
 
 	@Override
-	public void load() throws IOException {
+	public void load() {
 
 	}
 
@@ -670,6 +662,30 @@ public class EastDoorPuzzle implements IRoom {
 		p.textBox.append("\n    Count on your answer to unlock the way");
 		p.textBox.append("\n     But use the wrong key to your dismay");
 
+	}
+
+	@Override
+	public void investigate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void put() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void place() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remove() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

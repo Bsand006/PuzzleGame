@@ -1,12 +1,10 @@
 package com.briansandpuzzlegame;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GreatDoor implements IRoom {
 	CommandParser p;
-	StateTracker a = new StateTracker(this);
 
 	String userInput;
 	String playerLocation = "center";
@@ -15,8 +13,13 @@ public class GreatDoor implements IRoom {
 	public GreatDoor(CommandParser p) {
 		this.p = p;
 
+		firstTimeRun();
 		setInventory(inventory);
 
+	}
+	
+	public void firstTimeRun() {
+		System.out.println("fdsfasdafa");
 	}
 
 	@Override
@@ -42,6 +45,15 @@ public class GreatDoor implements IRoom {
 
 		if (userInput.contains("inventory"))
 			inventory();
+		
+		if (userInput.contains("inspect"))
+			inspect();
+		
+		if (userInput.contains("investigate"))
+			investigate();
+		
+		if (userInput.contains("search"))
+			search();
 
 	}
 
@@ -78,6 +90,17 @@ public class GreatDoor implements IRoom {
 			playerLocation = "puzzleBox";
 			p.activeLevel = "East door puzzle";
 
+		} else if (userInput.contains("door") && playerLocation.equals("westDoor")) {
+			p.textBox.append("\n ");
+			p.textBox.append("\n Nine skulls rest near a four-foot square set of tiles in the floor"
+					+ "\n The tiles are arranged in a four by four square"
+					+ "\n Stone panels on the top and right side of the square label the rows and columns"
+					+ "\n The columns are labeled from left to right : III, I, II, III"
+					+ "\n The rows are labeled from top to bottom : III, II, III, I");
+			
+			playerLocation = "West door";
+			p.activeLevel = "West door puzzle";
+			
 		} else {
 			p.textBox.append("\n I do not understand what you want to open");
 		}
@@ -111,7 +134,18 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void inspect() {
+		if (userInput.contains("box")) {
+			p.textBox.append("\n This small metal box has a single lock on the front");
+		} else {
+			p.textBox.append("\n I do not understand what you are inspecting");
+		}
 
+	}
+	
+	@Override
+	public void investigate() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -234,8 +268,7 @@ public class GreatDoor implements IRoom {
 	public void west() {
 		if (playerLocation.equals("center")) {
 			playerLocation = "westDoor";
-			p.textBox.append("\n You stand in front of an unassuming door"
-					+ "\n Above the door there is a sign that reads: " + " LOCKED DOOR");
+			p.textBox.append("\n You stand in front of an unassuming door");
 
 		} else if (playerLocation.equals("eastDoor")) {
 			playerLocation = "center";
@@ -286,19 +319,15 @@ public class GreatDoor implements IRoom {
 	}
 
 	@Override
-	public void save() throws IOException {
+	public void save(StateTracker z) {
 
 		p.textBox.append("\n Game Saved");
-		a.inventory = inventory;
-		a.currentRoom = p.activeLevel;
 
-		a.save();
 	}
 
 	@Override
-	public void load() throws IOException {
+	public void load() {
 
-		a.load();
 	}
 
 	@Override
@@ -309,6 +338,24 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void repeat() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void put() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void place() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remove() {
 		// TODO Auto-generated method stub
 		
 	}

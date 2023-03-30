@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Level1 implements IRoom {
 	CommandParser p;
-	StateTracker a = new StateTracker(this);
 
 	String userInput;
 	String playerLocation = "center";
@@ -82,11 +81,11 @@ public class Level1 implements IRoom {
 			load();
 
 		if (userInput.contains("save"))
-			save();
+			save(null);
 
 		if (userInput.contains("touch"))
 			touch();
-		
+
 		if (userInput.contains("check"))
 			check();
 	}
@@ -313,13 +312,13 @@ public class Level1 implements IRoom {
 	}
 
 	public void check() {
-		 if (userInput.contains("wall") && playerLocation.equals("east")) {
-				p.textBox.append("You find a metal panel attached by four screws");
-				playerState.add("foundPlate");
-		 } else {
-			 p.textBox.append("\n I do not understand what you want to check");
-		 }
-		
+		if (userInput.contains("wall") && playerLocation.equals("east")) {
+			p.textBox.append("You find a metal panel attached by four screws");
+			playerState.add("foundPlate");
+		} else {
+			p.textBox.append("\n I do not understand what you want to check");
+		}
+
 	}
 
 	public void touch() {
@@ -404,7 +403,6 @@ public class Level1 implements IRoom {
 
 	public void Continue() { // MOVES TO NEXT LEVEL
 
-		a.inventory = inventory;
 		getInventory();
 		p.activeLevel = "Great door";
 		p.textBox.setText("");
@@ -413,6 +411,7 @@ public class Level1 implements IRoom {
 		p.textBox.append("\n There are 5 pedastals in a row in front of the door");
 		p.textBox.append("\n To the east there is a small wood door");
 		p.textBox.append("\n To the west there is another door");
+		p.textBox.append("\n A small metal box lies on a table in the room");
 	}
 
 	public void south() {
@@ -436,6 +435,19 @@ public class Level1 implements IRoom {
 	}
 
 	@Override
+	public void leave() {
+	}
+
+	@Override
+	public void exit() {
+	}
+
+	@Override
+	public void repeat() {
+
+	}
+
+	@Override
 	public List<String> getInventory() {
 		return inventory;
 	}
@@ -444,45 +456,47 @@ public class Level1 implements IRoom {
 	public void setInventory(List<String> inventory) {
 
 		this.inventory = inventory;
-		a.inventory = inventory;
 
 	}
 
 	@Override
-	public void leave() {
-		// TODO Auto-generated method stub
+	public void save(StateTracker z) {
 
-	}
-
-	@Override
-	public void exit() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void save() throws IOException {
+		String room = p.activeLevel;
+		z.setCurrentRoom(room);
+		z.setInventory(inventory);
+		z.setPlayerState(playerState);
 
 		p.textBox.append("\n Game saved");
-		a.playerState = playerState;
-		a.inventory = inventory;
-		a.currentRoom = p.activeLevel;
-
-		a.JSONSetup();
-		a.save();
 
 	}
 
 	@Override
-	public void load() throws IOException {
-		a.load();
+	public void load() {
 
 	}
 
 	@Override
-	public void repeat() {
+	public void investigate() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void put() {
 		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
+	public void place() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remove() {
+		// TODO Auto-generated method stub
+		
+	}
 }

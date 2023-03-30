@@ -1,7 +1,9 @@
 package com.briansandpuzzlegame;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -20,6 +22,7 @@ public class CommandParser implements KeyListener {
 	Level1 r;
 	GreatDoor a;
 	EastDoorPuzzle b;
+	WestDoorPuzzle c;
 
 	// Current room hashmap
 	HashMap<String, IRoom> levels;
@@ -43,40 +46,42 @@ public class CommandParser implements KeyListener {
 	 * active room
 	 */
 
-	public CommandParser(StateTracker z) {
-		this.z = z;
-	}
-
 	void run() {
 
-		// Hashmap to track active room
+		// Hashmap to track active roo
 
 		r = new Level1(this);
 		a = new GreatDoor(this);
 		b = new EastDoorPuzzle(this);
+		c = new WestDoorPuzzle(this);
 
 		levels = new HashMap<>();
 
 		levels.put("First level", r);
 		levels.put("Great door", a);
 		levels.put("East door puzzle", b);
+		levels.put("West door puzzle", c);
 		activeLevel = "First level";
 
 		// Generates game GUI
 
+		Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+		int width = size.width;
+		int height = size.height;
+
 		f = new JFrame();
 		f.setLayout(null);
 		f.setVisible(true);
-		f.setSize(850, 600);
+		f.setSize(width, height);
 		f.setTitle("Zorp");
-		f.getContentPane().setBackground(Color.BLACK);
+		f.getContentPane().setBackground(Color.darkGray);
 
 		// Text font
 		font = new Font("Monospaced", Font.BOLD, 17);
 
 		// Text display box
 		textBox = new JTextArea(" You stand in a pitch black room");
-		textBox.setBounds(5, 5, 500, 200);
+		textBox.setBounds(5, 5, width, height - 370);
 		textBox.setFont(font);
 		textBox.setForeground(Color.WHITE);
 		textBox.setBackground(Color.BLACK);
@@ -84,11 +89,12 @@ public class CommandParser implements KeyListener {
 
 		// User input box
 		inputBox = new JTextField();
-		inputBox.setBounds(5, 454, 800, 50);
+
+		inputBox.setBounds(5, height - 350, width, 50);
 
 		// Scroller
 		scroller = new JScrollPane(textBox);
-		scroller.setBounds(3, 3, 800, 450);
+		scroller.setBounds(5, 3, width, height - 370);
 
 		f.add(scroller);
 		f.add(inputBox);
@@ -121,6 +127,7 @@ public class CommandParser implements KeyListener {
 						inputPasser();
 
 						IRoom room = levels.get(activeLevel);
+
 						try {
 							room.verbInterpreter();
 						} catch (IOException e1) {
@@ -165,6 +172,7 @@ public class CommandParser implements KeyListener {
 		verbList.add("crawl");
 		verbList.add("jump");
 		verbList.add("search");
+		verbList.add("investigate");
 		verbList.add("look");
 		verbList.add("check");
 		verbList.add("touch");
@@ -174,6 +182,12 @@ public class CommandParser implements KeyListener {
 		verbList.add("break");
 		verbList.add("smash");
 		verbList.add("walk");
+		verbList.add("place");
+		verbList.add("put");
+		verbList.add("eat");
+		verbList.add("defenestrate");
+		verbList.add("oscillate");
+		verbList.add("remove");
 
 	}
 
