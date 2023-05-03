@@ -39,7 +39,6 @@ public class StateTracker {
 
 	JTextArea textBox;
 
-
 	void load(String activeLevel) throws IOException { // Load functionality
 
 		textBox.append("\n LOADING SAVE FILE...");
@@ -107,18 +106,7 @@ public class StateTracker {
 
 	void save() throws IOException { // Save functionality
 
-		Files.newBufferedWriter(filePath , StandardOpenOption.TRUNCATE_EXISTING);
-		
-		gameTracker = new JSONObject();
-		gameTracker.put("Active Class", currentRoom);
-
-	
-
-		// Player inventory
-		playerInventory = new JSONArray();
-		playerInventory.put(1, inventory);
-		gameTracker.put("inventory", playerInventory);
-
+		Files.newBufferedWriter(filePath, StandardOpenOption.TRUNCATE_EXISTING);
 		rawContent = gameTracker.toString(gameTracker.length());
 		Files.writeString(filePath, rawContent, StandardOpenOption.CREATE);
 
@@ -130,6 +118,8 @@ public class StateTracker {
 
 	public void setCurrentRoom(String currentRoom) {
 		this.currentRoom = currentRoom;
+		gameTracker = new JSONObject();
+		gameTracker.put("Active class", currentRoom);
 	}
 
 	public List<String> getInventory() {
@@ -138,6 +128,9 @@ public class StateTracker {
 
 	public void setInventory(List<String> inventory) {
 		this.inventory = inventory;
+		playerInventory = new JSONArray();
+		playerInventory.put(1, inventory);
+		gameTracker.put("inventory", playerInventory);
 	}
 
 	public List<String> getPlayerState() {
@@ -146,22 +139,29 @@ public class StateTracker {
 
 	public void setPlayerState(List<String> playerState) {
 		this.playerState = playerState;
+		level1State = new JSONArray();
+		level1State.put(1, playerState);
+		gameTracker.put("Level 1 state", level1State);
 	}
 
 	public boolean[] getLocks() {
 		return locks;
-	} 	
+	}
 
 	public void setLocks(boolean[] locks) {
 		this.locks = locks;
+		eastDoorLocks = new JSONArray();
+		for (int i = 0; i < locks.length; i++) {
+			eastDoorLocks.put(i, locks[i]);
+		}
 	}
 
-	public boolean isBoxOpen() {
+	public boolean getBoxOpen() {
 		return boxOpen;
 	}
 
 	public void setBoxOpen(boolean boxOpen) {
 		this.boxOpen = boxOpen;
+		gameTracker.put("Hallway box open?", boxOpen);
 	}
-
 }

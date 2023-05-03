@@ -468,6 +468,12 @@ public class Level1 implements IRoom {
 		z.setCurrentRoom(room);
 		z.setInventory(inventory);
 		z.setPlayerState(playerState);
+		
+		try {
+			z.save();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		p.textBox.append("\n Game saved");
 
