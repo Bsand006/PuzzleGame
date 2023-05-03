@@ -39,9 +39,6 @@ public class StateTracker {
 
 	JTextArea textBox;
 
-	public StateTracker(JTextArea textBox) {
-		this.textBox = textBox;
-	}
 
 	void load(String activeLevel) throws IOException { // Load functionality
 
@@ -110,34 +107,12 @@ public class StateTracker {
 
 	void save() throws IOException { // Save functionality
 
+		Files.newBufferedWriter(filePath , StandardOpenOption.TRUNCATE_EXISTING);
+		
 		gameTracker = new JSONObject();
 		gameTracker.put("Active Class", currentRoom);
 
-		// If player is on the first level
-		if (currentRoom.equals("First level")) {
-			level1State = new JSONArray();
-
-			level1State.put(1, playerState);
-
-			gameTracker.put("level1State", level1State);
-		}
-
-		// If player has completed the east door puzzle
-		if (boxOpen == true && !currentRoom.equals("East Door Puzzle")) {
-			gameTracker.put("boxOpen?", boxOpen);
-
-			// If the player is in east door puzzle
-		} else if (boxOpen != true && currentRoom.equals("East Door Puzzle")) {
-
-			eastDoorLocks = new JSONArray();
-
-			for (int i = 0; i < locks.length; i++)
-				eastDoorLocks.put(i, locks[i]);
-
-			gameTracker.put("eastDoorBoxLocks", eastDoorLocks);
-			gameTracker.put("boxOpen?", boxOpen);
-
-		}
+	
 
 		// Player inventory
 		playerInventory = new JSONArray();

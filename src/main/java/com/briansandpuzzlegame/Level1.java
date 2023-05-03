@@ -7,6 +7,7 @@ import java.util.List;
 public class Level1 implements IRoom {
 	CommandParser p;
 
+	StateTracker z;
 	String userInput;
 	String playerLocation = "center";
 	List<String> inventory = new ArrayList<String>();
@@ -81,7 +82,8 @@ public class Level1 implements IRoom {
 			load();
 
 		if (userInput.contains("save"))
-			save(null);
+			z = new StateTracker();
+			save(z);
 
 		if (userInput.contains("touch"))
 			touch();

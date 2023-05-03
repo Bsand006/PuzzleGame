@@ -26,7 +26,7 @@ public class CommandParser implements KeyListener {
 
 	// Current room hashmap
 	HashMap<String, IRoom> levels;
-	String activeLevel;
+	String activeLevel = "First level";
 
 	// Parser wordlists
 	ArrayList<String> verbList;
