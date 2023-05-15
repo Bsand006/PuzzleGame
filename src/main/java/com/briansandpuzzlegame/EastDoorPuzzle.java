@@ -1,17 +1,20 @@
 package com.briansandpuzzlegame;
 
-import java.io.IOException;
-
 /*
  * This room is past the door to the east in the GreatDoor room. This room contains a puzzle box
  * that holds a piece of paper which has part of the sequence to open the great door.
  */
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class EastDoorPuzzle implements IRoom {
 	CommandParser p;
+	StateTracker z;
 
 	String userInput;
 	boolean[] locks = new boolean[4]; // Position of the four locks on the box. Are they unlocked or not?
@@ -23,6 +26,11 @@ public class EastDoorPuzzle implements IRoom {
 		this.p = p;
 
 		setInventory(inventory); // Updates inventory from previous class
+	}
+	
+	@Override
+	public void firstTimeRun() {
+		
 	}
 
 	@Override // Executes verb methods
@@ -91,7 +99,12 @@ public class EastDoorPuzzle implements IRoom {
 			no();
 
 		if (userInput.contains("load"))
-			load();
+			z = new StateTracker();
+			try {
+				load(z);
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
 
 		if (userInput.contains("save"))
 			save(null);
@@ -631,16 +644,23 @@ public class EastDoorPuzzle implements IRoom {
 
 	@Override
 	public void save(StateTracker z) {
+		JSONObject eastDoor = new JSONObject();
+		eastDoor.put("activeLevel", "com.briansandpuzzlegame.EastDoorPuzzle");
 
-		
-		z.setCurrentRoom(userInput);
+		JSONArray playerInv = new JSONArray();
+		playerInv.put(1, inventory);
+		eastDoor.put("Inv", playerInv);
+
+		JSONArray boxLocks = new JSONArray();
+
+		for (int i = 0; i < locks.length; i++) {
+			boxLocks.put(i, locks[i]);
+		}
+
+		eastDoor.put("locks", boxLocks);
+		eastDoor.put("boxUnlock?", boxUnlock);
+
 		p.textBox.append("\n Game saved");
-
-	}
-
-	@Override
-	public void load() {
-
 	}
 
 	@Override
@@ -667,25 +687,42 @@ public class EastDoorPuzzle implements IRoom {
 	@Override
 	public void investigate() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void put() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void place() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void remove() {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void load(StateTracker z)
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
+		p.textBox.append("\n LOADING...");
+		z.load();
+	}
+
+	@Override
+	public void loadCall(JSONObject params) {
+		JSONObject paramaters = params;
+		inventory = (List<String>) paramaters.get("Inv");
 		
+		for (int i = 0; i < locks.length; i++) {
+		}
+
 	}
 
 }

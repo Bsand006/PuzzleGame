@@ -1,7 +1,10 @@
 package com.briansandpuzzlegame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
 
 public class GreatDoor implements IRoom {
 	CommandParser p;
@@ -13,13 +16,22 @@ public class GreatDoor implements IRoom {
 	public GreatDoor(CommandParser p) {
 		this.p = p;
 
-		firstTimeRun();
-		setInventory(inventory);
-
 	}
-	
+
+	@Override
 	public void firstTimeRun() {
 		System.out.println("fdsfasdafa");
+		setInventory(inventory);
+		System.out.println(inventory);
+
+		p.textBox.setText("");
+		p.textBox.append("You step into a large room");
+		p.textBox.append("\n To the north is a large door 20ft tall");
+		p.textBox.append("\n There are 5 pedastals in a row in front of the door");
+		p.textBox.append("\n To the east there is a small wood door");
+		p.textBox.append("\n To the west there is another door");
+		p.textBox.append("\n A small metal box lies on a table in the room");
+
 	}
 
 	@Override
@@ -45,13 +57,13 @@ public class GreatDoor implements IRoom {
 
 		if (userInput.contains("inventory"))
 			inventory();
-		
+
 		if (userInput.contains("inspect"))
 			inspect();
-		
+
 		if (userInput.contains("investigate"))
 			investigate();
-		
+
 		if (userInput.contains("search"))
 			search();
 
@@ -78,7 +90,8 @@ public class GreatDoor implements IRoom {
 		if (userInput.contains("door") && playerLocation.equals("eastDoor")) {
 			p.textBox.append("\n ");
 			p.textBox.append("\n In the center of this room sits a small metal box on " + "a pedastal");
-			p.textBox.append("\n There is an iron lock on all four sides. Each lock has a " + "scuplted image above it");
+			p.textBox
+					.append("\n There is an iron lock on all four sides. Each lock has a " + "scuplted image above it");
 			p.textBox.append("\n Four keys hang from the wall, all with different numbers of teeth");
 			p.textBox.append("\n Above the keys the following verse is etched into the wall:");
 			p.textBox.append("\n ");
@@ -97,10 +110,10 @@ public class GreatDoor implements IRoom {
 					+ "\n Stone panels on the top and right side of the square label the rows and columns"
 					+ "\n The columns are labeled from left to right : III, I, II, III"
 					+ "\n The rows are labeled from top to bottom : III, II, III, I");
-			
+
 			playerLocation = "West door";
 			p.activeLevel = "West door puzzle";
-			
+
 		} else {
 			p.textBox.append("\n I do not understand what you want to open");
 		}
@@ -141,11 +154,11 @@ public class GreatDoor implements IRoom {
 		}
 
 	}
-	
+
 	@Override
 	public void investigate() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -326,11 +339,6 @@ public class GreatDoor implements IRoom {
 	}
 
 	@Override
-	public void load() {
-
-	}
-
-	@Override
 	public void walk() {
 		// TODO Auto-generated method stub
 
@@ -345,19 +353,32 @@ public class GreatDoor implements IRoom {
 	@Override
 	public void put() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void place() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void remove() {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public void load(StateTracker z)
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void loadCall(JSONObject params) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

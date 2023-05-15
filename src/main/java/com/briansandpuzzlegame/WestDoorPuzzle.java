@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 public class WestDoorPuzzle implements IRoom {
 	CommandParser p;
 
@@ -378,11 +380,7 @@ public class WestDoorPuzzle implements IRoom {
 
 	}
 
-	@Override
-	public void load() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	@Override
 	public List<String> getInventory() {
@@ -393,6 +391,20 @@ public class WestDoorPuzzle implements IRoom {
 	public void setInventory(List<String> inventory) {
 		this.inventory = inventory;
 
+	}
+
+	@Override
+	public void load(StateTracker z)
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void loadCall(JSONObject params) {
+		JSONObject paramaters = params;
+		inventory = (List<String>) paramaters.get("Inv");
+		
 	}
 
 }

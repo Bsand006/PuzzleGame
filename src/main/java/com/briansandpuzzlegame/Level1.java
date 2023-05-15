@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class Level1 implements IRoom {
 	CommandParser p;
 
@@ -15,6 +18,12 @@ public class Level1 implements IRoom {
 
 	public Level1(CommandParser p) {
 		this.p = p;
+		System.out.println("Mep");
+
+	}
+
+	@Override
+	public void firstTimeRun() {
 
 	}
 
@@ -79,11 +88,17 @@ public class Level1 implements IRoom {
 			Continue();
 
 		if (userInput.contains("load"))
-			load();
+			try {
+				z = new StateTracker();
+				load(z);
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
 
-		if (userInput.contains("save"))
+		if (userInput.contains("save")) {
 			z = new StateTracker();
 			save(z);
+		}
 
 		if (userInput.contains("touch"))
 			touch();
@@ -269,6 +284,24 @@ public class Level1 implements IRoom {
 		}
 	}
 
+	@Override
+	public void put() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void place() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void remove() {
+		// TODO Auto-generated method stub
+
+	}
+
 	public void attack() {
 	}
 
@@ -306,6 +339,12 @@ public class Level1 implements IRoom {
 		} else {
 			p.textBox.append("\n I do not understand what you are searching for");
 		}
+
+	}
+
+	@Override
+	public void investigate() {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -403,19 +442,6 @@ public class Level1 implements IRoom {
 			p.textBox.append("\n You are as east as you can go");
 	}
 
-	public void Continue() { // MOVES TO NEXT LEVEL
-
-		getInventory();
-		p.activeLevel = "Great door";
-		p.textBox.setText("");
-		p.textBox.append("You step into a large room");
-		p.textBox.append("\n To the north is a large door 20ft tall");
-		p.textBox.append("\n There are 5 pedastals in a row in front of the door");
-		p.textBox.append("\n To the east there is a small wood door");
-		p.textBox.append("\n To the west there is another door");
-		p.textBox.append("\n A small metal box lies on a table in the room");
-	}
-
 	public void south() {
 
 		if (!playerLocation.equals("south") && playerState.contains("pushedButton")) {
@@ -464,13 +490,19 @@ public class Level1 implements IRoom {
 	@Override
 	public void save(StateTracker z) {
 
-		String room = p.activeLevel;
-		z.setCurrentRoom(room);
-		z.setInventory(inventory);
-		z.setPlayerState(playerState);
-		
+		JSONObject level1 = new JSONObject();
+		level1.put("activeLevel", "com.briansandpuzzlegame.Level1");
+
+		JSONArray playerInv = new JSONArray();
+		playerInv.put(1, inventory);
+		level1.put("Inv", playerInv);
+
+		JSONArray playerTrack = new JSONArray();
+		playerTrack.put(1, playerState);
+		level1.put("State", playerTrack);
+
 		try {
-			z.save();
+			z.save(level1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -480,31 +512,28 @@ public class Level1 implements IRoom {
 	}
 
 	@Override
-	public void load() {
+	public void load(StateTracker z)
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
+		p.textBox.setText("LOADING...");
+		z.load();
 
 	}
 
 	@Override
-	public void investigate() {
-		// TODO Auto-generated method stub
+	public void loadCall(JSONObject params) {
+		JSONObject paramaters = params;
+		inventory = (List<String>) paramaters.get("Inv");
+		playerState = (List<String>) paramaters.get("State");
 
+		p.textBox.append("\n GAME SAVE LOADED");
+		p.textBox.append("\n Active room: " + "First Level");
 	}
 
-	@Override
-	public void put() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void Continue() { // MOVES TO NEXT LEVEL
 
-	@Override
-	public void place() {
-		// TODO Auto-generated method stub
-		
-	}
+		getInventory();
+		p.activeLevel = "Great door";
+		p.level.setText("Great door");
 
-	@Override
-	public void remove() {
-		// TODO Auto-generated method stub
-		
 	}
 }

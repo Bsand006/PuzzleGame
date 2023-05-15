@@ -3,9 +3,13 @@ package com.briansandpuzzlegame;
 import java.io.IOException;
 import java.util.List;
 
+import org.json.JSONObject;
+
 public interface IRoom {
 
 	public void verbInterpreter() throws IOException;
+	
+	public void firstTimeRun();
 
 	public void enter();
 
@@ -93,8 +97,10 @@ public interface IRoom {
 
 	public void save(StateTracker z);
 
-	public void load();
-
+	public void load(StateTracker z) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException ;
+	
+	public void loadCall(JSONObject params);
+	
 	public List<String> getInventory();
 
 	public void setInventory(List<String> inventory);

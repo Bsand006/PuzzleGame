@@ -6,17 +6,20 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-public class CommandParser implements KeyListener {
+public class CommandParser implements KeyListener, PropertyChangeListener {
 	StateTracker z;
 
 	Level1 r;
@@ -36,6 +39,7 @@ public class CommandParser implements KeyListener {
 	JFrame f;
 	JTextArea textBox;
 	JTextField inputBox;
+	JLabel level;
 	JScrollPane scroller;
 	Font font;
 
@@ -48,20 +52,11 @@ public class CommandParser implements KeyListener {
 
 	void run() {
 
-		// Hashmap to track active roo
+		// Hashmap to track active room
 
 		r = new Level1(this);
-		a = new GreatDoor(this);
-		b = new EastDoorPuzzle(this);
-		c = new WestDoorPuzzle(this);
-
 		levels = new HashMap<>();
-
 		levels.put("First level", r);
-		levels.put("Great door", a);
-		levels.put("East door puzzle", b);
-		levels.put("West door puzzle", c);
-		activeLevel = "First level";
 
 		// Generates game GUI
 
@@ -75,6 +70,10 @@ public class CommandParser implements KeyListener {
 		f.setSize(width, height);
 		f.setTitle("Zorp");
 		f.getContentPane().setBackground(Color.darkGray);
+
+		level = new JLabel();
+		level.setText(activeLevel);
+		level.addPropertyChangeListener(this);
 
 		// Text font
 		font = new Font("Monospaced", Font.BOLD, 17);
@@ -101,9 +100,29 @@ public class CommandParser implements KeyListener {
 
 		inputBox.addKeyListener(this); // Adds KeyListener
 
-		verbs(); // Runs verbs
-		adverbs(); // Runs adverbs
+		verbs();
+		adverbs();
 
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+
+		if (evt.getOldValue() != evt.getNewValue()) {
+			if (evt.getNewValue().equals("Great door")) {
+				a = new GreatDoor(this);
+				levels.put("Great door", a);
+				a.firstTimeRun();
+			} else if (evt.getNewValue().equals("East door puzzle")) {
+				b = new EastDoorPuzzle(this);
+				levels.put("East door puzzle", b);
+				b.firstTimeRun();
+			} else if (evt.getNewValue().equals("West door puzzle")) {
+				c = new WestDoorPuzzle(this);
+				levels.put("West door puzzle", c);
+				c.firstTimeRun();
+			}
+		}
 	}
 
 	// Parser
