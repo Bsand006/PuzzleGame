@@ -16,10 +16,19 @@ public class Level1 implements IRoom {
 	List<String> inventory = new ArrayList<String>();
 	List<String> playerState = new ArrayList<String>();
 
+	public Level1() {
+
+	}
+
 	public Level1(CommandParser p) {
 		this.p = p;
 		System.out.println("Mep");
 
+	}
+
+	@Override
+	public void setParser(CommandParser p) {
+		this.p = p;
 	}
 
 	@Override
@@ -406,16 +415,6 @@ public class Level1 implements IRoom {
 		}
 	}
 
-	public void inventory() {
-
-		// Displays inventory
-		if (!inventory.isEmpty()) {
-			p.textBox.append("\n" + inventory);
-		} else {
-			p.textBox.append("\n Inventory is empty");
-		}
-	}
-
 	public void north() {
 
 		// Metal door
@@ -475,6 +474,20 @@ public class Level1 implements IRoom {
 
 	}
 
+	/*
+	 * GAME FUNCTION LOGIC
+	 */
+
+	public void inventory() {
+
+		// Displays inventory
+		if (!inventory.isEmpty()) {
+			p.textBox.append("\n" + inventory);
+		} else {
+			p.textBox.append("\n Inventory is empty");
+		}
+	}
+
 	@Override
 	public List<String> getInventory() {
 		return inventory;
@@ -494,11 +507,20 @@ public class Level1 implements IRoom {
 		level1.put("activeLevel", "com.briansandpuzzlegame.Level1");
 
 		JSONArray playerInv = new JSONArray();
-		playerInv.put(1, inventory);
+
+		for (int i = 0; i < inventory.size(); i++) {
+			playerInv.put(inventory.get(i));
+		}
+
 		level1.put("Inv", playerInv);
 
 		JSONArray playerTrack = new JSONArray();
-		playerTrack.put(1, playerState);
+		
+
+		for (int i = 0; i < playerState.size(); i++) {
+			playerTrack.put(playerState.get(i));
+		}
+
 		level1.put("State", playerTrack);
 
 		try {
@@ -514,7 +536,8 @@ public class Level1 implements IRoom {
 	@Override
 	public void load(StateTracker z)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
-		p.textBox.setText("LOADING...");
+		p.f.dispose();
+
 		z.load();
 
 	}
@@ -522,11 +545,24 @@ public class Level1 implements IRoom {
 	@Override
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
-		inventory = (List<String>) paramaters.get("Inv");
-		playerState = (List<String>) paramaters.get("State");
+		JSONArray inv = paramaters.getJSONArray("Inv");
+		inventory.clear();
+		playerState.clear();
+
+		for (int i = 0; i < inv.length(); i++) {
+			inventory.add(inv.getString(i));
+		}
+		
+		JSONArray state = paramaters.getJSONArray("State");
+		
+		for (int i = 0; i < state.length(); i++) {
+			playerState.add(state.getString(i));
+		}
 
 		p.textBox.append("\n GAME SAVE LOADED");
 		p.textBox.append("\n Active room: " + "First Level");
+		System.out.println(inventory);
+		System.out.println(playerState);
 	}
 
 	public void Continue() { // MOVES TO NEXT LEVEL

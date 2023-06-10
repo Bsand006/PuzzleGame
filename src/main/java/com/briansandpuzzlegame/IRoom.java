@@ -10,6 +10,8 @@ public interface IRoom {
 	public void verbInterpreter() throws IOException;
 	
 	public void firstTimeRun();
+	
+	public void setParser(CommandParser p);
 
 	public void enter();
 

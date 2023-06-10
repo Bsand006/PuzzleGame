@@ -29,7 +29,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 	// Current room hashmap
 	HashMap<String, IRoom> levels;
-	String activeLevel = "First level";
+	String activeLevel;
 
 	// Parser wordlists
 	ArrayList<String> verbList;
@@ -56,7 +56,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 		r = new Level1(this);
 		levels = new HashMap<>();
-		levels.put("First level", r);
+		levels.put("com.briansandpuzzlegame.Level1", r);
 
 		// Generates game GUI
 
@@ -79,12 +79,16 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		font = new Font("Monospaced", Font.BOLD, 17);
 
 		// Text display box
-		textBox = new JTextArea(" You stand in a pitch black room");
+		textBox = new JTextArea("Game started");
 		textBox.setBounds(5, 5, width, height - 370);
 		textBox.setFont(font);
 		textBox.setForeground(Color.WHITE);
 		textBox.setBackground(Color.BLACK);
 		textBox.setEnabled(false);
+
+		if (activeLevel.equals("com.briansandpuzzlegame.Level1")) {
+			textBox.append("\n You stand in a pitch black room");
+		}
 
 		// User input box
 		inputBox = new JTextField();

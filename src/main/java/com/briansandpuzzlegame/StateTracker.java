@@ -9,6 +9,7 @@ import java.nio.file.StandardOpenOption;
 import org.json.JSONObject;
 
 public class StateTracker {
+	CommandParser p;
 
 	JSONObject gameTracker;
 	Path filePath = Paths.get("state.json");
@@ -23,6 +24,11 @@ public class StateTracker {
 
 		IRoom activeRoom = (IRoom) this.getClass().getClassLoader().loadClass(activeLevel).newInstance();
 
+		p = new CommandParser();
+
+		p.run();
+
+		activeRoom.setParser(p);
 		activeRoom.loadCall(gameTracker);
 
 	}

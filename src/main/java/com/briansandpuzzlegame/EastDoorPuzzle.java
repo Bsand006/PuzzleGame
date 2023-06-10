@@ -19,18 +19,33 @@ public class EastDoorPuzzle implements IRoom {
 	String userInput;
 	boolean[] locks = new boolean[4]; // Position of the four locks on the box. Are they unlocked or not?
 	boolean boxUnlock = false; // Is the box unlocked?
-	boolean leaveRoom = false; // Leave the room?
+	boolean puzzleComplete = false;
 	List<String> inventory = new ArrayList<String>(); // Inventory
+
+	public EastDoorPuzzle() {
+
+	}
 
 	public EastDoorPuzzle(CommandParser p) {
 		this.p = p;
 
-		setInventory(inventory); // Updates inventory from previous class
 	}
-	
+
 	@Override
 	public void firstTimeRun() {
+		p.textBox.append("\n ");
+		p.textBox.append("\n In the center of this room sits a small metal box on " + "a pedastal");
+		p.textBox.append("\n There is an iron lock on all four sides. Each lock has a " + "scuplted image above it");
+		p.textBox.append("\n Four keys hang from the wall, all with different numbers of teeth");
+		p.textBox.append("\n Above the keys the following verse is etched into the wall:");
+		p.textBox.append("\n ");
+		p.textBox.append("\n    The spells of these locks are all the same");
+		p.textBox.append("\n     Though each possesses a unique name");
+		p.textBox.append("\n    Count on your answer to unlock the way");
+		p.textBox.append("\n     But use the wrong key to your dismay");
 		
+		setInventory(inventory); // Updates inventory from previous class
+
 	}
 
 	@Override // Executes verb methods
@@ -100,14 +115,15 @@ public class EastDoorPuzzle implements IRoom {
 
 		if (userInput.contains("load"))
 			z = new StateTracker();
-			try {
-				load(z);
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			load(z);
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
+			e.printStackTrace();
+		}
 
 		if (userInput.contains("save"))
-			save(null);
+			z = new StateTracker();
+			save(z);
 	}
 
 	public void boxUnlocks() { // Alerts player when the puzzle is completed
@@ -142,10 +158,6 @@ public class EastDoorPuzzle implements IRoom {
 	@Override
 	public void go() {
 
-		if (userInput.contains("west")) {
-			p.textBox.append("\n Do you want to leave the room? Yes or no");
-			leaveRoom = true;
-		}
 	}
 
 	@Override
@@ -382,6 +394,13 @@ public class EastDoorPuzzle implements IRoom {
 			if (boxUnlock == true) {
 				p.textBox.append("\n You take the paper");
 				inventory.add("paper");
+				p.textBox.append("\n You have completed this room!");
+				p.textBox.append("\n You leave the room, the door swings shut behind you");
+				
+				getInventory();
+				p.activeLevel = "Great door";
+				p.level.setText("Great door");
+				
 			}
 
 		default:
@@ -579,32 +598,16 @@ public class EastDoorPuzzle implements IRoom {
 	@Override
 	public void west() {
 
-		p.textBox.append("\n Do you want to leave this room? Yes or no");
-		leaveRoom = true;
 	}
 
 	@Override
 	public void yes() {
-
-		if (leaveRoom == true) {
-			p.textBox.append("\n You leave the room");
-			getInventory();
-			p.activeLevel = "Great door";
-		} else {
-			p.textBox.append("\n What?");
-		}
 
 	}
 
 	@Override
 	public void no() {
 
-		if (leaveRoom == true) {
-			p.textBox.append("\n You decide not to leave the room");
-			leaveRoom = false;
-		} else {
-			p.textBox.append("\n What?");
-		}
 	}
 
 	@Override
@@ -627,40 +630,11 @@ public class EastDoorPuzzle implements IRoom {
 	@Override
 	public void leave() {
 
-		if (userInput.contains("room")) {
-			p.textBox.append("\n Do you want to leave the room? Yes or no");
-			leaveRoom = true;
-		}
 	}
 
 	@Override
 	public void exit() {
 
-		if (userInput.contains("room")) {
-			p.textBox.append("\n Do you want to exit the room? Yes or no");
-			leaveRoom = true;
-		}
-	}
-
-	@Override
-	public void save(StateTracker z) {
-		JSONObject eastDoor = new JSONObject();
-		eastDoor.put("activeLevel", "com.briansandpuzzlegame.EastDoorPuzzle");
-
-		JSONArray playerInv = new JSONArray();
-		playerInv.put(1, inventory);
-		eastDoor.put("Inv", playerInv);
-
-		JSONArray boxLocks = new JSONArray();
-
-		for (int i = 0; i < locks.length; i++) {
-			boxLocks.put(i, locks[i]);
-		}
-
-		eastDoor.put("locks", boxLocks);
-		eastDoor.put("boxUnlock?", boxUnlock);
-
-		p.textBox.append("\n Game saved");
 	}
 
 	@Override
@@ -709,6 +683,27 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
+	public void save(StateTracker z) {
+		JSONObject eastDoor = new JSONObject();
+		eastDoor.put("activeLevel", "com.briansandpuzzlegame.EastDoorPuzzle");
+
+		JSONArray playerInv = new JSONArray();
+		playerInv.put(1, inventory);
+		eastDoor.put("Inv", playerInv);
+
+		JSONArray boxLocks = new JSONArray();
+
+		for (int i = 0; i < locks.length; i++) {
+			boxLocks.put(i, locks[i]);
+		}
+
+		eastDoor.put("locks", boxLocks);
+		eastDoor.put("boxUnlock?", boxUnlock);
+
+		p.textBox.append("\n Game saved");
+	}
+
+	@Override
 	public void load(StateTracker z)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		p.textBox.append("\n LOADING...");
@@ -718,10 +713,15 @@ public class EastDoorPuzzle implements IRoom {
 	@Override
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
-		inventory = (List<String>) paramaters.get("Inv");
-		
+
 		for (int i = 0; i < locks.length; i++) {
 		}
+
+	}
+
+	@Override
+	public void setParser(CommandParser p) {
+		// TODO Auto-generated method stub
 
 	}
 

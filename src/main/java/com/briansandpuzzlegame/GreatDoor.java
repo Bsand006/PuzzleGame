@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class GreatDoor implements IRoom {
@@ -12,6 +13,12 @@ public class GreatDoor implements IRoom {
 	String userInput;
 	String playerLocation = "center";
 	List<String> inventory = new ArrayList<String>();
+	boolean eastDoorComplete = false;
+	boolean westDoorComplete = false;
+
+	public GreatDoor() {
+
+	}
 
 	public GreatDoor(CommandParser p) {
 		this.p = p;
@@ -88,31 +95,20 @@ public class GreatDoor implements IRoom {
 	public void open() {
 
 		if (userInput.contains("door") && playerLocation.equals("eastDoor")) {
-			p.textBox.append("\n ");
-			p.textBox.append("\n In the center of this room sits a small metal box on " + "a pedastal");
-			p.textBox
-					.append("\n There is an iron lock on all four sides. Each lock has a " + "scuplted image above it");
-			p.textBox.append("\n Four keys hang from the wall, all with different numbers of teeth");
-			p.textBox.append("\n Above the keys the following verse is etched into the wall:");
-			p.textBox.append("\n ");
-			p.textBox.append("\n    The spells of these locks are all the same");
-			p.textBox.append("\n     Though each possesses a unique name");
-			p.textBox.append("\n    Count on your answer to unlock the way");
-			p.textBox.append("\n     But use the wrong key to your dismay");
-
-			playerLocation = "puzzleBox";
-			p.activeLevel = "East door puzzle";
+			if (eastDoorComplete == false) {
+				playerLocation = "puzzleBox";
+				p.activeLevel = "East door puzzle";
+				p.level.setText("East door puzzle");
+			} else {
+				p.textBox.append("\n There is nothing more to do in there");
+			}
 
 		} else if (userInput.contains("door") && playerLocation.equals("westDoor")) {
-			p.textBox.append("\n ");
-			p.textBox.append("\n Nine skulls rest near a four-foot square set of tiles in the floor"
-					+ "\n The tiles are arranged in a four by four square"
-					+ "\n Stone panels on the top and right side of the square label the rows and columns"
-					+ "\n The columns are labeled from left to right : III, I, II, III"
-					+ "\n The rows are labeled from top to bottom : III, II, III, I");
+			if (westDoorComplete == false) {
+				playerLocation = "West door";
+				p.activeLevel = "West door puzzle";
 
-			playerLocation = "West door";
-			p.activeLevel = "West door puzzle";
+			}
 
 		} else {
 			p.textBox.append("\n I do not understand what you want to open");
@@ -213,6 +209,7 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void touch() {
+		System.out.println("touch");
 
 	}
 
@@ -239,16 +236,6 @@ public class GreatDoor implements IRoom {
 	@Override
 	public void smash() {
 
-	}
-
-	@Override
-	public void inventory() {
-		// Displays inventory
-		if (!inventory.isEmpty()) {
-			p.textBox.append("\n" + inventory);
-		} else {
-			p.textBox.append("\n Inventory is empty");
-		}
 	}
 
 	@Override
@@ -308,18 +295,6 @@ public class GreatDoor implements IRoom {
 	}
 
 	@Override
-	public List<String> getInventory() {
-		return inventory;
-	}
-
-	@Override
-	public void setInventory(List<String> inventory) {
-
-		this.inventory = inventory;
-
-	}
-
-	@Override
 	public void leave() {
 		// TODO Auto-generated method stub
 
@@ -328,13 +303,6 @@ public class GreatDoor implements IRoom {
 	@Override
 	public void exit() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void save(StateTracker z) {
-
-		p.textBox.append("\n Game Saved");
 
 	}
 
@@ -369,14 +337,69 @@ public class GreatDoor implements IRoom {
 	}
 
 	@Override
-	public void load(StateTracker z)
-			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
-		// TODO Auto-generated method stub
+	public void inventory() {
+		// Displays inventory
+		if (!inventory.isEmpty()) {
+			p.textBox.append("\n" + inventory);
+		} else {
+			p.textBox.append("\n Inventory is empty");
+		}
+	}
+
+	@Override
+	public List<String> getInventory() {
+		return inventory;
+	}
+
+	@Override
+	public void setInventory(List<String> inventory) {
+
+		this.inventory = inventory;
 
 	}
 
 	@Override
+	public void save(StateTracker z) {
+		JSONObject greatDoor = new JSONObject();
+		greatDoor.put("activeLevel", "com.briansandpuzzlegame.GreatDoor");
+
+		JSONArray playerInv = new JSONArray();
+
+		for (int i = 0; i < inventory.size(); i++) {
+			playerInv.put(inventory.get(i));
+		}
+		
+		greatDoor.put("Inv", playerInv);
+
+		p.textBox.append("\n Game Saved");
+
+	}
+
+	@Override
+	public void load(StateTracker z)
+			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
+
+		z.load();
+	}
+
+	@Override
 	public void loadCall(JSONObject params) {
+		JSONObject paramaters = params;
+
+		JSONArray inv = paramaters.getJSONArray("Inv");
+		inventory.clear();
+
+		for (int i = 0; i < inv.length(); i++) {
+			inventory.add(inv.getString(i));
+		}
+
+		p.textBox.append("\n GAME SAVE LOADED");
+		p.textBox.append("\n Active room: " + "Great door");
+
+	}
+
+	@Override
+	public void setParser(CommandParser p) {
 		// TODO Auto-generated method stub
 
 	}

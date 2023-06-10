@@ -15,6 +15,17 @@ public class WestDoorPuzzle implements IRoom {
 	int skullsLeft = 9;
 	boolean solved = false;
 
+	public WestDoorPuzzle() {
+
+	}
+	
+	@Override
+	public void setParser(CommandParser p) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	public WestDoorPuzzle(CommandParser p) {
 		this.p = p;
 		firstTimeRun();
@@ -28,6 +39,13 @@ public class WestDoorPuzzle implements IRoom {
 				grid[i][j] = 0;
 			}
 		}
+		
+		p.textBox.append("\n ");
+		p.textBox.append("\n Nine skulls rest near a four-foot square set of tiles in the floor"
+				+ "\n The tiles are arranged in a four by four square"
+				+ "\n Stone panels on the top and right side of the square label the rows and columns"
+				+ "\n The columns are labeled from left to right : III, I, II, III"
+				+ "\n The rows are labeled from top to bottom : III, II, III, I");
 
 	}
 
@@ -281,7 +299,7 @@ public class WestDoorPuzzle implements IRoom {
 						p.textBox.append("\n Placing skull on tile " + x + "," + y);
 						winCheck();
 						skullsLeft--;
-						//inventory.set(inventory.size(), "skulls : " + skullsLeft);
+						// inventory.set(inventory.size(), "skulls : " + skullsLeft);
 					} else
 						p.textBox.append("\n Square already occupied");
 				} else
@@ -293,7 +311,7 @@ public class WestDoorPuzzle implements IRoom {
 
 			}
 
-		} else 
+		} else
 			p.textBox.append("\n Puzzle is solved");
 	}
 
@@ -361,7 +379,7 @@ public class WestDoorPuzzle implements IRoom {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public void Continue() {
 		// TODO Auto-generated method stub
@@ -380,8 +398,6 @@ public class WestDoorPuzzle implements IRoom {
 
 	}
 
-	
-
 	@Override
 	public List<String> getInventory() {
 		return inventory;
@@ -397,14 +413,15 @@ public class WestDoorPuzzle implements IRoom {
 	public void load(StateTracker z)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
 		inventory = (List<String>) paramaters.get("Inv");
-		
+
 	}
 
+	
 }

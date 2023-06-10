@@ -1,19 +1,5 @@
 {
-   "Inv": [
-      null,
-      [
-         "buttonKey",
-         "hammer"
-      ]
-   ],
-   "State": [
-      null,
-      [
-         "movedForward",
-         "inspectedObject",
-         "pushedButton",
-         "pushedButtonTwice"
-      ]
-   ],
+   "Inv": [],
+   "State": ["movedForward"],
    "activeLevel": "com.briansandpuzzlegame.Level1"
 }
