@@ -1,3 +1,4 @@
+
 package com.briansandpuzzlegame;
 
 import java.io.IOException;
@@ -41,61 +42,129 @@ public class Level1 implements IRoom {
 
 		userInput = p.inputPasser();
 		System.out.println(userInput);
-
-		if (userInput.contains("break"))
-			Break();
-
-		if (userInput.contains("inventory"))
-			inventory();
-
-		if (userInput.contains("look"))
-			look();
-
-		if (userInput.contains("move"))
-			move();
-
+		
+		if (userInput.contains("enter"))
+			enter();
+		
 		if (userInput.contains("go"))
 			go();
-
-		if (userInput.contains("walk"))
-			walk();
-
-		if (userInput.contains("search"))
-			search();
-
-		if (userInput.contains("inspect"))
-			inspect();
-
+		
 		if (userInput.contains("push"))
 			push();
-
-		if (userInput.contains("east"))
-			east();
-
-		if (userInput.contains("north"))
-			north();
-
-		if (userInput.contains("south"))
-			south();
-
-		if (userInput.contains("west"))
-			west();
-
+		
 		if (userInput.contains("open"))
 			open();
-
-		if (userInput.contains("take"))
-			take();
-
+		
+		if (userInput.contains("close"))
+			close();
+		
+		if (userInput.contains("move"))
+			move();
+		
+		if (userInput.contains("walk"))
+			walk();
+		
 		if (userInput.contains("use"))
 			use();
-
+		
+		if (userInput.contains("turn"))
+			turn();
+		
+		if (userInput.contains("take"))
+			take();
+		
+		if (userInput.contains("inspect"))
+			inspect();
+		
+		if (userInput.contains("put"))
+			put();
+		
+		if (userInput.contains("place"))
+			place();
+		
+		if (userInput.contains("remove"))
+			remove();
+		
+		if (userInput.contains("attack"))
+			attack();
+		
+		if (userInput.contains("climb"))
+			climb();
+		
+		if (userInput.contains("hide"))
+			hide();
+		
+		if (userInput.contains("descend"))
+			descend();
+		
+		if (userInput.contains("run"))
+			run();
+		
+		if (userInput.contains("jump"))
+			jump();
+		
+		if (userInput.contains("search"))
+			search();
+		
+		if (userInput.contains("investigate"))
+			investigate();
+		
 		if (userInput.contains("look"))
 			look();
+		
+		if (userInput.contains("check"))
+			check();
+		
+		if (userInput.contains("touch"))	
+			touch();
+		
+		if (userInput.contains("throw"))
+			Throw();
+		
+		if (userInput.contains("watch"))
+			watch();
+		
+		if (userInput.contains("wait"))
+			Wait();
+		
+		if (userInput.contains("break"))
+			Break();
+		
+		if (userInput.contains("smash"))
+			smash();
+		
+		if (userInput.contains("north"))
+			north();
+		
+		if (userInput.contains("east"))
+			east();
+		
+		if (userInput.contains("south"))
+			south();
+		
+		if (userInput.contains("west"))
+			west();
+		
+		if (userInput.contains("yes"))
+			yes();
+		
+		if (userInput.contains("no"))
+			no();
+		
+		if (userInput.contains("exit"))
+			exit();
+		
+		if (userInput.contains("repeat"));
+			repeat();
+			
+		if (userInput.contains("inventory"))
+			inventory();
+		
+		
+		
+		
 
-		if (userInput.contains("continue"))
-			Continue();
-
+		
 		if (userInput.contains("load"))
 			try {
 				z = new StateTracker();
@@ -109,11 +178,10 @@ public class Level1 implements IRoom {
 			save(z);
 		}
 
-		if (userInput.contains("touch"))
-			touch();
-
-		if (userInput.contains("check"))
-			check();
+		
+		
+		if (userInput.contains("continue"))
+			Continue();
 	}
 
 	// Level completion method
@@ -458,15 +526,17 @@ public class Level1 implements IRoom {
 	public void yes() {
 	}
 
-	public void no() {
-	}
-
 	@Override
 	public void leave() {
 	}
 
 	@Override
 	public void exit() {
+	}
+	
+	@Override
+	public void spyglass() {
+		
 	}
 
 	@Override
@@ -491,6 +561,9 @@ public class Level1 implements IRoom {
 	@Override
 	public List<String> getInventory() {
 		return inventory;
+	}
+
+	public void no() {
 	}
 
 	@Override
@@ -572,4 +645,6 @@ public class Level1 implements IRoom {
 		p.level.setText("Great door");
 
 	}
+
+	
 }

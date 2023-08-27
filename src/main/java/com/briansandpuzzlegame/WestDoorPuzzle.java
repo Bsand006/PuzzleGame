@@ -9,22 +9,22 @@ import org.json.JSONObject;
 public class WestDoorPuzzle implements IRoom {
 	CommandParser p;
 
+	StateTracker z;
 	String userInput;
 	List<String> inventory = new ArrayList<String>();
 	int grid[][] = new int[4][4];
 	int skullsLeft = 9;
 	boolean solved = false;
+	String skulls;
 
 	public WestDoorPuzzle() {
 
 	}
-	
+
 	@Override
 	public void setParser(CommandParser p) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	public WestDoorPuzzle(CommandParser p) {
 		this.p = p;
@@ -39,7 +39,7 @@ public class WestDoorPuzzle implements IRoom {
 				grid[i][j] = 0;
 			}
 		}
-		
+
 		p.textBox.append("\n ");
 		p.textBox.append("\n Nine skulls rest near a four-foot square set of tiles in the floor"
 				+ "\n The tiles are arranged in a four by four square"
@@ -53,20 +53,38 @@ public class WestDoorPuzzle implements IRoom {
 	public void verbInterpreter() throws IOException {
 		userInput = p.inputPasser();
 
-		if (userInput.contains("inspect"))
-			inspect();
+		if (userInput.contains("enter"))
+			enter();
 
-		if (userInput.contains("search"))
-			search();
+		if (userInput.contains("go"))
+			go();
 
-		if (userInput.contains("investigate"))
-			investigate();
+		if (userInput.contains("push"))
+			push();
 
-		if (userInput.contains("check"))
-			check();
+		if (userInput.contains("open"))
+			open();
+
+		if (userInput.contains("close"))
+			close();
+
+		if (userInput.contains("move"))
+			move();
+
+		if (userInput.contains("walk"))
+			walk();
+
+		if (userInput.contains("use"))
+			use();
+
+		if (userInput.contains("turn"))
+			turn();
 
 		if (userInput.contains("take"))
 			take();
+
+		if (userInput.contains("inspect"))
+			inspect();
 
 		if (userInput.contains("put"))
 			put();
@@ -74,9 +92,100 @@ public class WestDoorPuzzle implements IRoom {
 		if (userInput.contains("place"))
 			place();
 
+		if (userInput.contains("remove"))
+			remove();
+
+		if (userInput.contains("attack"))
+			attack();
+
+		if (userInput.contains("climb"))
+			climb();
+
+		if (userInput.contains("hide"))
+			hide();
+
+		if (userInput.contains("descend"))
+			descend();
+
+		if (userInput.contains("run"))
+			run();
+
+		if (userInput.contains("jump"))
+			jump();
+
+		if (userInput.contains("search"))
+			search();
+
+		if (userInput.contains("investigate"))
+			investigate();
+
+		if (userInput.contains("look"))
+			look();
+
+		if (userInput.contains("check"))
+			check();
+
+		if (userInput.contains("touch"))
+			touch();
+
+		if (userInput.contains("throw"))
+			Throw();
+
+		if (userInput.contains("watch"))
+			watch();
+
+		if (userInput.contains("wait"))
+			Wait();
+
+		if (userInput.contains("break"))
+			Break();
+
+		if (userInput.contains("smash"))
+			smash();
+
+		if (userInput.contains("north"))
+			north();
+
+		if (userInput.contains("east"))
+			east();
+
+		if (userInput.contains("south"))
+			south();
+
+		if (userInput.contains("west"))
+			west();
+
+		if (userInput.contains("yes"))
+			yes();
+
+		if (userInput.contains("no"))
+			no();
+
+		if (userInput.contains("exit"))
+			exit();
+
+		if (userInput.contains("repeat"))
+			;
+		repeat();
+
 		if (userInput.contains("inventory"))
 			inventory();
 
+		if (userInput.contains("load"))
+			try {
+				z = new StateTracker();
+				load(z);
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
+
+		if (userInput.contains("save")) {
+			z = new StateTracker();
+			save(z);
+		}
+
+		if (userInput.contains("continue"))
+			Continue();
 	}
 
 	public void winCheck() {
@@ -90,73 +199,77 @@ public class WestDoorPuzzle implements IRoom {
 								if (grid[3][2] + grid[2][2] + grid[1][2] + grid[0][2] == 3)
 									if (grid[3][3] + grid[2][3] + grid[1][3] + grid[0][3] == 1) {
 										solved = true;
-										System.out.println("AHHHHHHHHHHHHH");
+										p.textBox.append(
+												"\n The tiles light up as a slab of stone in the back slides to the side"
+														+ "\n Behind the stone slab is a small intricate pyramid and a key");
 									}
-
 	}
 
 	@Override
 	public void enter() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void push() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void go() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void open() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void close() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void move() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void walk() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void use() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void turn() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void take() {
 
-		if (userInput.contains("skulls")) {
-			p.textBox.append("\n You take the nine skulls");
+		switch (userInput) {
 
-			inventory.add(inventory.size(), "skulls : 9");
+		case "skulls":
+			p.textBox.append("\n You take the nine skulls");
+			skulls = "Skulls : " + skullsLeft;
+
+			inventory.add(skulls);
+
+		case "pyramid":
+			p.textBox.append("\n You take the pyramid");
+			inventory.add("westRoomPyramid");
+
+		case "key":
+			p.textBox.append("\n You take the key");
+			inventory.add("westRoomKey");
 		}
+
 	}
 
 	@Override
@@ -176,116 +289,98 @@ public class WestDoorPuzzle implements IRoom {
 
 	@Override
 	public void investigate() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void attack() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void climb() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void descend() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void crawl() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void jump() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void search() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void look() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void check() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void touch() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void Throw() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void watch() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void Wait() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void Break() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void smash() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void put() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void place() {
 
-		if (solved == false) {
+		if (solved == false && inventory.contains(skulls) && skullsLeft > 0) {
 			String[] split = userInput.split(" ");
 
 			try {
@@ -299,7 +394,8 @@ public class WestDoorPuzzle implements IRoom {
 						p.textBox.append("\n Placing skull on tile " + x + "," + y);
 						winCheck();
 						skullsLeft--;
-						// inventory.set(inventory.size(), "skulls : " + skullsLeft);
+						skulls = "Skulls : " + skullsLeft;
+
 					} else
 						p.textBox.append("\n Square already occupied");
 				} else
@@ -308,7 +404,6 @@ public class WestDoorPuzzle implements IRoom {
 			} catch (Exception e) {
 				p.textBox.append("\n Caught exception " + e.toString() + "\n Please include comma-separated coordinates"
 						+ "\n Example: '0,0'");
-
 			}
 
 		} else
@@ -317,9 +412,34 @@ public class WestDoorPuzzle implements IRoom {
 
 	@Override
 	public void remove() {
-		if (userInput.contains("skull")) {
+		if (solved == false && inventory.contains(skulls) && skullsLeft > 0) {
+			String[] split = userInput.split(" ");
 
-		}
+			try {
+				String[] nums = split[1].split(",");
+				int x = Integer.parseInt(nums[0]);
+				int y = Integer.parseInt(nums[1]);
+
+				if (x < 4 && y < 4) {
+					if (grid[x][y] == 1) {
+						grid[x][y] = 0;
+						p.textBox.append("\n Removing skull on tile " + x + "," + y);
+						winCheck();
+						skullsLeft++;
+						skulls = "Skulls : " + skullsLeft;
+
+					} else
+						p.textBox.append("\n ");
+				} else
+					p.textBox.append("\n Invalid coordinates");
+
+			} catch (Exception e) {
+				p.textBox.append("\n Caught exception " + e.toString() + "\n Please include comma-separated coordinates"
+						+ "\n Example: '0,0'");
+			}
+
+		} else
+			p.textBox.append("\n Puzzle is solved");
 	}
 
 	@Override
@@ -334,67 +454,61 @@ public class WestDoorPuzzle implements IRoom {
 
 	@Override
 	public void north() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void east() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void south() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void west() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void yes() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void no() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void leave() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void exit() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void Continue() {
-		// TODO Auto-generated method stub
 
+	}
+	
+	@Override
+	public void spyglass() {
+		
 	}
 
 	@Override
 	public void repeat() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void save(StateTracker z) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -412,7 +526,6 @@ public class WestDoorPuzzle implements IRoom {
 	@Override
 	public void load(StateTracker z)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -423,5 +536,4 @@ public class WestDoorPuzzle implements IRoom {
 
 	}
 
-	
 }

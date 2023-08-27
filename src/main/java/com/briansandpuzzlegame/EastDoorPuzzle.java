@@ -43,7 +43,7 @@ public class EastDoorPuzzle implements IRoom {
 		p.textBox.append("\n     Though each possesses a unique name");
 		p.textBox.append("\n    Count on your answer to unlock the way");
 		p.textBox.append("\n     But use the wrong key to your dismay");
-		
+
 		setInventory(inventory); // Updates inventory from previous class
 
 	}
@@ -53,41 +53,71 @@ public class EastDoorPuzzle implements IRoom {
 
 		userInput = p.inputPasser();
 
-		if (userInput.contains("repeat"))
-			repeat();
+		if (userInput.contains("enter"))
+			enter();
 
-		if (userInput.contains("inspect"))
-			inspect();
-
-		if (userInput.contains("break"))
-			Break();
-
-		if (userInput.contains("smash"))
-			smash();
-
-		if (userInput.contains("use"))
-			use();
-
-		if (userInput.contains("take"))
-			take();
-
-		if (userInput.contains("open"))
-			open();
+		if (userInput.contains("go"))
+			go();
 
 		if (userInput.contains("push"))
 			push();
 
+		if (userInput.contains("open"))
+			open();
+
+		if (userInput.contains("close"))
+			close();
+
+		if (userInput.contains("move"))
+			move();
+
+		if (userInput.contains("walk"))
+			walk();
+
+		if (userInput.contains("use"))
+			use();
+
+		if (userInput.contains("turn"))
+			turn();
+
+		if (userInput.contains("take"))
+			take();
+
+		if (userInput.contains("inspect"))
+			inspect();
+
+		if (userInput.contains("put"))
+			put();
+
+		if (userInput.contains("place"))
+			place();
+
+		if (userInput.contains("remove"))
+			remove();
+
+		if (userInput.contains("attack"))
+			attack();
+
+		if (userInput.contains("climb"))
+			climb();
+
+		if (userInput.contains("hide"))
+			hide();
+
+		if (userInput.contains("descend"))
+			descend();
+
+		if (userInput.contains("run"))
+			run();
+
+		if (userInput.contains("jump"))
+			jump();
+
 		if (userInput.contains("search"))
 			search();
 
-		if (userInput.contains("touch"))
-			touch();
-
-		if (userInput.contains("throw"))
-			Throw();
-
-		if (userInput.contains("inventory"))
-			inventory();
+		if (userInput.contains("investigate"))
+			investigate();
 
 		if (userInput.contains("look"))
 			look();
@@ -95,17 +125,35 @@ public class EastDoorPuzzle implements IRoom {
 		if (userInput.contains("check"))
 			check();
 
+		if (userInput.contains("touch"))
+			touch();
+
+		if (userInput.contains("throw"))
+			Throw();
+
+		if (userInput.contains("watch"))
+			watch();
+
+		if (userInput.contains("wait"))
+			Wait();
+
+		if (userInput.contains("break"))
+			Break();
+
+		if (userInput.contains("smash"))
+			smash();
+
+		if (userInput.contains("north"))
+			north();
+
+		if (userInput.contains("east"))
+			east();
+
+		if (userInput.contains("south"))
+			south();
+
 		if (userInput.contains("west"))
 			west();
-
-		if (userInput.contains("leave"))
-			leave();
-
-		if (userInput.contains("exit"))
-			exit();
-
-		if (userInput.contains("go"))
-			go();
 
 		if (userInput.contains("yes"))
 			yes();
@@ -113,17 +161,31 @@ public class EastDoorPuzzle implements IRoom {
 		if (userInput.contains("no"))
 			no();
 
-		if (userInput.contains("load"))
-			z = new StateTracker();
-		try {
-			load(z);
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
-			e.printStackTrace();
-		}
+		if (userInput.contains("exit"))
+			exit();
 
-		if (userInput.contains("save"))
+		if (userInput.contains("repeat"))
+			;
+		repeat();
+
+		if (userInput.contains("inventory"))
+			inventory();
+
+		if (userInput.contains("load"))
+			try {
+				z = new StateTracker();
+				load(z);
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
+
+		if (userInput.contains("save")) {
 			z = new StateTracker();
 			save(z);
+		}
+
+		if (userInput.contains("continue"))
+			Continue();
 	}
 
 	public void boxUnlocks() { // Alerts player when the puzzle is completed
@@ -164,7 +226,7 @@ public class EastDoorPuzzle implements IRoom {
 	public void open() { // Player tries to open the box?
 		if (boxUnlock == true) {
 			p.textBox.append("\n The lid of the box creaks open");
-			p.textBox.append("Inside there is a single sheet of paper and a key");
+			p.textBox.append("Inside there is a small intricate pyramid");
 		} else if (boxUnlock == false) {
 			p.textBox.append("\n The box is locked");
 		} else {
@@ -396,11 +458,11 @@ public class EastDoorPuzzle implements IRoom {
 				inventory.add("paper");
 				p.textBox.append("\n You have completed this room!");
 				p.textBox.append("\n You leave the room, the door swings shut behind you");
-				
+
 				getInventory();
 				p.activeLevel = "Great door";
 				p.level.setText("Great door");
-				
+
 			}
 
 		default:
@@ -565,6 +627,11 @@ public class EastDoorPuzzle implements IRoom {
 		} else {
 			p.textBox.append("\n I do not understand what you want to smash");
 		}
+	}
+	
+	@Override
+	public void spyglass() {
+		
 	}
 
 	@Override

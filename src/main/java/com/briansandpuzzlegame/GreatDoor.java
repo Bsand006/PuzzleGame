@@ -10,6 +10,7 @@ import org.json.JSONObject;
 public class GreatDoor implements IRoom {
 	CommandParser p;
 
+	StateTracker z;
 	String userInput;
 	String playerLocation = "center";
 	List<String> inventory = new ArrayList<String>();
@@ -47,32 +48,139 @@ public class GreatDoor implements IRoom {
 		userInput = p.inputPasser();
 		System.out.println(userInput);
 
-		if (userInput.contains("east"))
-			east();
+		if (userInput.contains("enter"))
+			enter();
 
-		if (userInput.contains("west"))
-			west();
+		if (userInput.contains("go"))
+			go();
 
-		if (userInput.contains("north"))
-			north();
-
-		if (userInput.contains("south"))
-			south();
+		if (userInput.contains("push"))
+			push();
 
 		if (userInput.contains("open"))
 			open();
 
-		if (userInput.contains("inventory"))
-			inventory();
+		if (userInput.contains("close"))
+			close();
+
+		if (userInput.contains("move"))
+			move();
+
+		if (userInput.contains("walk"))
+			walk();
+
+		if (userInput.contains("use"))
+			use();
+
+		if (userInput.contains("turn"))
+			turn();
+
+		if (userInput.contains("take"))
+			take();
 
 		if (userInput.contains("inspect"))
 			inspect();
 
-		if (userInput.contains("investigate"))
-			investigate();
+		if (userInput.contains("put"))
+			put();
+
+		if (userInput.contains("place"))
+			place();
+
+		if (userInput.contains("remove"))
+			remove();
+
+		if (userInput.contains("attack"))
+			attack();
+
+		if (userInput.contains("climb"))
+			climb();
+
+		if (userInput.contains("hide"))
+			hide();
+
+		if (userInput.contains("descend"))
+			descend();
+
+		if (userInput.contains("run"))
+			run();
+
+		if (userInput.contains("jump"))
+			jump();
 
 		if (userInput.contains("search"))
 			search();
+
+		if (userInput.contains("investigate"))
+			investigate();
+
+		if (userInput.contains("look"))
+			look();
+
+		if (userInput.contains("check"))
+			check();
+
+		if (userInput.contains("touch"))
+			touch();
+
+		if (userInput.contains("throw"))
+			Throw();
+
+		if (userInput.contains("watch"))
+			watch();
+
+		if (userInput.contains("wait"))
+			Wait();
+
+		if (userInput.contains("break"))
+			Break();
+
+		if (userInput.contains("smash"))
+			smash();
+
+		if (userInput.contains("north"))
+			north();
+
+		if (userInput.contains("east"))
+			east();
+
+		if (userInput.contains("south"))
+			south();
+
+		if (userInput.contains("west"))
+			west();
+
+		if (userInput.contains("yes"))
+			yes();
+
+		if (userInput.contains("no"))
+			no();
+
+		if (userInput.contains("exit"))
+			exit();
+
+		if (userInput.contains("repeat"))
+			;
+		repeat();
+
+		if (userInput.contains("inventory"))
+			inventory();
+
+		if (userInput.contains("load"))
+			try {
+				z = new StateTracker();
+				load(z);
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
+
+		if (userInput.contains("save")) {
+			z = new StateTracker();
+			save(z);
+		}
+
+		if (userInput.contains("continue"))
+			Continue();
 
 	}
 
@@ -107,7 +215,17 @@ public class GreatDoor implements IRoom {
 			if (westDoorComplete == false) {
 				playerLocation = "West door";
 				p.activeLevel = "West door puzzle";
+				p.level.setText("West door puzzle");
 
+			}
+
+		} else if (userInput.contains("box") && userInput.contains("key")) {
+			if (inventory.contains("westRoomKey")) {
+				p.textBox.append("\n The box opens to reveal a small spyglass"
+					+ "\n There is a note that reads : Use the spyglass to reveal what is otherwise hidden"
+						+ "\n TYPE SPYGLASS + OBJECT YOU WANT TO USE IT ON TO USE");
+				
+				
 			}
 
 		} else {
@@ -204,7 +322,11 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void check() {
-
+		if (userInput.contains("box")) {
+			p.textBox.append("\n This small metal box has a single lock on the front");
+		} else {
+			p.textBox.append("\n I do not understand what you are inspecting");
+		}
 	}
 
 	@Override
@@ -230,11 +352,21 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void Break() {
+		if (userInput.contains("box")) {
+			p.textBox.append("\n The box does not break");
+		} else {
+			p.textBox.append("\n I do not understand what you want to break");
+		}
 
 	}
 
 	@Override
 	public void smash() {
+		if (userInput.contains("box")) {
+			p.textBox.append("\n The box does not break");
+		} else {
+			p.textBox.append("\n I do not understand what you want to break");
+		}
 
 	}
 
@@ -253,6 +385,9 @@ public class GreatDoor implements IRoom {
 		} else if (playerLocation.equals("westDoor")) {
 			playerLocation = "center";
 			p.textBox.append("\n You are in front of the large door in the center");
+			if (inventory.contains("westDoorPyramid")) {
+				westDoorComplete = true;
+			}
 		} else {
 			p.textBox.append("\n You are as east as you can go");
 		}
@@ -273,6 +408,9 @@ public class GreatDoor implements IRoom {
 		} else if (playerLocation.equals("eastDoor")) {
 			playerLocation = "center";
 			p.textBox.append("\n You are in front of the large door in the center");
+			if (inventory.contains("eastDoorPyramid")) {
+				eastDoorComplete = true;
+			}
 		} else {
 			p.textBox.append("\n You are as west as you can go");
 		}
@@ -335,6 +473,11 @@ public class GreatDoor implements IRoom {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void spyglass() {
+		
+	}
 
 	@Override
 	public void inventory() {
@@ -368,7 +511,7 @@ public class GreatDoor implements IRoom {
 		for (int i = 0; i < inventory.size(); i++) {
 			playerInv.put(inventory.get(i));
 		}
-		
+
 		greatDoor.put("Inv", playerInv);
 
 		p.textBox.append("\n Game Saved");

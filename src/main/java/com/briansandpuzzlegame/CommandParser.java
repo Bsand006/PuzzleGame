@@ -29,13 +29,13 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 	// Current room hashmap
 	HashMap<String, IRoom> levels;
-	String activeLevel;
+	String activeLevel = "com.briansandpuzzlegame.Level1";
 
 	// Parser wordlists
 	ArrayList<String> verbList;
 	ArrayList<String> adverbList;
 
-	// GUI variables
+	// GUI fields
 	JFrame f;
 	JTextArea textBox;
 	JTextField inputBox;
@@ -66,10 +66,12 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 		f = new JFrame();
 		f.setLayout(null);
-		f.setVisible(true);
-		f.setSize(width, height);
+		//f.setSize(width, height);
+		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		f.setUndecorated(true);
 		f.setTitle("Zorp");
 		f.getContentPane().setBackground(Color.darkGray);
+		f.setVisible(true);
 
 		level = new JLabel();
 		level.setText(activeLevel);
@@ -109,6 +111,10 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 	}
 
+	/*
+	 * Initializes each level when the player enters it for the first time by detecting a change in the active level string
+	 */
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 

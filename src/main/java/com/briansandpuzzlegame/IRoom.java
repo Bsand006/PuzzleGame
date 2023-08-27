@@ -92,6 +92,8 @@ public interface IRoom {
 	public void leave();
 
 	public void exit();
+	
+	public void spyglass();
 
 	public void Continue();
 
