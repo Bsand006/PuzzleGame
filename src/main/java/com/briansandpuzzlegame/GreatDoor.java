@@ -14,23 +14,25 @@ public class GreatDoor implements IRoom {
 	String userInput;
 	String playerLocation = "center";
 	List<String> inventory = new ArrayList<String>();
+	
+	// Game checks
+	
 	boolean eastDoorComplete = false;
 	boolean westDoorComplete = false;
+	boolean stairs = false;
 
 	public GreatDoor() {
-
 	}
 
 	public GreatDoor(CommandParser p) {
 		this.p = p;
-
 	}
 
 	@Override
 	public void firstTimeRun() {
 		System.out.println("fdsfasdafa");
 		setInventory(inventory);
-		System.out.println(inventory);
+		
 
 		p.textBox.setText("");
 		p.textBox.append("You step into a large room");
@@ -40,6 +42,15 @@ public class GreatDoor implements IRoom {
 		p.textBox.append("\n To the west there is another door");
 		p.textBox.append("\n A small metal box lies on a table in the room");
 
+	}
+	
+	public void doorCheck() {
+		if (eastDoorComplete == true && westDoorComplete == true) {
+			p.textBox.append("\n The east and west doors swing shut" 
+					+ "\n Part of the wall slides down to reveal a staircase going up");
+			stairs = true;
+			
+		}
 	}
 
 	@Override
@@ -196,7 +207,50 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void go() {
+		
+		switch (userInput) {
+		
+		case "stairs":
+			if (stairs == true) {
+				
+				
+			}
+			
+		case "east":
+			if (playerLocation.equals("center")) {
+				playerLocation = "eastDoor";
+				p.textBox.append("");
+				p.textBox.append("\n You stand before a wooden door");
 
+			} else if (playerLocation.equals("westDoor")) {
+				playerLocation = "center";
+				p.textBox.append("\n You are in front of the large door in the center");
+				if (inventory.contains("westDoorPyramid")) {
+					westDoorComplete = true;
+					doorCheck();
+				}
+			} else {
+				p.textBox.append("\n You are as east as you can go");
+			}
+			
+		case "west":
+			if (playerLocation.equals("center")) {
+				playerLocation = "westDoor";
+				p.textBox.append("\n You stand in front of an unassuming door");
+
+			} else if (playerLocation.equals("eastDoor")) {
+				playerLocation = "center";
+				p.textBox.append("\n You are in front of the large door in the center");
+				if (inventory.contains("eastDoorPyramid")) {
+					eastDoorComplete = true;
+					doorCheck();
+				}
+			} else {
+				p.textBox.append("\n You are as west as you can go");
+			}
+			
+			
+		}
 	}
 
 	@Override
@@ -205,8 +259,7 @@ public class GreatDoor implements IRoom {
 		if (userInput.contains("door") && playerLocation.equals("eastDoor")) {
 			if (eastDoorComplete == false) {
 				playerLocation = "puzzleBox";
-				p.activeLevel = "East door puzzle";
-				p.level.setText("East door puzzle");
+				p.level.setText("com.briansandpuzzlegame.EastDoorPuzzle");
 			} else {
 				p.textBox.append("\n There is nothing more to do in there");
 			}
@@ -214,18 +267,16 @@ public class GreatDoor implements IRoom {
 		} else if (userInput.contains("door") && playerLocation.equals("westDoor")) {
 			if (westDoorComplete == false) {
 				playerLocation = "West door";
-				p.activeLevel = "West door puzzle";
-				p.level.setText("West door puzzle");
+				p.level.setText("com.briansandpuzzlegame.WestDoorPuzzle");
 
 			}
 
 		} else if (userInput.contains("box") && userInput.contains("key")) {
 			if (inventory.contains("westRoomKey")) {
 				p.textBox.append("\n The box opens to reveal a small spyglass"
-					+ "\n There is a note that reads : Use the spyglass to reveal what is otherwise hidden"
+						+ "\n There is a note that reads : Use the spyglass to reveal what is otherwise hidden"
 						+ "\n TYPE SPYGLASS + OBJECT YOU WANT TO USE IT ON TO USE");
-				
-				
+
 			}
 
 		} else {
@@ -331,7 +382,6 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void touch() {
-		System.out.println("touch");
 
 	}
 
@@ -387,6 +437,7 @@ public class GreatDoor implements IRoom {
 			p.textBox.append("\n You are in front of the large door in the center");
 			if (inventory.contains("westDoorPyramid")) {
 				westDoorComplete = true;
+				doorCheck();
 			}
 		} else {
 			p.textBox.append("\n You are as east as you can go");
@@ -410,6 +461,7 @@ public class GreatDoor implements IRoom {
 			p.textBox.append("\n You are in front of the large door in the center");
 			if (inventory.contains("eastDoorPyramid")) {
 				eastDoorComplete = true;
+				doorCheck();
 			}
 		} else {
 			p.textBox.append("\n You are as west as you can go");
@@ -473,10 +525,10 @@ public class GreatDoor implements IRoom {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	@Override
 	public void spyglass() {
-		
+
 	}
 
 	@Override

@@ -26,6 +26,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 	GreatDoor a;
 	EastDoorPuzzle b;
 	WestDoorPuzzle c;
+	SpookyStairs d;
 
 	// Current room hashmap
 	HashMap<String, IRoom> levels;
@@ -54,9 +55,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 		// Hashmap to track active room
 
-		r = new Level1(this);
 		levels = new HashMap<>();
-		levels.put("com.briansandpuzzlegame.Level1", r);
 
 		// Generates game GUI
 
@@ -66,16 +65,14 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 		f = new JFrame();
 		f.setLayout(null);
-		//f.setSize(width, height);
+		// f.setSize(width, height);
 		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		f.setUndecorated(true);
 		f.setTitle("Zorp");
 		f.getContentPane().setBackground(Color.darkGray);
 		f.setVisible(true);
 
-		level = new JLabel();
-		level.setText(activeLevel);
-		level.addPropertyChangeListener(this);
+		
 
 		// Text font
 		font = new Font("Monospaced", Font.BOLD, 17);
@@ -87,10 +84,6 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		textBox.setForeground(Color.WHITE);
 		textBox.setBackground(Color.BLACK);
 		textBox.setEnabled(false);
-
-		if (activeLevel.equals("com.briansandpuzzlegame.Level1")) {
-			textBox.append("\n You stand in a pitch black room");
-		}
 
 		// User input box
 		inputBox = new JTextField();
@@ -105,6 +98,10 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		f.add(inputBox);
 
 		inputBox.addKeyListener(this); // Adds KeyListener
+		
+		level = new JLabel();
+		level.addPropertyChangeListener(this);
+		level.setText(activeLevel);
 
 		verbs();
 		adverbs();
@@ -112,24 +109,32 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 	}
 
 	/*
-	 * Initializes each level when the player enters it for the first time by detecting a change in the active level string
+	 * Initializes each level when the player enters it for the first time by
+	 * detecting a change in the active level string
 	 */
-	
+
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
+		if (evt.getNewValue().equals("com.briansandpuzzlegame.Level1")) {
+			r = new Level1(this);
+			levels.put("com.briansandpuzzlegame.Level1", r);
+			r.firstTimeRun();
+		}
+
 		if (evt.getOldValue() != evt.getNewValue()) {
-			if (evt.getNewValue().equals("Great door")) {
+			if (evt.getNewValue().equals("com.briansandpuzzlegame.GreatDoor")) {
 				a = new GreatDoor(this);
-				levels.put("Great door", a);
+				levels.put("com.briansandpuzzlegame.GreatDoor", a);
 				a.firstTimeRun();
-			} else if (evt.getNewValue().equals("East door puzzle")) {
+				
+			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.EastDoorPuzzle")) {
 				b = new EastDoorPuzzle(this);
-				levels.put("East door puzzle", b);
+				levels.put("com.briansandpuzzlegame.EastDoorPuzzle", b);
 				b.firstTimeRun();
-			} else if (evt.getNewValue().equals("West door puzzle")) {
+			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.WestDoorPuzzle")) {
 				c = new WestDoorPuzzle(this);
-				levels.put("West door puzzle", c);
+				levels.put("com.briansandpuzzlegame.WestDoorPuzzle", c);
 				c.firstTimeRun();
 			}
 		}
@@ -155,7 +160,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 					if (verbList.contains(a) || adverbList.contains(a)) {
 						inputPasser();
 
-						IRoom room = levels.get(activeLevel);
+						IRoom room = levels.get(level.getText());
 
 						try {
 							room.verbInterpreter();

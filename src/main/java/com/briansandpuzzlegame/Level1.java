@@ -14,17 +14,15 @@ public class Level1 implements IRoom {
 	StateTracker z;
 	String userInput;
 	String playerLocation = "center";
-	List<String> inventory = new ArrayList<String>();
-	List<String> playerState = new ArrayList<String>();
+	List<String> inventory;
+	List<String> playerState;
 
 	public Level1() {
-
+		
 	}
 
 	public Level1(CommandParser p) {
 		this.p = p;
-		System.out.println("Mep");
-
 	}
 
 	@Override
@@ -34,7 +32,9 @@ public class Level1 implements IRoom {
 
 	@Override
 	public void firstTimeRun() {
-
+		p.textBox.setText("\n You stand in a pitch black room");
+		inventory = new ArrayList<String>();
+		playerState = new ArrayList<String>();
 	}
 
 	// Interpreter
@@ -634,15 +634,12 @@ public class Level1 implements IRoom {
 
 		p.textBox.append("\n GAME SAVE LOADED");
 		p.textBox.append("\n Active room: " + "First Level");
-		System.out.println(inventory);
-		System.out.println(playerState);
 	}
 
 	public void Continue() { // MOVES TO NEXT LEVEL
 
 		getInventory();
-		p.activeLevel = "Great door";
-		p.level.setText("Great door");
+		p.level.setText("com.briansandpuzzlegame.GreatDoor");
 
 	}
 
