@@ -14,8 +14,8 @@ public class Level1 implements IRoom {
 	StateTracker z;
 	String userInput;
 	String playerLocation = "center";
-	ArrayList<String> inventory = new ArrayList<String>();
-	List<String> playerState = new ArrayList<String>();
+	ArrayList<String> inventory;
+	List<String> playerState;
 
 	public Level1() {
 
@@ -33,7 +33,7 @@ public class Level1 implements IRoom {
 	@Override
 	public void firstTimeRun() {
 		p.textBox.setText("\n You stand in a pitch black room");
-	
+
 	}
 
 	// Interpreter
@@ -611,11 +611,13 @@ public class Level1 implements IRoom {
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
 		JSONArray inv = paramaters.getJSONArray("Inv");
+
 		inventory = new ArrayList<String>();
 		playerState = new ArrayList<String>();
 
 		for (int i = 0; i < inv.length(); i++) {
 			inventory.add(inv.getString(i));
+
 		}
 
 		JSONArray state = paramaters.getJSONArray("State");
@@ -623,9 +625,6 @@ public class Level1 implements IRoom {
 		for (int i = 0; i < state.length(); i++) {
 			playerState.add(state.getString(i));
 		}
-
-		p.textBox.append("\n GAME SAVE LOADED");
-		p.textBox.append("\n Active room: " + "First Level");
 
 	}
 

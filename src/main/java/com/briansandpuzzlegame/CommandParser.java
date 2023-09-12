@@ -110,6 +110,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		if (loaded == false) {
 			t = new TitleScreen(this);
 			levels.put("com.briansandpuzzlegame.TitleScreen", t);
+			level.setText("com.briansandpuzzlegame.TitleScreen");
 			t.firstTimeRun();
 		}
 
@@ -132,7 +133,8 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 			if (evt.getNewValue().equals("com.briansandpuzzlegame.Level1")) {
 				r = new Level1(this);
 				levels.put("com.briansandpuzzlegame.Level1", r);
-				r.firstTimeRun();
+				if (loaded == false)
+					r.firstTimeRun();
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.GreatDoor")) {
 
@@ -201,6 +203,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 						inputPasser();
 
 						room = levels.get(level.getText());
+						System.out.println(level.getText());
 
 						try {
 							room.verbInterpreter();
