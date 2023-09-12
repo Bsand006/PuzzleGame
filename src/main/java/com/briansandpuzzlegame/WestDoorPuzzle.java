@@ -11,7 +11,7 @@ public class WestDoorPuzzle implements IRoom {
 
 	StateTracker z;
 	String userInput;
-	List<String> inventory = new ArrayList<String>();
+	ArrayList<String> inventory = new ArrayList<String>();
 	int grid[][] = new int[4][4];
 	int skullsLeft = 9;
 	boolean solved = false;
@@ -513,12 +513,12 @@ public class WestDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public List<String> getInventory() {
+	public ArrayList<String> getInventory() {
 		return inventory;
 	}
 
 	@Override
-	public void setInventory(List<String> inventory) {
+	public void setInventory(ArrayList<String> inventory) {
 		this.inventory = inventory;
 
 	}
@@ -529,10 +529,11 @@ public class WestDoorPuzzle implements IRoom {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
-		inventory = (List<String>) paramaters.get("Inv");
+		inventory = (ArrayList<String>) paramaters.get("Inv");
 
 	}
 

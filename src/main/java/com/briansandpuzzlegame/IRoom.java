@@ -1,7 +1,7 @@
 package com.briansandpuzzlegame;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 import org.json.JSONObject;
 
@@ -105,8 +105,8 @@ public interface IRoom {
 	
 	public void loadCall(JSONObject params);
 	
-	public List<String> getInventory();
+	public ArrayList<String> getInventory();
 
-	public void setInventory(List<String> inventory);
+	public void setInventory(ArrayList<String> inventory);
 
 }

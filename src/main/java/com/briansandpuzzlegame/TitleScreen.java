@@ -1,33 +1,47 @@
 package com.briansandpuzzlegame;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
 
-public class SpookyStairs implements IRoom {
+public class TitleScreen implements IRoom {
 	CommandParser p;
 	StateTracker z;
 
-	String userInput;
-	ArrayList<String> inventory;
+	File json = new File("state.json");
+	boolean loadedfile;
 
-	public SpookyStairs() {
-	}
-
-	public SpookyStairs(CommandParser p) {
+	public TitleScreen(CommandParser p) {
 		this.p = p;
 	}
 
 	@Override
 	public void verbInterpreter() throws IOException {
-		
+
+		String userInput = p.inputPasser();
+
+		if (userInput.equalsIgnoreCase("Yes"))
+			yes();
+
+		if (userInput.equalsIgnoreCase("No"))
+			no();
+
 	}
 
 	@Override
 	public void firstTimeRun() {
-		inventory = new ArrayList<String>();
 
+		p.textBox.append("\n Welcome to Zorp!");
+
+		if (json.length() != 0) {
+			p.textBox.append("\n You have a game file saved, would you like to load it?");
+			loadedfile = true;
+		} else {
+			p.textBox.append("\n Would you like to start a new game?");
+			loadedfile = false;
+		}
 	}
 
 	@Override
@@ -217,11 +231,37 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void yes() {
+		if (loadedfile == true) {
+			p.textBox.append("\n LOADING FILE.....");
+			z = new StateTracker();
+			try {
+				z.load();
+			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
+
+		} else {
+			p.textBox.append("\n Starting new game file...");
+			p.level.setText("com.briansandpuzzlegame.Level1");
+		}
 
 	}
 
 	@Override
 	public void no() {
+		if (loadedfile == true) {
+			p.textBox.append("\n Starting new game file...");
+			p.level.setText("com.briansandpuzzlegame.Level1");
+		
+		} else {
+			p.textBox.append("\n EXITING...");
+			try {
+				wait(3);
+				exit();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 
@@ -258,7 +298,7 @@ public class SpookyStairs implements IRoom {
 	@Override
 	public void load(StateTracker z)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
-
+		
 	}
 
 	@Override
@@ -268,12 +308,13 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public ArrayList<String> getInventory() {
-		return inventory;
+
+		return null;
 	}
 
 	@Override
 	public void setInventory(ArrayList<String> inventory) {
-		this.inventory = inventory;
+
 	}
 
 }

@@ -2,7 +2,6 @@ package com.briansandpuzzlegame;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,7 +12,7 @@ public class GreatDoor implements IRoom {
 	StateTracker z;
 	String userInput;
 	String playerLocation = "center";
-	List<String> inventory = new ArrayList<String>();
+	ArrayList<String> inventory;
 	
 	// Game checks
 	
@@ -23,6 +22,12 @@ public class GreatDoor implements IRoom {
 
 	public GreatDoor() {
 	}
+	
+	@Override
+	public void setParser(CommandParser p) {
+		this.p = p;
+	}
+
 
 	public GreatDoor(CommandParser p) {
 		this.p = p;
@@ -30,8 +35,7 @@ public class GreatDoor implements IRoom {
 
 	@Override
 	public void firstTimeRun() {
-		System.out.println("fdsfasdafa");
-		setInventory(inventory);
+		inventory = new ArrayList<String>();
 		
 
 		p.textBox.setText("");
@@ -542,12 +546,12 @@ public class GreatDoor implements IRoom {
 	}
 
 	@Override
-	public List<String> getInventory() {
+	public ArrayList<String> getInventory() {
 		return inventory;
 	}
 
 	@Override
-	public void setInventory(List<String> inventory) {
+	public void setInventory(ArrayList<String> inventory) {
 
 		this.inventory = inventory;
 
@@ -565,6 +569,12 @@ public class GreatDoor implements IRoom {
 		}
 
 		greatDoor.put("Inv", playerInv);
+		
+		try {
+			z.save(greatDoor);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		p.textBox.append("\n Game Saved");
 
@@ -580,9 +590,8 @@ public class GreatDoor implements IRoom {
 	@Override
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
-
 		JSONArray inv = paramaters.getJSONArray("Inv");
-		inventory.clear();
+		inventory = new ArrayList<String>();
 
 		for (int i = 0; i < inv.length(); i++) {
 			inventory.add(inv.getString(i));
@@ -593,10 +602,5 @@ public class GreatDoor implements IRoom {
 
 	}
 
-	@Override
-	public void setParser(CommandParser p) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 }

@@ -20,7 +20,7 @@ public class EastDoorPuzzle implements IRoom {
 	boolean[] locks = new boolean[4]; // Position of the four locks on the box. Are they unlocked or not?
 	boolean boxUnlock = false; // Is the box unlocked?
 	boolean puzzleComplete = false;
-	List<String> inventory = new ArrayList<String>(); // Inventory
+	ArrayList<String> inventory = new ArrayList<String>(); // Inventory
 
 	public EastDoorPuzzle() {
 
@@ -683,13 +683,13 @@ public class EastDoorPuzzle implements IRoom {
 	}
 
 	@Override
-	public List<String> getInventory() {
+	public ArrayList<String> getInventory() {
 
 		return inventory;
 	}
 
 	@Override
-	public void setInventory(List<String> inventory) {
+	public void setInventory(ArrayList<String> inventory) {
 
 		this.inventory = inventory;
 	}

@@ -22,6 +22,10 @@ import javax.swing.SwingUtilities;
 public class CommandParser implements KeyListener, PropertyChangeListener {
 	StateTracker z;
 
+	TitleScreen t;
+
+	IRoom room;
+
 	Level1 r;
 	GreatDoor a;
 	EastDoorPuzzle b;
@@ -35,6 +39,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 	// Parser wordlists
 	ArrayList<String> verbList;
 	ArrayList<String> adverbList;
+	ArrayList<String> inv;
 
 	// GUI fields
 	JFrame f;
@@ -45,6 +50,8 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 	Font font;
 
 	public String words; // User input string
+
+	boolean loaded = false;
 
 	/*
 	 * This constructor creates the GUI interface and the Hashmap to track the
@@ -72,8 +79,6 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		f.getContentPane().setBackground(Color.darkGray);
 		f.setVisible(true);
 
-		
-
 		// Text font
 		font = new Font("Monospaced", Font.BOLD, 17);
 
@@ -98,10 +103,17 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		f.add(inputBox);
 
 		inputBox.addKeyListener(this); // Adds KeyListener
-		
+
 		level = new JLabel();
 		level.addPropertyChangeListener(this);
-		level.setText(activeLevel);
+
+		if (loaded == false) {
+			t = new TitleScreen(this);
+			levels.put("com.briansandpuzzlegame.TitleScreen", t);
+			t.firstTimeRun();
+		}
+
+		inv = new ArrayList<String>();
 
 		verbs();
 		adverbs();
@@ -116,26 +128,54 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 
-		if (evt.getNewValue().equals("com.briansandpuzzlegame.Level1")) {
-			r = new Level1(this);
-			levels.put("com.briansandpuzzlegame.Level1", r);
-			r.firstTimeRun();
-		}
-
 		if (evt.getOldValue() != evt.getNewValue()) {
-			if (evt.getNewValue().equals("com.briansandpuzzlegame.GreatDoor")) {
+			if (evt.getNewValue().equals("com.briansandpuzzlegame.Level1")) {
+				r = new Level1(this);
+				levels.put("com.briansandpuzzlegame.Level1", r);
+				r.firstTimeRun();
+
+			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.GreatDoor")) {
+
 				a = new GreatDoor(this);
 				levels.put("com.briansandpuzzlegame.GreatDoor", a);
+				IRoom old = room;
+				inv = old.getInventory();
 				a.firstTimeRun();
-				
+				a.setInventory(inv);
+				old.close();
+
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.EastDoorPuzzle")) {
+
 				b = new EastDoorPuzzle(this);
 				levels.put("com.briansandpuzzlegame.EastDoorPuzzle", b);
+				IRoom old = room;
+				inv = new ArrayList<String>();
+				inv = old.getInventory();
 				b.firstTimeRun();
+				b.setInventory(inv);
+				old.close();
+
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.WestDoorPuzzle")) {
+
 				c = new WestDoorPuzzle(this);
 				levels.put("com.briansandpuzzlegame.WestDoorPuzzle", c);
+				IRoom old = room;
+				inv = new ArrayList<String>();
+				inv = old.getInventory();
 				c.firstTimeRun();
+				c.setInventory(inv);
+				old.close();
+
+			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.SpookyStairs")) {
+
+				d = new SpookyStairs(this);
+				levels.put("com.briansandpuzzlegame.SpookyStairs", d);
+				IRoom old = room;
+				inv = new ArrayList<String>();
+				inv = old.getInventory();
+				d.firstTimeRun();
+				d.setInventory(inv);
+				old.close();
 			}
 		}
 	}
@@ -160,7 +200,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 					if (verbList.contains(a) || adverbList.contains(a)) {
 						inputPasser();
 
-						IRoom room = levels.get(level.getText());
+						room = levels.get(level.getText());
 
 						try {
 							room.verbInterpreter();

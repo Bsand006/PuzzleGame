@@ -22,13 +22,18 @@ public class StateTracker {
 
 		String activeLevel = (String) gameTracker.getString("activeLevel");
 
+		@SuppressWarnings("deprecation")
 		IRoom activeRoom = (IRoom) this.getClass().getClassLoader().loadClass(activeLevel).newInstance();
 
 		p = new CommandParser();
-
-		p.run();
-
 		activeRoom.setParser(p);
+
+		
+		p.loaded = true;
+		p.run();
+		
+		p.level.setText(activeLevel);
+
 		activeRoom.loadCall(gameTracker);
 
 	}

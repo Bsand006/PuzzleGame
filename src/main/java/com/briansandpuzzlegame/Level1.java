@@ -14,11 +14,11 @@ public class Level1 implements IRoom {
 	StateTracker z;
 	String userInput;
 	String playerLocation = "center";
-	List<String> inventory;
-	List<String> playerState;
+	ArrayList<String> inventory = new ArrayList<String>();
+	List<String> playerState = new ArrayList<String>();
 
 	public Level1() {
-		
+
 	}
 
 	public Level1(CommandParser p) {
@@ -33,8 +33,7 @@ public class Level1 implements IRoom {
 	@Override
 	public void firstTimeRun() {
 		p.textBox.setText("\n You stand in a pitch black room");
-		inventory = new ArrayList<String>();
-		playerState = new ArrayList<String>();
+	
 	}
 
 	// Interpreter
@@ -42,129 +41,125 @@ public class Level1 implements IRoom {
 
 		userInput = p.inputPasser();
 		System.out.println(userInput);
-		
+
 		if (userInput.contains("enter"))
 			enter();
-		
+
 		if (userInput.contains("go"))
 			go();
-		
+
 		if (userInput.contains("push"))
 			push();
-		
+
 		if (userInput.contains("open"))
 			open();
-		
+
 		if (userInput.contains("close"))
 			close();
-		
+
 		if (userInput.contains("move"))
 			move();
-		
+
 		if (userInput.contains("walk"))
 			walk();
-		
+
 		if (userInput.contains("use"))
 			use();
-		
+
 		if (userInput.contains("turn"))
 			turn();
-		
+
 		if (userInput.contains("take"))
 			take();
-		
+
 		if (userInput.contains("inspect"))
 			inspect();
-		
+
 		if (userInput.contains("put"))
 			put();
-		
+
 		if (userInput.contains("place"))
 			place();
-		
+
 		if (userInput.contains("remove"))
 			remove();
-		
+
 		if (userInput.contains("attack"))
 			attack();
-		
+
 		if (userInput.contains("climb"))
 			climb();
-		
+
 		if (userInput.contains("hide"))
 			hide();
-		
+
 		if (userInput.contains("descend"))
 			descend();
-		
+
 		if (userInput.contains("run"))
 			run();
-		
+
 		if (userInput.contains("jump"))
 			jump();
-		
+
 		if (userInput.contains("search"))
 			search();
-		
+
 		if (userInput.contains("investigate"))
 			investigate();
-		
+
 		if (userInput.contains("look"))
 			look();
-		
+
 		if (userInput.contains("check"))
 			check();
-		
-		if (userInput.contains("touch"))	
+
+		if (userInput.contains("touch"))
 			touch();
-		
+
 		if (userInput.contains("throw"))
 			Throw();
-		
+
 		if (userInput.contains("watch"))
 			watch();
-		
+
 		if (userInput.contains("wait"))
 			Wait();
-		
+
 		if (userInput.contains("break"))
 			Break();
-		
+
 		if (userInput.contains("smash"))
 			smash();
-		
+
 		if (userInput.contains("north"))
 			north();
-		
+
 		if (userInput.contains("east"))
 			east();
-		
+
 		if (userInput.contains("south"))
 			south();
-		
+
 		if (userInput.contains("west"))
 			west();
-		
+
 		if (userInput.contains("yes"))
 			yes();
-		
+
 		if (userInput.contains("no"))
 			no();
-		
+
 		if (userInput.contains("exit"))
 			exit();
-		
-		if (userInput.contains("repeat"));
-			repeat();
-			
+
+		if (userInput.contains("repeat"))
+			;
+		repeat();
+
 		if (userInput.contains("inventory"))
 			inventory();
-		
-		
-		
-		
 
-		
 		if (userInput.contains("load"))
 			try {
 				z = new StateTracker();
@@ -178,8 +173,6 @@ public class Level1 implements IRoom {
 			save(z);
 		}
 
-		
-		
 		if (userInput.contains("continue"))
 			Continue();
 	}
@@ -533,10 +526,10 @@ public class Level1 implements IRoom {
 	@Override
 	public void exit() {
 	}
-	
+
 	@Override
 	public void spyglass() {
-		
+
 	}
 
 	@Override
@@ -559,7 +552,7 @@ public class Level1 implements IRoom {
 	}
 
 	@Override
-	public List<String> getInventory() {
+	public ArrayList<String> getInventory() {
 		return inventory;
 	}
 
@@ -567,7 +560,7 @@ public class Level1 implements IRoom {
 	}
 
 	@Override
-	public void setInventory(List<String> inventory) {
+	public void setInventory(ArrayList<String> inventory) {
 
 		this.inventory = inventory;
 
@@ -588,7 +581,6 @@ public class Level1 implements IRoom {
 		level1.put("Inv", playerInv);
 
 		JSONArray playerTrack = new JSONArray();
-		
 
 		for (int i = 0; i < playerState.size(); i++) {
 			playerTrack.put(playerState.get(i));
@@ -619,29 +611,28 @@ public class Level1 implements IRoom {
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
 		JSONArray inv = paramaters.getJSONArray("Inv");
-		inventory.clear();
-		playerState.clear();
+		inventory = new ArrayList<String>();
+		playerState = new ArrayList<String>();
 
 		for (int i = 0; i < inv.length(); i++) {
 			inventory.add(inv.getString(i));
 		}
-		
+
 		JSONArray state = paramaters.getJSONArray("State");
-		
+
 		for (int i = 0; i < state.length(); i++) {
 			playerState.add(state.getString(i));
 		}
 
 		p.textBox.append("\n GAME SAVE LOADED");
 		p.textBox.append("\n Active room: " + "First Level");
+
 	}
 
 	public void Continue() { // MOVES TO NEXT LEVEL
 
-		getInventory();
 		p.level.setText("com.briansandpuzzlegame.GreatDoor");
 
 	}
 
-	
 }
