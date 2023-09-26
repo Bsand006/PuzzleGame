@@ -1,5 +1,10 @@
 package com.briansandpuzzlegame;
 
+/*
+ * CommandParser is the brain of the entire game. Here is where the game GUI is generated and where the 
+ * players input is parsed and then passed to the proper room class.
+ */
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -34,7 +39,6 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 	// Current room hashmap
 	HashMap<String, IRoom> levels;
-	String activeLevel = "com.briansandpuzzlegame.Level1";
 
 	// Parser wordlists
 	ArrayList<String> verbList;
@@ -51,7 +55,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 	public String words; // User input string
 
-	boolean loaded = false;
+	boolean loaded;
 
 	/*
 	 * This constructor creates the GUI interface and the Hashmap to track the
@@ -61,7 +65,6 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 	void run() {
 
 		// Hashmap to track active room
-
 		levels = new HashMap<>();
 
 		// Generates game GUI
@@ -92,7 +95,6 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 		// User input box
 		inputBox = new JTextField();
-
 		inputBox.setBounds(5, height - 350, width, 50);
 
 		// Scroller
@@ -102,12 +104,20 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		f.add(scroller);
 		f.add(inputBox);
 
-		inputBox.addKeyListener(this); // Adds KeyListener
+		inputBox.addKeyListener(this); // Adds KeyListener to the user input box
+
+		/*
+		 * The parser uses a hidden JLabel that contains the text string of the current
+		 * active class the player is in. There is then a hashmap that contains each
+		 * class string and an object of that class. The parser uses a property listener
+		 * on the JLabel to detect when the text changes to the next class, which
+		 * matches with the hashmap.
+		 */
 
 		level = new JLabel();
 		level.addPropertyChangeListener(this);
 
-		if (loaded == false) {
+		if (loaded == false) { // If a save file is not being loaded
 			t = new TitleScreen(this);
 			levels.put("com.briansandpuzzlegame.TitleScreen", t);
 			level.setText("com.briansandpuzzlegame.TitleScreen");
@@ -116,14 +126,16 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 		inv = new ArrayList<String>();
 
+		// Parser accepted wordlists
 		verbs();
 		adverbs();
 
 	}
 
 	/*
-	 * Initializes each level when the player enters it for the first time by
-	 * detecting a change in the active level string
+	 * This propertyChange event method detects when the value of the hidden JLabel
+	 * changes and initializes the class in the hashmap that corresponds with the
+	 * new value of the JLabel.
 	 */
 
 	@Override
@@ -131,10 +143,13 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 		if (evt.getOldValue() != evt.getNewValue()) {
 			if (evt.getNewValue().equals("com.briansandpuzzlegame.Level1")) {
-				r = new Level1(this);
-				levels.put("com.briansandpuzzlegame.Level1", r);
-				if (loaded == false)
+				if (loaded == false) {
+					r = new Level1(this);
+					levels.put("com.briansandpuzzlegame.Level1", r);
 					r.firstTimeRun();
+				} else {
+					
+				}
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.GreatDoor")) {
 
@@ -182,7 +197,13 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		}
 	}
 
-	// Parser
+	/*
+	 * This is the parser behind the game. Using the keyPressed method, it parses
+	 * every input the player enters and if the input contains a verb accepted by
+	 * the parser, it will pass the players input to the proper active class
+	 * according to the hashmap.
+	 */
+
 	public void keyPressed(KeyEvent e) {
 
 		if (e.getSource() == inputBox) {
@@ -293,6 +314,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 	}
 
+	// Main driver method
 	public static void main(String[] args) {
 
 		SwingUtilities.invokeLater(new Runnable() {

@@ -1,4 +1,3 @@
-
 package com.briansandpuzzlegame;
 
 import java.io.IOException;
@@ -18,7 +17,6 @@ public class Level1 implements IRoom {
 	List<String> playerState;
 
 	public Level1() {
-
 	}
 
 	public Level1(CommandParser p) {
@@ -33,6 +31,8 @@ public class Level1 implements IRoom {
 	@Override
 	public void firstTimeRun() {
 		p.textBox.setText("\n You stand in a pitch black room");
+		inventory = new ArrayList<String>();
+		playerState = new ArrayList<String>();
 
 	}
 
@@ -161,12 +161,14 @@ public class Level1 implements IRoom {
 			inventory();
 
 		if (userInput.contains("load"))
+			/*
 			try {
 				z = new StateTracker();
 				load(z);
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
+			*/
 
 		if (userInput.contains("save")) {
 			z = new StateTracker();

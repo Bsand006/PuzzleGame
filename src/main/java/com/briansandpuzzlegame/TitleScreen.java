@@ -1,5 +1,12 @@
 package com.briansandpuzzlegame;
 
+/*
+ * This is where the game starts, here the player can choose whether to start a new save file or to 
+ * load a game save file if there is one
+ * 
+ * @author Brian Sand
+ */
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +42,7 @@ public class TitleScreen implements IRoom {
 
 		p.textBox.append("\n Welcome to Zorp!");
 
-		if (json.length() != 0) {
+		if (json.length() != 0) { // Determines if there is a previous game save file that can be loaded
 			p.textBox.append("\n You have a game file saved, would you like to load it?");
 			loadedfile = true;
 		} else {
@@ -231,7 +238,7 @@ public class TitleScreen implements IRoom {
 
 	@Override
 	public void yes() {
-		if (loadedfile == true) {
+		if (loadedfile == true) { // If the player wants to load a save file
 			p.textBox.append("\n LOADING FILE.....");
 			z = new StateTracker();
 			try {
@@ -240,7 +247,7 @@ public class TitleScreen implements IRoom {
 				e.printStackTrace();
 			}
 
-		} else {
+		} else { // If there is no save file to load
 			p.textBox.append("\n Starting new game file...");
 			p.level.setText("com.briansandpuzzlegame.Level1");
 		}
@@ -249,11 +256,11 @@ public class TitleScreen implements IRoom {
 
 	@Override
 	public void no() {
-		if (loadedfile == true) {
+		if (loadedfile == true) { // If the player doesn't want to start a new game file
 			p.textBox.append("\n Starting new game file...");
 			p.level.setText("com.briansandpuzzlegame.Level1");
-		
-		} else {
+
+		} else { // Closes the program
 			p.textBox.append("\n EXITING...");
 			try {
 				wait(3);
@@ -298,7 +305,6 @@ public class TitleScreen implements IRoom {
 	@Override
 	public void load(StateTracker z)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
-		
 	}
 
 	@Override
@@ -308,7 +314,6 @@ public class TitleScreen implements IRoom {
 
 	@Override
 	public ArrayList<String> getInventory() {
-
 		return null;
 	}
 

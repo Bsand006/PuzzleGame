@@ -1,5 +1,9 @@
 package com.briansandpuzzlegame;
 
+/*
+ * StateTracker handles the save/load functionality of the game.
+ */
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +18,12 @@ public class StateTracker {
 	JSONObject gameTracker;
 	Path filePath = Paths.get("state.json");
 	String rawContent;
+	
+	/*
+	 * The load method works in reverse of the save method. It will unpack the contents of the JSON file and
+	 * write it all to a JSONObject. From there the method returns the JSONObject to the appropriate class determined
+	 * by the activeLevel field written in the file.
+	 */
 
 	void load() throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 
@@ -28,17 +38,23 @@ public class StateTracker {
 		p = new CommandParser();
 		activeRoom.setParser(p);
 
+		activeRoom.loadCall(gameTracker);
+
 		
 		p.loaded = true;
 		p.run();
-		
+
 		p.level.setText(activeLevel);
 
-		activeRoom.loadCall(gameTracker);
 
 	}
 
-	void save(JSONObject room) throws IOException { // Save functionality
+	/*
+	 * Before this method is called the current active class takes all required fields and packs them into a single
+	 * JSONObject. That JSONObject is then passed into this method, which then writes that JSONObject to the file.
+	 */
+
+	void save(JSONObject room) throws IOException {
 		gameTracker = room;
 
 		Files.newBufferedWriter(filePath, StandardOpenOption.TRUNCATE_EXISTING);

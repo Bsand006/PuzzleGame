@@ -460,7 +460,6 @@ public class EastDoorPuzzle implements IRoom {
 				p.textBox.append("\n You leave the room, the door swings shut behind you");
 
 				getInventory();
-				p.activeLevel = "Great door";
 				p.level.setText("Great door");
 
 			}
