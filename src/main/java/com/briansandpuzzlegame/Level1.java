@@ -33,6 +33,7 @@ public class Level1 implements IRoom {
 		p.textBox.setText("\n You stand in a pitch black room");
 		inventory = new ArrayList<String>();
 		playerState = new ArrayList<String>();
+		System.out.println("FIIIIISH");
 
 	}
 
@@ -162,18 +163,15 @@ public class Level1 implements IRoom {
 
 		if (userInput.contains("load"))
 			/*
-			try {
-				z = new StateTracker();
-				load(z);
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
-				e.printStackTrace();
-			}
-			*/
+			 * try { z = new StateTracker(); load(z); } catch (InstantiationException |
+			 * IllegalAccessException | ClassNotFoundException | IOException e) {
+			 * e.printStackTrace(); }
+			 */
 
-		if (userInput.contains("save")) {
-			z = new StateTracker();
-			save(z);
-		}
+			if (userInput.contains("save")) {
+				z = new StateTracker();
+				save(z);
+			}
 
 		if (userInput.contains("continue"))
 			Continue();
@@ -416,8 +414,23 @@ public class Level1 implements IRoom {
 
 	@Override
 	public void investigate() {
-		// TODO Auto-generated method stub
+		if (userInput.contains("object") && !playerState.contains("inspectedObject")) {
 
+			p.textBox.append("\n You run your hand along its metallic surface and you feel a button");
+			playerState.add("inspectedObject");
+
+		} else if (userInput.contains("drawer") && playerLocation.equals("east")) {
+			p.textBox.append("\n You run your hand along the inside of the drawer"
+					+ "\n You feel a small panel. You push it and it retracts to reveal a screwdriver");
+			playerState.add("foundScrewdriver");
+
+		} else if (userInput.contains("wall") && playerLocation.equals("east")) {
+			p.textBox.append("You find a metal panel attached by four screws");
+			playerState.add("foundPlate");
+
+		} else {
+			p.textBox.append("\n I do not understand what you are inspecting");
+		}
 	}
 
 	public void look() {
@@ -544,7 +557,7 @@ public class Level1 implements IRoom {
 	 */
 
 	public void inventory() {
-
+		System.out.println(inventory);
 		// Displays inventory
 		if (!inventory.isEmpty()) {
 			p.textBox.append("\n" + inventory);
@@ -612,13 +625,15 @@ public class Level1 implements IRoom {
 	@Override
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
-		JSONArray inv = paramaters.getJSONArray("Inv");
 
 		inventory = new ArrayList<String>();
 		playerState = new ArrayList<String>();
 
+		JSONArray inv = paramaters.getJSONArray("Inv");
+
 		for (int i = 0; i < inv.length(); i++) {
 			inventory.add(inv.getString(i));
+			System.out.println(inventory);
 
 		}
 

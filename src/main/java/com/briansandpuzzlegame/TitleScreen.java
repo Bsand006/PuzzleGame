@@ -240,12 +240,13 @@ public class TitleScreen implements IRoom {
 	public void yes() {
 		if (loadedfile == true) { // If the player wants to load a save file
 			p.textBox.append("\n LOADING FILE.....");
-			z = new StateTracker();
 			try {
-				z.load();
+				z = new StateTracker();
+				z.load(); // Initializes StateTracker and executes load(); Now jump to StateTracker
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
+			
 
 		} else { // If there is no save file to load
 			p.textBox.append("\n Starting new game file...");

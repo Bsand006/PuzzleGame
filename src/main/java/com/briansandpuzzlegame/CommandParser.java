@@ -147,8 +147,17 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 					r = new Level1(this);
 					levels.put("com.briansandpuzzlegame.Level1", r);
 					r.firstTimeRun();
-				} else {
-					
+				} else { // If loaded == true
+					r = new Level1(this); // initialize level1
+					levels.put("com.briansandpuzzlegame.Level1", r);
+					z = new StateTracker(); // create new statetracker
+
+					try {
+						z.returnJSON(); // run return JSON. jump to statetracker
+					} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
+
 				}
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.GreatDoor")) {
