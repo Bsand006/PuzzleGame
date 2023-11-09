@@ -33,7 +33,7 @@ public class Level1 implements IRoom {
 		p.textBox.setText("\n You stand in a pitch black room");
 		inventory = new ArrayList<String>();
 		playerState = new ArrayList<String>();
-		System.out.println("FIIIIISH");
+		
 
 	}
 

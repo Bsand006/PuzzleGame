@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class WestDoorPuzzle implements IRoom {
@@ -17,10 +18,6 @@ public class WestDoorPuzzle implements IRoom {
 	boolean solved = false;
 	String skulls;
 
-	public WestDoorPuzzle() {
-
-	}
-
 	@Override
 	public void setParser(CommandParser p) {
 
@@ -28,11 +25,9 @@ public class WestDoorPuzzle implements IRoom {
 
 	public WestDoorPuzzle(CommandParser p) {
 		this.p = p;
-		firstTimeRun();
 	}
 
 	public void firstTimeRun() {
-		setInventory(inventory);
 
 		for (int i = 0; i < grid.length; i++) {
 			for (int j = 0; j < i; j++) {
@@ -496,10 +491,10 @@ public class WestDoorPuzzle implements IRoom {
 	public void Continue() {
 
 	}
-	
+
 	@Override
 	public void spyglass() {
-		
+
 	}
 
 	@Override
@@ -533,7 +528,12 @@ public class WestDoorPuzzle implements IRoom {
 	@Override
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
-		inventory = (ArrayList<String>) paramaters.get("Inv");
+		JSONArray inv = paramaters.getJSONArray("Inv");
+		inventory = new ArrayList<String>();
+
+		for (int i = 0; i < inv.length(); i++) {
+			inventory.add(inv.getString(i));
+		}
 
 	}
 

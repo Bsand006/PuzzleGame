@@ -1,13 +1,4 @@
 {
-   "Inv": [
-      "buttonKey",
-      "hammer"
-   ],
-   "State": [
-      "movedForward",
-      "inspectedObject",
-      "pushedButton",
-      "pushedButtonTwice"
-   ],
-   "activeLevel": "com.briansandpuzzlegame.Level1"
-}	
+  "Inv": ["hammer"],
+  "activeLevel": "com.briansandpuzzlegame.GreatDoor"
+}

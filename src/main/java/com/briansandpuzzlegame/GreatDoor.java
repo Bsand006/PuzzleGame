@@ -596,6 +596,8 @@ public class GreatDoor implements IRoom {
 		for (int i = 0; i < inv.length(); i++) {
 			inventory.add(inv.getString(i));
 		}
+		
+		System.out.println(inventory);
 
 		p.textBox.append("\n GAME SAVE LOADED");
 		p.textBox.append("\n Active room: " + "Great door");

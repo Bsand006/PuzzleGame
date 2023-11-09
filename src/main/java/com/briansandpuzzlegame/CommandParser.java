@@ -24,6 +24,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.json.JSONObject;
+
 public class CommandParser implements KeyListener, PropertyChangeListener {
 	StateTracker z;
 
@@ -53,9 +55,9 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 	JScrollPane scroller;
 	Font font;
 
-	public String words; // User input string
+	boolean loaded = false;
 
-	boolean loaded;
+	public String words; // User input string
 
 	/*
 	 * This constructor creates the GUI interface and the Hashmap to track the
@@ -117,14 +119,25 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		level = new JLabel();
 		level.addPropertyChangeListener(this);
 
-		if (loaded == false) { // If a save file is not being loaded
-			t = new TitleScreen(this);
-			levels.put("com.briansandpuzzlegame.TitleScreen", t);
-			level.setText("com.briansandpuzzlegame.TitleScreen");
-			t.firstTimeRun();
-		}
+		r = new Level1(this);
+		levels.put("com.briansandpuzzlegame.Level1", r);
 
-		inv = new ArrayList<String>();
+		a = new GreatDoor(this);
+		levels.put("com.briansandpuzzlegame.GreatDoor", a);
+
+		b = new EastDoorPuzzle(this);
+		levels.put("com.briansandpuzzlegame.EastDoorPuzzle", b);
+
+		c = new WestDoorPuzzle(this);
+		levels.put("com.briansandpuzzlegame.WestDoorPuzzle", c);
+
+		d = new SpookyStairs(this);
+		levels.put("com.briansandpuzzlegame.SpookyStairs", d);
+
+		t = new TitleScreen(this);
+		levels.put("com.briansandpuzzlegame.TitleScreen", t);
+		level.setText("com.briansandpuzzlegame.TitleScreen");
+		t.firstTimeRun();
 
 		// Parser accepted wordlists
 		verbs();
@@ -143,67 +156,85 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 		if (evt.getOldValue() != evt.getNewValue()) {
 			if (evt.getNewValue().equals("com.briansandpuzzlegame.Level1")) {
-				if (loaded == false) {
-					r = new Level1(this);
-					levels.put("com.briansandpuzzlegame.Level1", r);
-					r.firstTimeRun();
-				} else { // If loaded == true
-					r = new Level1(this); // initialize level1
-					levels.put("com.briansandpuzzlegame.Level1", r);
-					z = new StateTracker(); // create new statetracker
 
-					try {
-						z.returnJSON(); // run return JSON. jump to statetracker
-					} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
-						e.printStackTrace();
-					}
-
-				}
+				r.firstTimeRun();
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.GreatDoor")) {
 
-				a = new GreatDoor(this);
-				levels.put("com.briansandpuzzlegame.GreatDoor", a);
-				IRoom old = room;
-				inv = old.getInventory();
+				if (loaded == false) {
+					IRoom old = room;
+					inv = old.getInventory();
+					a.firstTimeRun();
+					a.setInventory(inv);
+					old.close();
+				}
+
 				a.firstTimeRun();
-				a.setInventory(inv);
-				old.close();
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.EastDoorPuzzle")) {
 
-				b = new EastDoorPuzzle(this);
-				levels.put("com.briansandpuzzlegame.EastDoorPuzzle", b);
-				IRoom old = room;
-				inv = new ArrayList<String>();
-				inv = old.getInventory();
+				if (loaded == false) {
+					IRoom old = room;
+					inv = old.getInventory();
+					a.firstTimeRun();
+					a.setInventory(inv);
+					old.close();
+				}
+
 				b.firstTimeRun();
-				b.setInventory(inv);
-				old.close();
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.WestDoorPuzzle")) {
 
-				c = new WestDoorPuzzle(this);
-				levels.put("com.briansandpuzzlegame.WestDoorPuzzle", c);
-				IRoom old = room;
-				inv = new ArrayList<String>();
-				inv = old.getInventory();
+				if (loaded == false) {
+					IRoom old = room;
+					inv = old.getInventory();
+					a.firstTimeRun();
+					a.setInventory(inv);
+					old.close();
+				}
+
 				c.firstTimeRun();
-				c.setInventory(inv);
-				old.close();
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.SpookyStairs")) {
 
-				d = new SpookyStairs(this);
-				levels.put("com.briansandpuzzlegame.SpookyStairs", d);
-				IRoom old = room;
-				inv = new ArrayList<String>();
-				inv = old.getInventory();
+				if (loaded == false) {
+					IRoom old = room;
+					inv = old.getInventory();
+					a.firstTimeRun();
+					a.setInventory(inv);
+					old.close();
+				}
+
 				d.firstTimeRun();
-				d.setInventory(inv);
-				old.close();
 			}
 		}
+	}
+
+	public void loadJSON(JSONObject file) {
+		JSONObject game = file;
+		String activeRoom = game.getString("activeLevel");
+
+		level.setText(activeRoom);
+
+		switch (activeRoom) {
+
+		case "com.briansandpuzzlegame.Level1":
+			r.loadCall(game);
+
+		case "com.briansandpuzzlegame.GreatDoor":
+			a.loadCall(game);
+
+		case "com.briansandpuzzlegame.EastDoorPuzzle":
+			b.loadCall(game);
+
+		case "com.briansandpuzzlegame.WestDoorPuzzle":
+			c.loadCall(game);
+
+		case "com.briansandpuzzlegame.SpookyStairs":
+			d.loadCall(game);
+
+		}
+
 	}
 
 	/*

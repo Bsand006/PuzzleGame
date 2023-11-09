@@ -31,35 +31,14 @@ public class StateTracker {
 
 		rawContent = new String(Files.readAllBytes(filePath));
 		gameTracker = new JSONObject(rawContent);
+		p = new CommandParser();
+		p.loaded = true;
+		p.run();
 
-		String activeLevel = (String) gameTracker.getString("activeLevel");
-
-		// Reads activeLevel string stored in JSON and initializes IRoom instance of it
-		@SuppressWarnings("deprecation")
-		IRoom activeRoom = (IRoom) this.getClass().getClassLoader().loadClass(activeLevel).newInstance();
-
-		p = new CommandParser(); // Initialize new command parser
-		activeRoom.setParser(p); // Set the parser in active room
-
-		p.loaded = true; // Tell CommandParser a file has been loaded
-		p.run(); // Initialize GUI
-
-		p.level.setText(activeLevel); // Set active level in Commandparser. Now jump to propertyChange
+		p.loadJSON(gameTracker);
 
 	}
 
-	public void returnJSON() throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-		rawContent = new String(Files.readAllBytes(filePath));
-		gameTracker = new JSONObject(rawContent);
-
-		String activeLevel = (String) gameTracker.getString("activeLevel");
-
-		@SuppressWarnings("deprecation")
-		IRoom activeRoom = (IRoom) this.getClass().getClassLoader().loadClass(activeLevel).newInstance();
-		
-		activeRoom.loadCall(gameTracker); // Passes the JSON into activeLevel
-
-	}
 	/*
 	 * Before this method is called the current active class takes all required
 	 * fields and packs them into a single JSONObject. That JSONObject is then
