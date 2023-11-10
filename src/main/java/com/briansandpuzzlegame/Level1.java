@@ -33,7 +33,6 @@ public class Level1 implements IRoom {
 		p.textBox.setText("\n You stand in a pitch black room");
 		inventory = new ArrayList<String>();
 		playerState = new ArrayList<String>();
-		
 
 	}
 
@@ -604,7 +603,7 @@ public class Level1 implements IRoom {
 		level1.put("State", playerTrack);
 
 		try {
-			z.save(level1);
+			z.save(level1, z.createFile());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -617,8 +616,6 @@ public class Level1 implements IRoom {
 	public void load(StateTracker z)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		p.f.dispose();
-
-		z.load();
 
 	}
 

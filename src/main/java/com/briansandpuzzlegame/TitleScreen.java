@@ -242,7 +242,7 @@ public class TitleScreen implements IRoom {
 			p.textBox.append("\n LOADING FILE.....");
 			try {
 				z = new StateTracker();
-				z.load(); // Initializes StateTracker and executes load(); Now jump to StateTracker
+				z.load(z.createFile()); // Initializes StateTracker and executes load(); Now jump to StateTracker
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}

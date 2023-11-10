@@ -1,5 +1,7 @@
 package com.briansandpuzzlegame;
 
+import java.io.File;
+
 /*
  * StateTracker handles the save/load functionality of the game.
  */
@@ -16,9 +18,29 @@ public class StateTracker {
 	CommandParser p;
 
 	JSONObject gameTracker;
-	Path filePath = Paths.get("state.json");
 	String rawContent;
 	IRoom activeRoom;
+
+	public Path createFile() {
+
+		try {
+			File file = new File("state.json");
+			if (file.createNewFile()) {
+				Path pathToFile = Paths.get("state.json");
+				return pathToFile;
+			} else {
+				System.out.println("FILE ALREADY EXISTS");
+				Path path = Paths.get("state.json");
+
+				return path;
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 	/*
 	 * The load method works in reverse of the save method. It will unpack the
@@ -27,9 +49,11 @@ public class StateTracker {
 	 * activeLevel field written in the file.
 	 */
 
-	public void load() throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public void load(Path file)
+			throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		Path path = file;
 
-		rawContent = new String(Files.readAllBytes(filePath));
+		rawContent = new String(Files.readAllBytes(path));
 		gameTracker = new JSONObject(rawContent);
 		p = new CommandParser();
 		p.loaded = true;
@@ -45,12 +69,13 @@ public class StateTracker {
 	 * passed into this method, which then writes that JSONObject to the file.
 	 */
 
-	void save(JSONObject room) throws IOException {
+	void save(JSONObject room, Path file) throws IOException {
 		gameTracker = room;
+		Path path = file;
 
-		Files.newBufferedWriter(filePath, StandardOpenOption.TRUNCATE_EXISTING);
+		Files.newBufferedWriter(path, StandardOpenOption.TRUNCATE_EXISTING);
 		rawContent = gameTracker.toString(gameTracker.length());
-		Files.writeString(filePath, rawContent, StandardOpenOption.CREATE);
+		Files.writeString(path, rawContent, StandardOpenOption.CREATE);
 
 	}
 }

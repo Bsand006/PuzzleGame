@@ -767,13 +767,18 @@ public class EastDoorPuzzle implements IRoom {
 		eastDoor.put("boxUnlock?", boxUnlock);
 
 		p.textBox.append("\n Game saved");
+		
+		try {
+			z.save(eastDoor, z.createFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void load(StateTracker z)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 		p.textBox.append("\n LOADING...");
-		z.load();
 	}
 
 	@Override

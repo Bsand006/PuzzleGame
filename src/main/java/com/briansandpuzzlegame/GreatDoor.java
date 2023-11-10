@@ -571,7 +571,7 @@ public class GreatDoor implements IRoom {
 		greatDoor.put("Inv", playerInv);
 		
 		try {
-			z.save(greatDoor);
+			z.save(greatDoor, z.createFile());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -584,7 +584,7 @@ public class GreatDoor implements IRoom {
 	public void load(StateTracker z)
 			throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException {
 
-		z.load();
+	
 	}
 
 	@Override
