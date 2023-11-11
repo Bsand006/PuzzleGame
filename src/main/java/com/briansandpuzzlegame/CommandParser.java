@@ -38,6 +38,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 	EastDoorPuzzle b;
 	WestDoorPuzzle c;
 	SpookyStairs d;
+	WaterRoom e;
 
 	// Current room hashmap
 	HashMap<String, IRoom> levels;
@@ -54,8 +55,6 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 	JLabel level;
 	JScrollPane scroller;
 	Font font;
-
-	boolean loaded = false;
 
 	public String words; // User input string
 
@@ -77,8 +76,8 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 		f = new JFrame();
 		f.setLayout(null);
-		// f.setSize(width, height);
-		f.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		f.setSize(width, height);
+		// f.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		f.setUndecorated(true);
 		f.setTitle("Zorp");
 		f.getContentPane().setBackground(Color.darkGray);
@@ -139,6 +138,9 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		level.setText("com.briansandpuzzlegame.TitleScreen");
 		t.firstTimeRun();
 
+		e = new WaterRoom(this);
+		levels.put("com.briansandpuzzlegame.WaterRoom", e);
+
 		// Parser accepted wordlists
 		verbs();
 		adverbs();
@@ -161,51 +163,44 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.GreatDoor")) {
 
-				if (loaded == false) {
-					IRoom old = room;
-					inv = old.getInventory();
-					a.firstTimeRun();
-					a.setInventory(inv);
-					old.close();
-				}
-
+				IRoom old = room;
+				inv = old.getInventory();
 				a.firstTimeRun();
+				a.setInventory(inv);
+				old.close();
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.EastDoorPuzzle")) {
 
-				if (loaded == false) {
-					IRoom old = room;
-					inv = old.getInventory();
-					a.firstTimeRun();
-					a.setInventory(inv);
-					old.close();
-				}
-
+				IRoom old = room;
+				inv = old.getInventory();
 				b.firstTimeRun();
+				b.setInventory(inv);
+				old.close();
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.WestDoorPuzzle")) {
 
-				if (loaded == false) {
-					IRoom old = room;
-					inv = old.getInventory();
-					a.firstTimeRun();
-					a.setInventory(inv);
-					old.close();
-				}
-
+				IRoom old = room;
+				inv = old.getInventory();
 				c.firstTimeRun();
+				c.setInventory(inv);
+				old.close();
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.SpookyStairs")) {
 
-				if (loaded == false) {
-					IRoom old = room;
-					inv = old.getInventory();
-					a.firstTimeRun();
-					a.setInventory(inv);
-					old.close();
-				}
-
+				IRoom old = room;
+				inv = old.getInventory();
 				d.firstTimeRun();
+				a.setInventory(inv);
+				old.close();
+
+			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.WaterRoom")) {
+
+				IRoom old = room;
+				inv = old.getInventory();
+				e.firstTimeRun();
+				e.setInventory(inv);
+				old.close();
+
 			}
 		}
 	}

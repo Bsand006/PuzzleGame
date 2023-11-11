@@ -20,11 +20,7 @@ public class EastDoorPuzzle implements IRoom {
 	boolean[] locks = new boolean[4]; // Position of the four locks on the box. Are they unlocked or not?
 	boolean boxUnlock = false; // Is the box unlocked?
 	boolean puzzleComplete = false;
-	ArrayList<String> inventory = new ArrayList<String>(); // Inventory
-
-	public EastDoorPuzzle() {
-
-	}
+	ArrayList<String> inventory;
 
 	public EastDoorPuzzle(CommandParser p) {
 		this.p = p;
@@ -33,6 +29,8 @@ public class EastDoorPuzzle implements IRoom {
 
 	@Override
 	public void firstTimeRun() {
+		inventory = new ArrayList<String>();
+		
 		p.textBox.append("\n ");
 		p.textBox.append("\n In the center of this room sits a small metal box on " + "a pedastal");
 		p.textBox.append("\n There is an iron lock on all four sides. Each lock has a " + "scuplted image above it");
@@ -44,7 +42,6 @@ public class EastDoorPuzzle implements IRoom {
 		p.textBox.append("\n    Count on your answer to unlock the way");
 		p.textBox.append("\n     But use the wrong key to your dismay");
 
-		setInventory(inventory); // Updates inventory from previous class
 
 	}
 
@@ -165,8 +162,7 @@ public class EastDoorPuzzle implements IRoom {
 			exit();
 
 		if (userInput.contains("repeat"))
-			;
-		repeat();
+			repeat();
 
 		if (userInput.contains("inventory"))
 			inventory();
@@ -784,6 +780,9 @@ public class EastDoorPuzzle implements IRoom {
 	@Override
 	public void loadCall(JSONObject params) {
 		JSONObject paramaters = params;
+		
+		JSONArray inv = paramaters.getJSONArray("Inv");
+
 
 		for (int i = 0; i < locks.length; i++) {
 		}
@@ -792,8 +791,7 @@ public class EastDoorPuzzle implements IRoom {
 
 	@Override
 	public void setParser(CommandParser p) {
-		// TODO Auto-generated method stub
-
+		this.p = p;
 	}
 
 }

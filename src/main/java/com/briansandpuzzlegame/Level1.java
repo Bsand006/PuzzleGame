@@ -16,9 +16,6 @@ public class Level1 implements IRoom {
 	ArrayList<String> inventory;
 	List<String> playerState;
 
-	public Level1() {
-	}
-
 	public Level1(CommandParser p) {
 		this.p = p;
 	}

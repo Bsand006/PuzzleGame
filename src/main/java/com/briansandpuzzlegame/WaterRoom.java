@@ -5,24 +5,22 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
-public class SpookyStairs implements IRoom {
+public class WaterRoom implements IRoom {
 	CommandParser p;
 	StateTracker z;
 
 	String userInput;
 	ArrayList<String> inventory;
-	
-	// Level checks
-	
-	boolean spyglass = false;
-	boolean wallUp = false;
-	
-	public SpookyStairs(CommandParser p) {
+
+	int turns = 8;
+
+	public WaterRoom(CommandParser p) {
 		this.p = p;
 	}
 
 	@Override
 	public void verbInterpreter() throws IOException {
+		userInput = p.inputPasser();
 
 		if (userInput.contains("enter"))
 			enter();
@@ -164,14 +162,16 @@ public class SpookyStairs implements IRoom {
 	@Override
 	public void firstTimeRun() {
 		inventory = new ArrayList<String>();
-		p.textBox.append("\n You walk up this spiral staircase for a few seconds until you come face to face"
-				+ "\n with a stone wall.");
+
+		p.textBox.append("\n You find yourself at one end of this long room"
+				+ "\n The walls are lined with human-like head statues, placed equally apart"
+				+ " \n In the center of the room is a stone pedastel with the top slanted");
 
 	}
 
 	@Override
 	public void setParser(CommandParser p) {
-		this.p = p;
+
 	}
 
 	@Override
@@ -181,14 +181,6 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void push() {
-		if (userInput.contains("wall") || userInput.contains("stone")) {
-			p.textBox.append("\n The wall does not budge");
-		}
-		
-		if (userInput.contains("button") && spyglass == true) {
-			p.textBox.append("\n The wall rumbles as it slowly retracts into the floor");
-			wallUp = true;
-		}
 
 	}
 
@@ -199,9 +191,6 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void open() {
-		if (userInput.contains("wall") || userInput.contains("stone")) {
-			p.textBox.append("\n The wall does not budge");
-		}
 
 	}
 
@@ -212,9 +201,6 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void move() {
-		if (userInput.contains("wall") || userInput.contains("stone")) {
-			p.textBox.append("\n The wall does not budge");
-		}
 
 	}
 
@@ -240,16 +226,12 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void inspect() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n It is a solid stone wall");
-		}
+
 	}
 
 	@Override
 	public void investigate() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n It is a solid stone wall");
-		}
+
 	}
 
 	@Override
@@ -259,9 +241,6 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void climb() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n The wall reaches the ceiling");
-		}
 
 	}
 
@@ -282,25 +261,17 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void crawl() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n The wall reaches the floor");
-		}
 
 	}
 
 	@Override
 	public void jump() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n The wall reaches the ceiling");
-		}
 
 	}
 
 	@Override
 	public void search() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n It is a solid stone wall");
-		}
+
 	}
 
 	@Override
@@ -310,23 +281,16 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void check() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n It is a solid stone wall");
-		}
+
 	}
 
 	@Override
 	public void touch() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n The stone is cold to the touch");
-		}
+
 	}
 
 	@Override
 	public void Throw() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n Wall too big :(");
-		}
 
 	}
 
@@ -342,16 +306,12 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void Break() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n Wall too big :(");
-		}
+
 	}
 
 	@Override
 	public void smash() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n Wall too big :(");
-		}
+
 	}
 
 	@Override
@@ -366,18 +326,12 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void remove() {
-		if (userInput.contains("stone") || userInput.contains("wall")) {
-			p.textBox.append("\n Wall too big :(");
-		}
+
 	}
 
 	@Override
 	public void inventory() {
-		if (!inventory.isEmpty()) {
-			p.textBox.append("\n" + inventory);
-		} else {
-			p.textBox.append("\n Inventory is empty");
-		}
+
 	}
 
 	@Override
@@ -422,24 +376,19 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public void spyglass() {
-		if (userInput.contains("wall") || userInput.contains("stone")) {
-			p.textBox.append("\n You put the spyglass up to your eye"
-					+ "\n A glowing green button appears in the center of the wall");
-		}
+
 	}
 
 	@Override
 	public void Continue() {
-		if (wallUp == true) {
-			p.textBox.append("\n The stairs continue upward for ten more steps"
-					+ "\n They open up to a large rectangular room");
-			p.level.setText("com.briansandpuzzlegame.WaterRoom");
-		}
 
 	}
 
 	@Override
 	public void repeat() {
+		p.textBox.append("\n You find yourself at one end of this long room"
+				+ "\n The walls are lined with human-like head statues, placed equally apart"
+				+ " \n In the center of the room is a stone pedastel with the top slanted");
 
 	}
 
@@ -461,6 +410,7 @@ public class SpookyStairs implements IRoom {
 
 	@Override
 	public ArrayList<String> getInventory() {
+
 		return inventory;
 	}
 

@@ -20,9 +20,6 @@ public class GreatDoor implements IRoom {
 	boolean westDoorComplete = false;
 	boolean stairs = false;
 
-	public GreatDoor() {
-	}
-	
 	@Override
 	public void setParser(CommandParser p) {
 		this.p = p;

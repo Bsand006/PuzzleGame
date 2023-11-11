@@ -31,7 +31,6 @@ public class StateTracker {
 			} else {
 				System.out.println("FILE ALREADY EXISTS");
 				Path path = Paths.get("state.json");
-
 				return path;
 			}
 
@@ -56,7 +55,6 @@ public class StateTracker {
 		rawContent = new String(Files.readAllBytes(path));
 		gameTracker = new JSONObject(rawContent);
 		p = new CommandParser();
-		p.loaded = true;
 		p.run();
 
 		p.loadJSON(gameTracker);
