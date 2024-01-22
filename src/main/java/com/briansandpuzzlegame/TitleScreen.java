@@ -11,11 +11,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JTextArea;
+
 import org.json.JSONObject;
 
 public class TitleScreen implements IRoom {
 	CommandParser p;
 	StateTracker z;
+	JTextArea textBox;
 
 	File json = new File("state.json");
 	boolean loadedfile;
@@ -27,7 +30,7 @@ public class TitleScreen implements IRoom {
 	@Override
 	public void verbInterpreter() throws IOException {
 
-		String userInput = p.inputPasser();
+		String userInput =  p.inputPasser();
 
 		if (userInput.equalsIgnoreCase("Yes"))
 			yes();
@@ -40,13 +43,13 @@ public class TitleScreen implements IRoom {
 	@Override
 	public void firstTimeRun() {
 
-		p.textBox.append("\n Welcome to Zorp!");
+		 textBox.append("\n Welcome to Zorp!");
 
 		if (json.length() != 0) { // Determines if there is a previous game save file that can be loaded
-			p.textBox.append("\n You have a game file saved, would you like to load it?");
+			 textBox.append("\n You have a game file saved, would you like to load it?");
 			loadedfile = true;
 		} else {
-			p.textBox.append("\n Would you like to start a new game?");
+			 textBox.append("\n Would you like to start a new game?");
 			loadedfile = false;
 		}
 	}
@@ -239,7 +242,7 @@ public class TitleScreen implements IRoom {
 	@Override
 	public void yes() {
 		if (loadedfile == true) { // If the player wants to load a save file
-			p.textBox.append("\n LOADING FILE.....");
+			 textBox.append("\n LOADING FILE.....");
 			try {
 				z = new StateTracker();
 				z.load(z.createFile()); // Initializes StateTracker and executes load(); Now jump to StateTracker
@@ -249,8 +252,8 @@ public class TitleScreen implements IRoom {
 			
 
 		} else { // If there is no save file to load
-			p.textBox.append("\n Starting new game file...");
-			p.level.setText("com.briansandpuzzlegame.Level1");
+			 textBox.append("\n Starting new game file...");
+			 p.level.setText("com.briansandpuzzlegame.Level1");
 		}
 
 	}
@@ -258,11 +261,11 @@ public class TitleScreen implements IRoom {
 	@Override
 	public void no() {
 		if (loadedfile == true) { // If the player doesn't want to start a new game file
-			p.textBox.append("\n Starting new game file...");
-			p.level.setText("com.briansandpuzzlegame.Level1");
+			 textBox.append("\n Starting new game file...");
+			 p.level.setText("com.briansandpuzzlegame.Level1");
 
 		} else { // Closes the program
-			p.textBox.append("\n EXITING...");
+			 textBox.append("\n EXITING...");
 			try {
 				wait(3);
 				exit();
@@ -321,6 +324,11 @@ public class TitleScreen implements IRoom {
 	@Override
 	public void setInventory(ArrayList<String> inventory) {
 
+	}
+
+	@Override
+	public void setTextBox(JTextArea textBox) {
+		this.textBox = textBox;
 	}
 
 }

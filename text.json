@@ -1,0 +1,35 @@
+{
+	"Level1": {
+		"enter": ["I do not understand where you want to enter"],
+		"go": ["You go into the room and bump into some object",
+			"You bump into a wall",
+			"I do not understand where you are trying to go"
+		],
+		"push": ["You push the button. The room floods with bright light. You stand in a large room. To the north is a large metal door. There is a table to the east. Along the east wall is a patch of cracked stone",
+			"You push the button again. A plate pops out with a key resting on it",
+			"I do not understand what you are trying to push"
+		],
+		"open": ["The drawer appears to be empty",
+			"I do not understand what you want to open"
+		],
+		"close": ["You close the drawer",
+			"I do not understand what you want to close"
+		],
+		"move": ["You move into the room and bump into some object",
+			"You bump into a wall",
+			"I do not understand where you are trying to move to"
+		],
+		"walk": ["You walk into the room and bump into some object",
+			"You bump into a wall",
+			"I do not understand where you want to walk to"
+		],
+		"use": ["You unscrew the panel. Behind it is a key",
+			"The key slides into the lock and the handle pops out of the door",
+			"The key slides into the lock and the latch slides open",
+			"I do not understand what you want to use"
+		],
+		"take": []
+
+	}
+
+}

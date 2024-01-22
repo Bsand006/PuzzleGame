@@ -136,6 +136,7 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		t = new TitleScreen(this);
 		levels.put("com.briansandpuzzlegame.TitleScreen", t);
 		level.setText("com.briansandpuzzlegame.TitleScreen");
+		t.setTextBox(textBox);
 		t.firstTimeRun();
 
 		e = new WaterRoom(this);
@@ -159,47 +160,73 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		if (evt.getOldValue() != evt.getNewValue()) {
 			if (evt.getNewValue().equals("com.briansandpuzzlegame.Level1")) {
 
+				r.setTextBox(textBox);
 				r.firstTimeRun();
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.GreatDoor")) {
 
-				IRoom old = room;
-				inv = old.getInventory();
-				a.firstTimeRun();
-				a.setInventory(inv);
-				old.close();
+				try {
+					IRoom old = room;
+					inv = old.getInventory();
+					a.setTextBox(textBox);
+					a.firstTimeRun();
+					a.setInventory(inv);
+					old.close();
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.EastDoorPuzzle")) {
 
-				IRoom old = room;
-				inv = old.getInventory();
-				b.firstTimeRun();
-				b.setInventory(inv);
-				old.close();
+				try {
+					IRoom old = room;
+					inv = old.getInventory();
+					b.setTextBox(textBox);
+					b.firstTimeRun();
+					b.setInventory(inv);
+					old.close();
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.WestDoorPuzzle")) {
 
-				IRoom old = room;
-				inv = old.getInventory();
-				c.firstTimeRun();
-				c.setInventory(inv);
-				old.close();
+				try {
+					IRoom old = room;
+					inv = old.getInventory();
+					c.setTextBox(textBox);
+					c.firstTimeRun();
+					c.setInventory(inv);
+					old.close();
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.SpookyStairs")) {
 
-				IRoom old = room;
-				inv = old.getInventory();
-				d.firstTimeRun();
-				a.setInventory(inv);
-				old.close();
+				try {
+					IRoom old = room;
+					inv = old.getInventory();
+					d.setTextBox(textBox);
+					d.firstTimeRun();
+					d.setInventory(inv);
+					old.close();
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
 
 			} else if (evt.getNewValue().equals("com.briansandpuzzlegame.WaterRoom")) {
 
-				IRoom old = room;
-				inv = old.getInventory();
-				e.firstTimeRun();
-				e.setInventory(inv);
-				old.close();
+				try {
+					IRoom old = room;
+					inv = old.getInventory();
+					e.setTextBox(textBox);
+					e.firstTimeRun();
+					e.setInventory(inv);
+					old.close();
+				} catch (NullPointerException e) {
+					e.printStackTrace();
+				}
 
 			}
 		}
@@ -214,19 +241,28 @@ public class CommandParser implements KeyListener, PropertyChangeListener {
 		switch (activeRoom) {
 
 		case "com.briansandpuzzlegame.Level1":
+			r.setTextBox(textBox);
 			r.loadCall(game);
 
 		case "com.briansandpuzzlegame.GreatDoor":
+			a.setTextBox(textBox);
 			a.loadCall(game);
 
 		case "com.briansandpuzzlegame.EastDoorPuzzle":
+			b.setTextBox(textBox);
 			b.loadCall(game);
 
 		case "com.briansandpuzzlegame.WestDoorPuzzle":
+			c.setTextBox(textBox);
 			c.loadCall(game);
 
 		case "com.briansandpuzzlegame.SpookyStairs":
+			d.setTextBox(textBox);
 			d.loadCall(game);
+			
+		case "com.briansandpuzzlegame.WaterRoom":
+			e.setTextBox(textBox);
+			e.loadCall(game);
 
 		}
 

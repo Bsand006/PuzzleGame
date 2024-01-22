@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextArea;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class WestDoorPuzzle implements IRoom {
 	CommandParser p;
+	JTextArea textBox;
 
 	StateTracker z;
 	String userInput;
@@ -35,8 +38,8 @@ public class WestDoorPuzzle implements IRoom {
 			}
 		}
 
-		p.textBox.append("\n ");
-		p.textBox.append("\n Nine skulls rest near a four-foot square set of tiles in the floor"
+		 textBox.append("\n ");
+		 textBox.append("\n Nine skulls rest near a four-foot square set of tiles in the floor"
 				+ "\n The tiles are arranged in a four by four square"
 				+ "\n Stone panels on the top and right side of the square label the rows and columns"
 				+ "\n The columns are labeled from left to right : III, I, II, III"
@@ -46,7 +49,7 @@ public class WestDoorPuzzle implements IRoom {
 
 	@Override
 	public void verbInterpreter() throws IOException {
-		userInput = p.inputPasser();
+		userInput =  p.inputPasser();
 
 		if (userInput.contains("enter"))
 			enter();
@@ -194,7 +197,7 @@ public class WestDoorPuzzle implements IRoom {
 								if (grid[3][2] + grid[2][2] + grid[1][2] + grid[0][2] == 3)
 									if (grid[3][3] + grid[2][3] + grid[1][3] + grid[0][3] == 1) {
 										solved = true;
-										p.textBox.append(
+										 textBox.append(
 												"\n The tiles light up as a slab of stone in the back slides to the side"
 														+ "\n Behind the stone slab is a small intricate pyramid and a key");
 									}
@@ -251,17 +254,17 @@ public class WestDoorPuzzle implements IRoom {
 		switch (userInput) {
 
 		case "skulls":
-			p.textBox.append("\n You take the nine skulls");
+			 textBox.append("\n You take the nine skulls");
 			skulls = "Skulls : " + skullsLeft;
 
 			inventory.add(skulls);
 
 		case "pyramid":
-			p.textBox.append("\n You take the pyramid");
+			 textBox.append("\n You take the pyramid");
 			inventory.add("westRoomPyramid");
 
 		case "key":
-			p.textBox.append("\n You take the key");
+			 textBox.append("\n You take the key");
 			inventory.add("westRoomKey");
 		}
 
@@ -271,13 +274,13 @@ public class WestDoorPuzzle implements IRoom {
 	public void inspect() {
 
 		if (userInput.contains("skulls")) {
-			p.textBox.append("\n These nine skulls have been here for a long time");
+			 textBox.append("\n These nine skulls have been here for a long time");
 
 		} else if (userInput.contains("tiles") || userInput.contains("squares")) {
-			p.textBox.append("\n The 4x4 set of tiles have indents in them");
+			 textBox.append("\n The 4x4 set of tiles have indents in them");
 
 		} else {
-			p.textBox.append("\n I do not understand what you are inspecting");
+			 textBox.append("\n I do not understand what you are inspecting");
 		}
 
 	}
@@ -386,23 +389,23 @@ public class WestDoorPuzzle implements IRoom {
 				if (x < 4 && y < 4) {
 					if (grid[x][y] == 0) {
 						grid[x][y] = 1;
-						p.textBox.append("\n Placing skull on tile " + x + "," + y);
+						 textBox.append("\n Placing skull on tile " + x + "," + y);
 						winCheck();
 						skullsLeft--;
 						skulls = "Skulls : " + skullsLeft;
 
 					} else
-						p.textBox.append("\n Square already occupied");
+						 textBox.append("\n Square already occupied");
 				} else
-					p.textBox.append("\n Invalid coordinates");
+					 textBox.append("\n Invalid coordinates");
 
 			} catch (Exception e) {
-				p.textBox.append("\n Caught exception " + e.toString() + "\n Please include comma-separated coordinates"
+				 textBox.append("\n Caught exception " + e.toString() + "\n Please include comma-separated coordinates"
 						+ "\n Example: '0,0'");
 			}
 
 		} else
-			p.textBox.append("\n Puzzle is solved");
+			 textBox.append("\n Puzzle is solved");
 	}
 
 	@Override
@@ -418,32 +421,32 @@ public class WestDoorPuzzle implements IRoom {
 				if (x < 4 && y < 4) {
 					if (grid[x][y] == 1) {
 						grid[x][y] = 0;
-						p.textBox.append("\n Removing skull on tile " + x + "," + y);
+						 textBox.append("\n Removing skull on tile " + x + "," + y);
 						winCheck();
 						skullsLeft++;
 						skulls = "Skulls : " + skullsLeft;
 
 					} else
-						p.textBox.append("\n ");
+						 textBox.append("\n ");
 				} else
-					p.textBox.append("\n Invalid coordinates");
+					 textBox.append("\n Invalid coordinates");
 
 			} catch (Exception e) {
-				p.textBox.append("\n Caught exception " + e.toString() + "\n Please include comma-separated coordinates"
+				 textBox.append("\n Caught exception " + e.toString() + "\n Please include comma-separated coordinates"
 						+ "\n Example: '0,0'");
 			}
 
 		} else
-			p.textBox.append("\n Puzzle is solved");
+			 textBox.append("\n Puzzle is solved");
 	}
 
 	@Override
 	public void inventory() {
 
 		if (!inventory.isEmpty()) {
-			p.textBox.append("\n" + inventory);
+			 textBox.append("\n" + inventory);
 		} else {
-			p.textBox.append("\n Inventory is empty");
+			 textBox.append("\n Inventory is empty");
 		}
 	}
 
@@ -535,6 +538,11 @@ public class WestDoorPuzzle implements IRoom {
 			inventory.add(inv.getString(i));
 		}
 
+	}
+
+	@Override
+	public void setTextBox(JTextArea textBox) {
+		this.textBox = textBox;
 	}
 
 }

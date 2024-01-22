@@ -3,6 +3,8 @@ package com.briansandpuzzlegame;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JTextArea;
+
 import org.json.JSONObject;
 
 public interface IRoom {
@@ -108,5 +110,7 @@ public interface IRoom {
 	public ArrayList<String> getInventory();
 
 	public void setInventory(ArrayList<String> inventory);
+	
+	public void setTextBox(JTextArea textBox);
 
 }
